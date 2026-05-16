@@ -1,4 +1,4 @@
-# dwKwai Downloader
+# Kwai Downloader
 
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Deploy](https://img.shields.io/badge/deploy-render-46E3B7)
@@ -40,7 +40,7 @@ FastAPI (Python Backend)
 ## 📂 Estrutura do projeto
 
 ```txt
-dwKwai/
+KwaiDownloader/
 ├── templates/          # Interface HTML/JS
 ├── temp/               # Arquivos temporários (auto-deleted)
 ├── docs/               # Documentação técnica

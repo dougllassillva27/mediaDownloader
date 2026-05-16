@@ -8,13 +8,15 @@ from fastapi.templating import Jinja2Templates
 from scraper import get_kwai_info, extract_url
 import httpx
 
-app = FastAPI(title="dwKwai Downloader")
+app = FastAPI(title="Kwai Downloader")
 
 # Config pastas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 TEMP_DIR = os.path.join(BASE_DIR, "temp")
+ASSETS_DIR = os.path.join(BASE_DIR, "assets")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
+app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
 templates = Jinja2Templates(directory="templates")
 
 def cleanup_file(path: str):
