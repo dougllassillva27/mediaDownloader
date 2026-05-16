@@ -213,9 +213,39 @@
         }
     };
 
-    btnMp4.onclick = () => {
+    btnMp4.onclick = async () => {
+        showOverlay("Preparando vídeo...");
         const url = encodeURIComponent(lastProcessedUrl);
-        window.location.href = `/api/download/mp4?url=${url}`;
+        
+        try {
+            // Usamos fetch para o MP4 para controlar o overlay e notificar o usuário
+            const response = await fetch(`/api/download/mp4?url=${url}`);
+            if (!response.ok) throw new Error("Erro ao baixar MP4.");
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let filename = "video.mp4";
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename="(.+)"/);
+                if (match) filename = match[1];
+            }
+
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+            
+            alert("Download iniciado!");
+        } catch (e) {
+            alert("Erro no download: " + e.message);
+        } finally {
+            hideOverlay();
+        }
     };
 
     btnMp3.onclick = async () => {
@@ -224,17 +254,13 @@
         const url = encodeURIComponent(lastProcessedUrl);
         
         try {
-            // Usamos fetch para o download do MP3 para podermos controlar o overlay.
-            // O backend retorna um FileResponse.
             const response = await fetch(`/api/download/mp3?url=${url}`);
-            
             if (!response.ok) throw new Error("Erro no processamento do MP3.");
 
             const blob = await response.blob();
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             
-            // Tenta pegar o nome do arquivo do header Content-Disposition
             const contentDisposition = response.headers.get('Content-Disposition');
             let filename = "audio.mp3";
             if (contentDisposition) {
@@ -249,6 +275,7 @@
             a.remove();
             window.URL.revokeObjectURL(downloadUrl);
 
+            alert("Download iniciado!");
         } catch (e) {
             alert("Erro ao converter MP3: " + e.message);
         } finally {
