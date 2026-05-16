@@ -2,6 +2,7 @@ import yt_dlp
 import logging
 import re
 import unicodedata
+from functools import lru_cache
 
 # Config log
 logging.basicConfig(level=logging.INFO)
@@ -24,6 +25,7 @@ def sanitize_filename(filename: str) -> str:
     filename = " ".join(filename.split())
     return filename or "kwai_video"
 
+@lru_cache(maxsize=128)
 def get_kwai_info(url_input: str, download_audio_only: bool = False):
     """
     Extrai metadados do vídeo Kwai usando yt-dlp.
