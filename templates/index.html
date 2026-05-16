@@ -214,6 +214,7 @@
     const btnMp4 = document.getElementById('btnMp4');
     
     let lastProcessedUrl = "";
+    let lastProcessedTitle = "kwai_video";
 
     function showOverlay(text) {
         overlayText.innerText = text;
@@ -254,6 +255,7 @@
                 document.getElementById('videoThumb').src = data.thumbnail;
                 document.getElementById('videoTitle').innerText = data.title;
                 lastProcessedUrl = data.source; // URL limpa vinda do backend
+                lastProcessedTitle = data.clean_title; // Nome sanitizado para download
                 preview.style.display = "block";
             } else {
                 alert("Erro: " + data.error);
@@ -271,7 +273,6 @@
         const url = encodeURIComponent(lastProcessedUrl);
         
         try {
-            // Usamos fetch para o MP4 para controlar o overlay e notificar o usuário
             const response = await fetch(`/api/download/mp4?url=${url}`);
             if (!response.ok) throw new Error("Erro ao baixar MP4.");
 
@@ -279,15 +280,8 @@
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             
-            const contentDisposition = response.headers.get('Content-Disposition');
-            let filename = "video.mp4";
-            if (contentDisposition) {
-                const match = contentDisposition.match(/filename="(.+)"/);
-                if (match) filename = match[1];
-            }
-
             a.href = downloadUrl;
-            a.download = filename;
+            a.download = `${lastProcessedTitle}.mp4`;
             document.body.appendChild(a);
             a.click();
             a.remove();
@@ -314,15 +308,8 @@
             const downloadUrl = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             
-            const contentDisposition = response.headers.get('Content-Disposition');
-            let filename = "audio.mp3";
-            if (contentDisposition) {
-                const match = contentDisposition.match(/filename="(.+)"/);
-                if (match) filename = match[1];
-            }
-
             a.href = downloadUrl;
-            a.download = filename;
+            a.download = `${lastProcessedTitle}.mp3`;
             document.body.appendChild(a);
             a.click();
             a.remove();
