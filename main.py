@@ -41,9 +41,8 @@ async def info(url: str = Form(...)):
 async def download_mp4(url: str):
     """Proxy para download do MP4 com nome personalizado."""
     try:
-        # Extrai link limpo caso venha com texto
-        clean_url = extract_url(url)
-        data = get_kwai_info(clean_url)
+        # get_kwai_info ja trata extração de URL internamente
+        data = get_kwai_info(url)
         if not data["success"]:
             raise HTTPException(status_code=400, detail="URL inválida")
         
@@ -66,46 +65,38 @@ async def download_mp4(url: str):
 
 @app.get("/api/download/mp3")
 async def download_mp3(url: str, background_tasks: BackgroundTasks):
-    """Gera MP3 via FFmpeg e envia."""
+    """Gera MP3 via yt-dlp post-processors e envia."""
     file_id = str(uuid.uuid4())
-    mp4_path = os.path.join(TEMP_DIR, f"{file_id}.mp4")
-    mp3_path = os.path.join(TEMP_DIR, f"{file_id}.mp3")
+    temp_file_base = os.path.join(TEMP_DIR, file_id)
+    mp3_path = f"{temp_file_base}.mp3"
     
     try:
-        # 1. Pegar info
-        clean_url = extract_url(url)
-        data = get_kwai_info(clean_url)
+        # 1. Pegar info (e extrair URL internamente)
+        data = get_kwai_info(url, download_audio_only=True)
         if not data["success"]:
             raise HTTPException(status_code=400, detail="URL inválida")
         
         filename = f"{data['clean_title']}.mp3"
 
-        # 2. Download via yt-dlp
+        # 2. Download e conversão via yt-dlp (mais eficiente)
         import yt_dlp
         ydl_opts = {
-            'outtmpl': mp4_path,
-            'format': 'bestvideo+bestaudio/best',
+            'outtmpl': temp_file_base,
+            'format': 'bestaudio/best',
             'quiet': True,
+            'postprocessors': [{
+                'key': 'FFmpegExtractAudio',
+                'preferredcodec': 'mp3',
+                'preferredquality': '192',
+            }],
         }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([clean_url])
+            ydl.download([data['source']])
         
-        if not os.path.exists(mp4_path):
-            raise HTTPException(status_code=500, detail="Falha ao baixar vídeo base")
+        if not os.path.exists(mp3_path):
+            raise HTTPException(status_code=500, detail="Falha ao gerar MP3")
 
-        # 2. Converter via FFmpeg
-        cmd = [
-            "ffmpeg", "-i", mp4_path, 
-            "-vn", "-ar", "44100", "-ac", "2", "-b:a", "192k",
-            mp3_path, "-y"
-        ]
-        
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode != 0:
-            raise Exception(f"Erro FFmpeg: {result.stderr}")
-        
         # 3. Agendar cleanup
-        background_tasks.add_task(cleanup_file, mp4_path)
         background_tasks.add_task(cleanup_file, mp3_path)
         
         return FileResponse(
@@ -115,7 +106,6 @@ async def download_mp3(url: str, background_tasks: BackgroundTasks):
         )
         
     except Exception as e:
-        cleanup_file(mp4_path)
         cleanup_file(mp3_path)
         raise HTTPException(status_code=500, detail=str(e))
 

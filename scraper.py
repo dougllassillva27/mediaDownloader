@@ -24,7 +24,7 @@ def sanitize_filename(filename: str) -> str:
     filename = " ".join(filename.split())
     return filename or "kwai_video"
 
-def get_kwai_info(url_input: str):
+def get_kwai_info(url_input: str, download_audio_only: bool = False):
     """
     Extrai metadados do vídeo Kwai usando yt-dlp.
     """
@@ -33,7 +33,7 @@ def get_kwai_info(url_input: str):
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
-        'format': 'bestvideo+bestaudio/best',
+        'format': 'bestaudio/best' if download_audio_only else 'bestvideo+bestaudio/best',
     }
     
     try:

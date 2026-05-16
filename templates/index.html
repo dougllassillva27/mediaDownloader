@@ -79,9 +79,39 @@
             margin: 15px 0;
             color: #aaa;
         }
+        /* Overlay de Loading */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 80, 0, 0.3);
+            border-top: 5px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #overlay p { font-size: 1.2rem; font-weight: bold; }
     </style>
 </head>
 <body>
+
+<div id="overlay">
+    <div class="spinner"></div>
+    <p id="overlayText">Processando...</p>
+</div>
 
 <div class="container">
     <h1>dwKwai</h1>
@@ -101,9 +131,6 @@
             <button id="btnMp4">Download MP4</button>
             <button id="btnMp3">Download MP3</button>
         </div>
-        <div id="mp3Loading" class="loading" style="color: var(--primary); font-weight: bold; margin-top: 10px;">
-            Convertendo áudio... Isso pode levar alguns segundos.
-        </div>
     </div>
 </div>
 
@@ -112,19 +139,28 @@
     const inputUrl = document.getElementById('kwaiUrl');
     const preview = document.getElementById('preview');
     const loading = document.getElementById('loading');
-    const mp3Loading = document.getElementById('mp3Loading');
+    const overlay = document.getElementById('overlay');
+    const overlayText = document.getElementById('overlayText');
     const btnMp3 = document.getElementById('btnMp3');
     const btnMp4 = document.getElementById('btnMp4');
     
     let lastProcessedUrl = "";
 
+    function showOverlay(text) {
+        overlayText.innerText = text;
+        overlay.style.display = "flex";
+    }
+
+    function hideOverlay() {
+        overlay.style.display = "none";
+    }
+
     btnFetch.onclick = async () => {
         const rawText = inputUrl.value.trim();
         if(!rawText) return alert("Cole uma URL ou texto com link!");
 
-        loading.style.display = "block";
+        showOverlay("Analisando vídeo...");
         preview.style.display = "none";
-        mp3Loading.style.display = "none";
         btnFetch.disabled = true;
 
         try {
@@ -148,7 +184,7 @@
         } catch (e) {
             alert("Erro na conexão com o servidor.");
         } finally {
-            loading.style.display = "none";
+            hideOverlay();
             btnFetch.disabled = false;
         }
     };
@@ -158,21 +194,42 @@
         window.location.href = `/api/download/mp4?url=${url}`;
     };
 
-    btnMp3.onclick = () => {
-        mp3Loading.style.display = "block";
-        btnMp3.disabled = true;
+    btnMp3.onclick = async () => {
+        showOverlay("Convertendo áudio... aguarde.");
         
         const url = encodeURIComponent(lastProcessedUrl);
         
-        // Como o FileResponse inicia o download, o browser nao avisa quando termina.
-        // Vamos apenas simular um tempo ou deixar o user clicar de novo apos um delay.
-        window.location.href = `/api/download/mp3?url=${url}`;
-        
-        // Destrava o botão após 10 segundos (tempo médio de conversão)
-        setTimeout(() => {
-            mp3Loading.style.display = "none";
-            btnMp3.disabled = false;
-        }, 10000);
+        try {
+            // Usamos fetch para o download do MP3 para podermos controlar o overlay.
+            // O backend retorna um FileResponse.
+            const response = await fetch(`/api/download/mp3?url=${url}`);
+            
+            if (!response.ok) throw new Error("Erro no processamento do MP3.");
+
+            const blob = await response.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            
+            // Tenta pegar o nome do arquivo do header Content-Disposition
+            const contentDisposition = response.headers.get('Content-Disposition');
+            let filename = "audio.mp3";
+            if (contentDisposition) {
+                const match = contentDisposition.match(/filename="(.+)"/);
+                if (match) filename = match[1];
+            }
+
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+
+        } catch (e) {
+            alert("Erro ao converter MP3: " + e.message);
+        } finally {
+            hideOverlay();
+        }
     };
 </script>
 
