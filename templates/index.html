@@ -1,340 +1,433 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kwai Downloader</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kwai Downloader - Baixe vídeos do Kwai, TikTok e Instagram</title>
 
     <!-- Meta Tags Básicas -->
-    <meta name="description" content="Baixe vídeos e áudios do Kwai rapidamente e sem complicações." />
-    <meta name="keywords" content="Kwai, Downloader, MP4, MP3, Vídeo, Áudio" />
+    <meta
+      name="description"
+      content="Baixe vídeos e áudios do Kwai, TikTok e Instagram rapidamente e sem complicações."
+    />
+    <meta
+      name="keywords"
+      content="Kwai, TikTok, Instagram, Downloader, MP4, MP3, Vídeo, Áudio"
+    />
     <meta name="author" content="Douglas Silva" />
 
     <!-- Open Graph / Facebook / WhatsApp -->
-    <meta property="og:title" content="Kwai Downloader" />
-    <meta property="og:description" content="Baixe vídeos e áudios do Kwai rapidamente." />
-    <meta property="og:url" content="https://kwaidownloader.dougllassillva.com.br/" />
+    <meta property="og:title" content="Kwai Downloader - Multi-Plataforma" />
+    <meta
+      property="og:description"
+      content="Baixe vídeos e áudios do Kwai, TikTok e Instagram rapidamente."
+    />
+    <meta
+      property="og:url"
+      content="https://kwaidownloader.dougllassillva.com.br/"
+    />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://kwaidownloader.dougllassillva.com.br/assets/img/Kwai-Downloader.webp" />
+    <meta
+      property="og:image"
+      content="https://kwaidownloader.dougllassillva.com.br/assets/img/Kwai-Downloader.webp"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Kwai Downloader" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Kwai Downloader" />
-    <meta name="twitter:description" content="Baixe vídeos e áudios do Kwai rapidamente." />
-    <meta name="twitter:image" content="https://kwaidownloader.dougllassillva.com.br/assets/img/Kwai-Downloader.webp" />
+    <meta name="twitter:title" content="Kwai Downloader - Multi-Plataforma" />
+    <meta
+      name="twitter:description"
+      content="Baixe vídeos e áudios do Kwai, TikTok e Instagram rapidamente."
+    />
+    <meta
+      name="twitter:image"
+      content="https://kwaidownloader.dougllassillva.com.br/assets/img/Kwai-Downloader.webp"
+    />
 
-    <link rel="icon" type="image/x-icon" href="/assets/img/Kwai-Downloader.ico">
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/assets/img/Kwai-Downloader.ico"
+    />
 
     <style>
-        :root {
-            --primary: #ff5000;
-            --dark: #121212;
-            --light: #f4f4f4;
-            --card: #1e1e1e;
+      :root {
+        --primary: #ff5000;
+        --dark: #121212;
+        --light: #f4f4f4;
+        --card: #1e1e1e;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--dark);
+        color: var(--light);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        width: 100%;
+        max-width: 500px;
+        background: var(--card);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+      h1 {
+        color: var(--primary);
+        margin-bottom: 20px;
+      }
+      .input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      input {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        background: #2a2a2a;
+        color: white;
+      }
+      button {
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: none;
+        background: var(--primary);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #preview {
+        margin-top: 20px;
+        display: none;
+        animation: fadeIn 0.5s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
         }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--dark);
-            color: var(--light);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
+        to {
+          opacity: 1;
         }
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: var(--card);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
+      }
+      .thumb {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 15px;
+      }
+      .actions {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 15px;
+      }
+      .loading {
+        display: none;
+        margin: 15px 0;
+        color: #aaa;
+      }
+      /* Overlay de Loading */
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.85);
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 80, 0, 0.3);
+        border-top: 5px solid var(--primary);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 20px;
+      }
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-        h1 { color: var(--primary); margin-bottom: 20px; }
-        .input-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
+        100% {
+          transform: rotate(360deg);
         }
-        input {
-            flex: 1;
-            padding: 12px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            background: #2a2a2a;
-            color: white;
-        }
-        button {
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: none;
-            background: var(--primary);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        #preview {
-            margin-top: 20px;
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .thumb {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-        .actions {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 15px;
-        }
-        .loading {
-            display: none;
-            margin: 15px 0;
-            color: #aaa;
-        }
-        /* Overlay de Loading */
-        #overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-        }
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid rgba(255, 80, 0, 0.3);
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #overlay p { font-size: 1.2rem; font-weight: bold; }
+      }
+      #overlay p {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
 
-        /* Modal de Sucesso */
-        #modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 1100;
+      /* Modal de Sucesso */
+      #modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 1100;
+      }
+      .modal-content {
+        background: var(--card);
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.8);
+        max-width: 300px;
+        width: 90%;
+        border: 1px solid var(--primary);
+        animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
         }
-        .modal-content {
-            background: var(--card);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.8);
-            max-width: 300px;
-            width: 90%;
-            border: 1px solid var(--primary);
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        to {
+          transform: scale(1);
+          opacity: 1;
         }
-        @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-icon {
-            font-size: 40px;
-            color: #4CAF50;
-            margin-bottom: 15px;
-        }
-        .modal-btn {
-            margin-top: 20px;
-            width: 100%;
-        }
-        /* Scrollbar mínima e discreta */
-        ::-webkit-scrollbar {
-            width: 1px;
-            height: 1px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #121212;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #121212;
-        }
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #121212 #121212;
-        }
+      }
+      .modal-icon {
+        font-size: 40px;
+        color: #4caf50;
+        margin-bottom: 15px;
+      }
+      .modal-btn {
+        margin-top: 20px;
+        width: 100%;
+      }
+      /* Scrollbar mínima e discreta */
+      ::-webkit-scrollbar {
+        width: 1px;
+        height: 1px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #121212;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #121212;
+      }
+      * {
+        scrollbar-width: thin;
+        scrollbar-color: #121212 #121212;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="overlay">
+      <div class="spinner"></div>
+      <p id="overlayText">Processando...</p>
+    </div>
 
-<div id="overlay">
-    <div class="spinner"></div>
-    <p id="overlayText">Processando...</p>
-</div>
-
-<div id="modal">
-    <div class="modal-content">
+    <div id="modal">
+      <div class="modal-content">
         <div class="modal-icon">✔</div>
-        <h2 style="margin:0">Sucesso!</h2>
+        <h2 style="margin: 0">Sucesso!</h2>
         <p>Seu download foi iniciado com sucesso.</p>
         <button class="modal-btn" onclick="hideModal()">Fechar</button>
+      </div>
     </div>
-</div>
 
-<div class="container">
-    <h1>Kwai Downloader</h1>
-    <p>Baixe vídeos e áudios do Kwai rapidamente.</p>
-    
-    <div class="input-group">
-        <input type="text" id="kwaiUrl" placeholder="Cole o link do Kwai aqui...">
+    <div class="container">
+      <h1>Kwai Downloader</h1>
+      <p>Baixe vídeos e áudios do Kwai, TikTok e Instagram.</p>
+
+      <div class="input-group">
+        <input
+          type="text"
+          id="kwaiUrl"
+          placeholder="Cole o link (Kwai, TikTok ou Instagram)..."
+        />
         <button id="btnFetch">Analisar</button>
-    </div>
+      </div>
 
-    <div id="loading" class="loading">Analisando vídeo... aguarde.</div>
+      <div id="loading" class="loading">Analisando vídeo... aguarde.</div>
 
-    <div id="preview">
-        <img id="videoThumb" src="" class="thumb" alt="Thumbnail do vídeo">
-        <h3 id="videoTitle" style="display:none;"></h3>
-        <p style="text-align: left; font-size: 0.9rem; color: #aaa; margin-bottom: 5px;">Nome do arquivo (opcional):</p>
-        <div class="input-group" style="margin-bottom: 10px;">
-            <input type="text" id="customFilename" placeholder="Renomear arquivo...">
+      <div id="preview">
+        <img id="videoThumb" src="" class="thumb" alt="Thumbnail do vídeo" />
+        <h3 id="videoTitle" style="display: none"></h3>
+        <p
+          style="
+            text-align: left;
+            font-size: 0.9rem;
+            color: #aaa;
+            margin-bottom: 5px;
+          "
+        >
+          Nome do arquivo (opcional):
+        </p>
+        <div class="input-group" style="margin-bottom: 10px">
+          <input
+            type="text"
+            id="customFilename"
+            placeholder="Renomear arquivo..."
+          />
         </div>
         <div class="actions">
-            <button id="btnMp4">Download MP4</button>
-            <button id="btnMp3">Download MP3</button>
+          <button id="btnMp4">Download MP4</button>
+          <button id="btnMp3">Download MP3</button>
         </div>
+      </div>
     </div>
-</div>
 
-<script>
-    const btnFetch = document.getElementById('btnFetch');
-    const inputUrl = document.getElementById('kwaiUrl');
-    const customFilename = document.getElementById('customFilename');
-    const preview = document.getElementById('preview');
-    const loading = document.getElementById('loading');
-    const overlay = document.getElementById('overlay');
-    const overlayText = document.getElementById('overlayText');
-    const modal = document.getElementById('modal');
-    const btnMp3 = document.getElementById('btnMp3');
-    const btnMp4 = document.getElementById('btnMp4');
-    
-    let lastProcessedUrl = "";
-    let lastProcessedTitle = "kwai_video";
+    <script>
+      const btnFetch = document.getElementById('btnFetch');
+      const inputUrl = document.getElementById('kwaiUrl');
+      const customFilename = document.getElementById('customFilename');
+      const preview = document.getElementById('preview');
+      const loading = document.getElementById('loading');
+      const overlay = document.getElementById('overlay');
+      const overlayText = document.getElementById('overlayText');
+      const modal = document.getElementById('modal');
+      const btnMp3 = document.getElementById('btnMp3');
+      const btnMp4 = document.getElementById('btnMp4');
 
-    function showOverlay(text) {
+      let lastProcessedUrl = '';
+      let lastProcessedTitle = 'kwai_video';
+
+      function showOverlay(text) {
         overlayText.innerText = text;
-        overlay.style.display = "flex";
-    }
+        overlay.style.display = 'flex';
+      }
 
-    function hideOverlay() {
-        overlay.style.display = "none";
-    }
+      function hideOverlay() {
+        overlay.style.display = 'none';
+      }
 
-    function showModal() {
-        modal.style.display = "flex";
-    }
+      function showModal() {
+        modal.style.display = 'flex';
+      }
 
-    function hideModal() {
-        modal.style.display = "none";
-    }
+      function hideModal() {
+        modal.style.display = 'none';
+      }
 
-    async function downloadBlob(endpoint, url, filename, extension, overlayMsg) {
+      async function downloadBlob(
+        endpoint,
+        url,
+        filename,
+        extension,
+        overlayMsg
+      ) {
         showOverlay(overlayMsg);
         try {
-            const encodedUrl = encodeURIComponent(url);
-            const encodedFilename = encodeURIComponent(filename);
-            const response = await fetch(`${endpoint}?url=${encodedUrl}&filename=${encodedFilename}`);
-            
-            if (!response.ok) throw new Error(`Erro ao baixar ${extension.toUpperCase()}.`);
+          const encodedUrl = encodeURIComponent(url);
+          const encodedFilename = encodeURIComponent(filename);
+          const response = await fetch(
+            `${endpoint}?url=${encodedUrl}&filename=${encodedFilename}`
+          );
 
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            
-            a.href = downloadUrl;
-            a.download = `${filename}.${extension}`;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(downloadUrl);
-            
-            showModal();
+          if (!response.ok)
+            throw new Error(`Erro ao baixar ${extension.toUpperCase()}.`);
+
+          const blob = await response.blob();
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+
+          a.href = downloadUrl;
+          a.download = `${filename}.${extension}`;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(downloadUrl);
+
+          showModal();
         } catch (e) {
-            alert(`Erro no download: ${e.message}`);
+          alert(`Erro no download: ${e.message}`);
         } finally {
-            hideOverlay();
+          hideOverlay();
         }
-    }
+      }
 
-    btnFetch.onclick = async () => {
+      btnFetch.onclick = async () => {
         const rawText = inputUrl.value.trim();
-        if(!rawText) return alert("Cole uma URL ou texto com link!");
+        if (!rawText) return alert('Cole uma URL ou texto com link!');
 
-        showOverlay("Analisando vídeo...");
-        preview.style.display = "none";
+        showOverlay('Analisando vídeo...');
+        preview.style.display = 'none';
         btnFetch.disabled = true;
 
         try {
-            const formData = new FormData();
-            formData.append('url', rawText);
+          const formData = new FormData();
+          formData.append('url', rawText);
 
-            const response = await fetch('/api/info', {
-                method: 'POST',
-                body: formData
-            });
-            const data = await response.json();
+          const response = await fetch('/api/info', {
+            method: 'POST',
+            body: formData,
+          });
+          const data = await response.json();
 
-            if(data.success) {
-                document.getElementById('videoThumb').src = data.thumbnail;
-                document.getElementById('videoTitle').innerText = data.title;
-                customFilename.value = data.title;
-                lastProcessedUrl = data.source;
-                lastProcessedTitle = data.clean_title;
-                preview.style.display = "block";
-            } else {
-                alert("Erro: " + data.error);
-            }
+          if (data.success) {
+            document.getElementById('videoThumb').src = data.thumbnail;
+            document.getElementById('videoTitle').innerText = data.title;
+            customFilename.value = data.title;
+            lastProcessedUrl = data.source;
+            lastProcessedTitle = data.clean_title;
+            preview.style.display = 'block';
+          } else {
+            alert('Erro: ' + data.error);
+          }
         } catch (e) {
-            alert("Erro na conexão com o servidor.");
+          alert('Erro na conexão com o servidor.');
         } finally {
-            hideOverlay();
-            btnFetch.disabled = false;
+          hideOverlay();
+          btnFetch.disabled = false;
         }
-    };
+      };
 
-    btnMp4.onclick = () => {
+      btnMp4.onclick = () => {
         const filename = customFilename.value.trim() || lastProcessedTitle;
-        downloadBlob('/api/download/mp4', lastProcessedUrl, filename, 'mp4', "Preparando vídeo...");
-    };
+        downloadBlob(
+          '/api/download/mp4',
+          lastProcessedUrl,
+          filename,
+          'mp4',
+          'Preparando vídeo...'
+        );
+      };
 
-    btnMp3.onclick = () => {
+      btnMp3.onclick = () => {
         const filename = customFilename.value.trim() || lastProcessedTitle;
-        downloadBlob('/api/download/mp3', lastProcessedUrl, filename, 'mp3', "Convertendo áudio... aguarde.");
-    };
+        downloadBlob(
+          '/api/download/mp3',
+          lastProcessedUrl,
+          filename,
+          'mp3',
+          'Convertendo áudio... aguarde.'
+        );
+      };
 
-    // Move cursor ao final do campo após clique/focus (setTimeout sobrescreve posição do mouse)
-    customFilename.addEventListener('focus', function() {
+      // Move cursor ao final do campo após clique/focus (setTimeout sobrescreve posição do mouse)
+      customFilename.addEventListener('focus', function () {
         setTimeout(() => {
-            const len = this.value.length;
-            this.setSelectionRange(len, len);
+          const len = this.value.length;
+          this.setSelectionRange(len, len);
         }, 0);
-    });
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>

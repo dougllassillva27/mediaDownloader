@@ -4,12 +4,156 @@
   "graph": {},
   "nodes": [
     {
+      "label": ".eslintrc.json",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L1",
+      "id": "eslintrc_json",
+      "community": 3,
+      "norm_label": ".eslintrc.json"
+    },
+    {
+      "label": "env",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L2",
+      "id": "kwaidownloader_eslintrc_env",
+      "community": 3,
+      "norm_label": "env"
+    },
+    {
+      "label": "browser",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L3",
+      "id": "kwaidownloader_eslintrc_env_browser",
+      "community": 3,
+      "norm_label": "browser"
+    },
+    {
+      "label": "es2021",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L4",
+      "id": "kwaidownloader_eslintrc_env_es2021",
+      "community": 3,
+      "norm_label": "es2021"
+    },
+    {
+      "label": "node",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L5",
+      "id": "kwaidownloader_eslintrc_env_node",
+      "community": 3,
+      "norm_label": "node"
+    },
+    {
+      "label": "extends",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L7",
+      "id": "kwaidownloader_eslintrc_extends",
+      "community": 3,
+      "norm_label": "extends"
+    },
+    {
+      "label": "parserOptions",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L8",
+      "id": "kwaidownloader_eslintrc_parseroptions",
+      "community": 3,
+      "norm_label": "parseroptions"
+    },
+    {
+      "label": "ecmaVersion",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L9",
+      "id": "kwaidownloader_eslintrc_parseroptions_ecmaversion",
+      "community": 3,
+      "norm_label": "ecmaversion"
+    },
+    {
+      "label": "sourceType",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L10",
+      "id": "kwaidownloader_eslintrc_parseroptions_sourcetype",
+      "community": 3,
+      "norm_label": "sourcetype"
+    },
+    {
+      "label": "rules",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L12",
+      "id": "kwaidownloader_eslintrc_rules",
+      "community": 3,
+      "norm_label": "rules"
+    },
+    {
+      "label": "no-unused-vars",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L13",
+      "id": "kwaidownloader_eslintrc_rules_no_unused_vars",
+      "community": 3,
+      "norm_label": "no-unused-vars"
+    },
+    {
+      "label": "no-console",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L14",
+      "id": "kwaidownloader_eslintrc_rules_no_console",
+      "community": 3,
+      "norm_label": "no-console"
+    },
+    {
+      "label": "eqeqeq",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L15",
+      "id": "kwaidownloader_eslintrc_rules_eqeqeq",
+      "community": 3,
+      "norm_label": "eqeqeq"
+    },
+    {
+      "label": "curly",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L16",
+      "id": "kwaidownloader_eslintrc_rules_curly",
+      "community": 3,
+      "norm_label": "curly"
+    },
+    {
+      "label": "no-var",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L17",
+      "id": "kwaidownloader_eslintrc_rules_no_var",
+      "community": 3,
+      "norm_label": "no-var"
+    },
+    {
+      "label": "prefer-const",
+      "file_type": "code",
+      "source_file": ".eslintrc.json",
+      "source_location": "L18",
+      "id": "kwaidownloader_eslintrc_rules_prefer_const",
+      "community": 3,
+      "norm_label": "prefer-const"
+    },
+    {
       "label": "main.py",
       "file_type": "code",
       "source_file": "main.py",
       "source_location": "L1",
       "id": "main_py",
-      "community": 1,
+      "community": 0,
       "norm_label": "main.py"
     },
     {
@@ -18,7 +162,7 @@
       "source_file": "main.py",
       "source_location": "L18",
       "id": "kwaidownloader_main_appstate",
-      "community": 1,
+      "community": 0,
       "norm_label": "appstate"
     },
     {
@@ -27,7 +171,7 @@
       "source_file": "main.py",
       "source_location": "L24",
       "id": "kwaidownloader_main_lifespan",
-      "community": 1,
+      "community": 0,
       "norm_label": "lifespan()"
     },
     {
@@ -36,7 +180,7 @@
       "source_file": "main.py",
       "source_location": "L40",
       "id": "kwaidownloader_main_cleanup_file",
-      "community": 3,
+      "community": 0,
       "norm_label": "cleanup_file()"
     },
     {
@@ -45,7 +189,7 @@
       "source_file": "main.py",
       "source_location": "L49",
       "id": "kwaidownloader_main_home",
-      "community": 1,
+      "community": 0,
       "norm_label": "home()"
     },
     {
@@ -54,7 +198,7 @@
       "source_file": "main.py",
       "source_location": "L53",
       "id": "kwaidownloader_main_info",
-      "community": 1,
+      "community": 0,
       "norm_label": "info()"
     },
     {
@@ -63,7 +207,7 @@
       "source_file": "main.py",
       "source_location": "L64",
       "id": "kwaidownloader_main_download_mp4",
-      "community": 4,
+      "community": 0,
       "norm_label": "download_mp4()"
     },
     {
@@ -72,7 +216,7 @@
       "source_file": "main.py",
       "source_location": "L92",
       "id": "kwaidownloader_main_download_mp3",
-      "community": 5,
+      "community": 0,
       "norm_label": "download_mp3()"
     },
     {
@@ -81,7 +225,7 @@
       "source_file": "main.py",
       "source_location": "L41",
       "id": "kwaidownloader_main_rationale_41",
-      "community": 3,
+      "community": 0,
       "norm_label": "remove arquivo temporario."
     },
     {
@@ -90,7 +234,7 @@
       "source_file": "main.py",
       "source_location": "L65",
       "id": "kwaidownloader_main_rationale_65",
-      "community": 4,
+      "community": 0,
       "norm_label": "proxy para download do mp4 com nome personalizado."
     },
     {
@@ -99,7 +243,7 @@
       "source_file": "main.py",
       "source_location": "L93",
       "id": "kwaidownloader_main_rationale_93",
-      "community": 5,
+      "community": 0,
       "norm_label": "gera mp3 via yt-dlp post-processors e envia."
     },
     {
@@ -126,7 +270,7 @@
       "source_file": "scraper.py",
       "source_location": "L20",
       "id": "kwaidownloader_scraper_sanitize_filename",
-      "community": 6,
+      "community": 0,
       "norm_label": "sanitize_filename()"
     },
     {
@@ -153,7 +297,7 @@
       "source_file": "scraper.py",
       "source_location": "L21",
       "id": "kwaidownloader_scraper_rationale_21",
-      "community": 6,
+      "community": 0,
       "norm_label": "limpa nome do arquivo para garantir compatibilidade com sos.     decompoe acent"
     },
     {
@@ -166,6 +310,141 @@
       "norm_label": "extrai metadados do video kwai usando yt-dlp."
     },
     {
+      "label": "commit-msg.py",
+      "file_type": "code",
+      "source_file": ".githooks/commit-msg.py",
+      "source_location": "L1",
+      "id": "githooks_commit_msg_py",
+      "community": 13,
+      "norm_label": "commit-msg.py"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".githooks/commit-msg.py",
+      "source_location": "L20",
+      "id": "githooks_commit_msg_main",
+      "community": 13,
+      "norm_label": "main()"
+    },
+    {
+      "label": "pre-commit.py",
+      "file_type": "code",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L1",
+      "id": "githooks_pre_commit_py",
+      "community": 9,
+      "norm_label": "pre-commit.py"
+    },
+    {
+      "label": "get_staged_files()",
+      "file_type": "code",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L34",
+      "id": "githooks_pre_commit_get_staged_files",
+      "community": 9,
+      "norm_label": "get_staged_files()"
+    },
+    {
+      "label": "scan_file()",
+      "file_type": "code",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L48",
+      "id": "githooks_pre_commit_scan_file",
+      "community": 9,
+      "norm_label": "scan_file()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L78",
+      "id": "githooks_pre_commit_main",
+      "community": 9,
+      "norm_label": "main()"
+    },
+    {
+      "label": "Retorna a lista de arquivos no stage (staged).",
+      "file_type": "rationale",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L35",
+      "id": "githooks_pre_commit_rationale_35",
+      "community": 9,
+      "norm_label": "retorna a lista de arquivos no stage (staged)."
+    },
+    {
+      "label": "Varre um arquivo em busca de segredos e caminhos protegidos.",
+      "file_type": "rationale",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L49",
+      "id": "githooks_pre_commit_rationale_49",
+      "community": 9,
+      "norm_label": "varre um arquivo em busca de segredos e caminhos protegidos."
+    },
+    {
+      "label": "test_git_hooks.py",
+      "file_type": "code",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L1",
+      "id": "tests_test_git_hooks_py",
+      "community": 7,
+      "norm_label": "test_git_hooks.py"
+    },
+    {
+      "label": "test_pre_commit_secret_detection()",
+      "file_type": "code",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L31",
+      "id": "tests_test_git_hooks_test_pre_commit_secret_detection",
+      "community": 7,
+      "norm_label": "test_pre_commit_secret_detection()"
+    },
+    {
+      "label": "test_pre_commit_protected_paths()",
+      "file_type": "code",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L51",
+      "id": "tests_test_git_hooks_test_pre_commit_protected_paths",
+      "community": 7,
+      "norm_label": "test_pre_commit_protected_paths()"
+    },
+    {
+      "label": "test_commit_msg_validation()",
+      "file_type": "code",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L80",
+      "id": "tests_test_git_hooks_test_commit_msg_validation",
+      "community": 7,
+      "norm_label": "test_commit_msg_validation()"
+    },
+    {
+      "label": "Garante que segredos reais sejam casados pelas regexes de seguran\u00e7a.",
+      "file_type": "rationale",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L32",
+      "id": "tests_test_git_hooks_rationale_32",
+      "community": 7,
+      "norm_label": "garante que segredos reais sejam casados pelas regexes de seguranca."
+    },
+    {
+      "label": "Valida se caminhos protegidos e secretos s\u00e3o interceptados de forma correta.",
+      "file_type": "rationale",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L52",
+      "id": "tests_test_git_hooks_rationale_52",
+      "community": 7,
+      "norm_label": "valida se caminhos protegidos e secretos sao interceptados de forma correta."
+    },
+    {
+      "label": "Valida se o formato Conventional Commit + ID de Observa\u00e7\u00e3o \u00e9 rigidamente exigido",
+      "file_type": "rationale",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L81",
+      "id": "tests_test_git_hooks_rationale_81",
+      "community": 7,
+      "norm_label": "valida se o formato conventional commit + id de observacao e rigidamente exigido"
+    },
+    {
       "label": "versionador.js",
       "file_type": "code",
       "source_file": "versionamento/versionador.js",
@@ -173,6 +452,60 @@
       "id": "versionamento_versionador_js",
       "community": 2,
       "norm_label": "versionador.js"
+    },
+    {
+      "label": "fs",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L18",
+      "id": "versionamento_versionador_fs",
+      "community": 2,
+      "norm_label": "fs"
+    },
+    {
+      "label": "path",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L19",
+      "id": "versionamento_versionador_path",
+      "community": 2,
+      "norm_label": "path"
+    },
+    {
+      "label": "crypto",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L20",
+      "id": "versionamento_versionador_crypto",
+      "community": 2,
+      "norm_label": "crypto"
+    },
+    {
+      "label": "diretorioBase",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L23",
+      "id": "versionamento_versionador_diretoriobase",
+      "community": 2,
+      "norm_label": "diretoriobase"
+    },
+    {
+      "label": "diretoriosIgnorados",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L24",
+      "id": "versionamento_versionador_diretoriosignorados",
+      "community": 2,
+      "norm_label": "diretoriosignorados"
+    },
+    {
+      "label": "extensoesAlvo",
+      "file_type": "code",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L25",
+      "id": "versionamento_versionador_extensoesalvo",
+      "community": 2,
+      "norm_label": "extensoesalvo"
     },
     {
       "label": "gerarHash()",
@@ -211,11 +544,542 @@
       "norm_label": "varrerdiretorio()"
     },
     {
+      "label": "AGENT.md",
+      "file_type": "document",
+      "source_file": "AGENT.md",
+      "source_location": "L1",
+      "id": "agent_md",
+      "community": 11,
+      "norm_label": "agent.md"
+    },
+    {
+      "label": "\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente",
+      "file_type": "document",
+      "source_file": "AGENT.md",
+      "source_location": "L1",
+      "id": "kwaidownloader_agent_dodo_starter_pack_instru\u00e7\u00f5es_do_agente",
+      "community": 11,
+      "norm_label": "\ud83e\udda4 dodo starter pack \u2014 instrucoes do agente"
+    },
+    {
+      "label": "CLAUDE.md",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "id": "claude_md",
+      "community": 8,
+      "norm_label": "claude.md"
+    },
+    {
+      "label": "\ud83e\udda4 Dodo Starter Pack - Manifesto Anti-Vibe Coding",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "id": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "community": 8,
+      "norm_label": "\ud83e\udda4 dodo starter pack - manifesto anti-vibe coding"
+    },
+    {
+      "label": "\ud83d\udee0\ufe0f Stack do Projeto",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L7",
+      "id": "kwaidownloader_claude_stack_do_projeto",
+      "community": 8,
+      "norm_label": "\ud83d\udee0\ufe0f stack do projeto"
+    },
+    {
+      "label": "\ud83d\ude80 Comandos Essenciais",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L14",
+      "id": "kwaidownloader_claude_comandos_essenciais",
+      "community": 8,
+      "norm_label": "\ud83d\ude80 comandos essenciais"
+    },
+    {
+      "label": "\ud83d\udd12 Regras Inegoci\u00e1veis (Anti-Vibe Coding)",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L32",
+      "id": "kwaidownloader_claude_regras_inegoci\u00e1veis_anti_vibe_coding",
+      "community": 8,
+      "norm_label": "\ud83d\udd12 regras inegociaveis (anti-vibe coding)"
+    },
+    {
+      "label": "\ud83d\udcc1 Estrutura de Dom\u00ednio Recomendada",
+      "file_type": "document",
+      "source_file": "CLAUDE.md",
+      "source_location": "L39",
+      "id": "kwaidownloader_claude_estrutura_de_dom\u00ednio_recomendada",
+      "community": 8,
+      "norm_label": "\ud83d\udcc1 estrutura de dominio recomendada"
+    },
+    {
+      "label": "GEMINI.md",
+      "file_type": "document",
+      "source_file": "GEMINI.md",
+      "source_location": "L1",
+      "id": "gemini_md",
+      "community": 12,
+      "norm_label": "gemini.md"
+    },
+    {
+      "label": "\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente Gemini",
+      "file_type": "document",
+      "source_file": "GEMINI.md",
+      "source_location": "L1",
+      "id": "kwaidownloader_gemini_dodo_starter_pack_instru\u00e7\u00f5es_do_agente_gemini",
+      "community": 12,
+      "norm_label": "\ud83e\udda4 dodo starter pack \u2014 instrucoes do agente gemini"
+    },
+    {
+      "label": "README.md",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L1",
+      "id": "readme_md",
+      "community": 1,
+      "norm_label": "readme.md"
+    },
+    {
+      "label": "Kwai Downloader",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L5",
+      "id": "kwaidownloader_readme_kwai_downloader",
+      "community": 1,
+      "norm_label": "kwai downloader"
+    },
+    {
+      "label": "\ud83d\udd17 Demo",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "id": "kwaidownloader_readme_demo",
+      "community": 1,
+      "norm_label": "\ud83d\udd17 demo"
+    },
+    {
+      "label": "\ud83c\udf0c Preview",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "id": "kwaidownloader_readme_preview",
+      "community": 1,
+      "norm_label": "\ud83c\udf0c preview"
+    },
+    {
+      "label": "\ud83d\udcd6 Vis\u00e3o Geral T\u00e9cnica",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L27",
+      "id": "kwaidownloader_readme_vis\u00e3o_geral_t\u00e9cnica",
+      "community": 1,
+      "norm_label": "\ud83d\udcd6 visao geral tecnica"
+    },
+    {
+      "label": "\u2699\ufe0f Highlights t\u00e9cnicos",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L33",
+      "id": "kwaidownloader_readme_highlights_t\u00e9cnicos",
+      "community": 1,
+      "norm_label": "\u2699\ufe0f highlights tecnicos"
+    },
+    {
+      "label": "\ud83c\udfd7\ufe0f Arquitetura",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L41",
+      "id": "kwaidownloader_readme_arquitetura",
+      "community": 1,
+      "norm_label": "\ud83c\udfd7\ufe0f arquitetura"
+    },
+    {
+      "label": "\ud83d\udcc2 Estrutura do projeto",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "id": "kwaidownloader_readme_estrutura_do_projeto",
+      "community": 1,
+      "norm_label": "\ud83d\udcc2 estrutura do projeto"
+    },
+    {
+      "label": "\ud83d\udcc2 Responsabilidades",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L68",
+      "id": "kwaidownloader_readme_responsabilidades",
+      "community": 1,
+      "norm_label": "\ud83d\udcc2 responsabilidades"
+    },
+    {
+      "label": "`main.py`",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L70",
+      "id": "kwaidownloader_readme_main_py",
+      "community": 1,
+      "norm_label": "`main.py`"
+    },
+    {
+      "label": "`scraper.py`",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L73",
+      "id": "kwaidownloader_readme_scraper_py",
+      "community": 1,
+      "norm_label": "`scraper.py`"
+    },
+    {
+      "label": "`templates/index.html`",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L76",
+      "id": "kwaidownloader_readme_templates_index_html",
+      "community": 1,
+      "norm_label": "`templates/index.html`"
+    },
+    {
+      "label": "\ud83d\udd04 Fluxo principal da aplica\u00e7\u00e3o",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L79",
+      "id": "kwaidownloader_readme_fluxo_principal_da_aplica\u00e7\u00e3o",
+      "community": 1,
+      "norm_label": "\ud83d\udd04 fluxo principal da aplicacao"
+    },
+    {
+      "label": "\ud83d\udd12 Seguran\u00e7a e privacidade",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L89",
+      "id": "kwaidownloader_readme_seguran\u00e7a_e_privacidade",
+      "community": 1,
+      "norm_label": "\ud83d\udd12 seguranca e privacidade"
+    },
+    {
+      "label": "\ud83d\ude80 Como rodar localmente",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L96",
+      "id": "kwaidownloader_readme_como_rodar_localmente",
+      "community": 1,
+      "norm_label": "\ud83d\ude80 como rodar localmente"
+    },
+    {
+      "label": "\ud83d\udce6 Build e Deploy",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L109",
+      "id": "kwaidownloader_readme_build_e_deploy",
+      "community": 1,
+      "norm_label": "\ud83d\udce6 build e deploy"
+    },
+    {
+      "label": "\ud83d\udee0\ufe0f Tecnologias",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L114",
+      "id": "kwaidownloader_readme_tecnologias",
+      "community": 1,
+      "norm_label": "\ud83d\udee0\ufe0f tecnologias"
+    },
+    {
+      "label": "\u2705 Testes",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L125",
+      "id": "kwaidownloader_readme_testes",
+      "community": 1,
+      "norm_label": "\u2705 testes"
+    },
+    {
+      "label": "\ud83d\udcc4 Licen\u00e7a",
+      "file_type": "document",
+      "source_file": "README.md",
+      "source_location": "L134",
+      "id": "kwaidownloader_readme_licen\u00e7a",
+      "community": 1,
+      "norm_label": "\ud83d\udcc4 licenca"
+    },
+    {
+      "label": "antigravity-rtk-rules.md",
+      "file_type": "document",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L1",
+      "id": "agents_rules_antigravity_rtk_rules_md",
+      "community": 10,
+      "norm_label": "antigravity-rtk-rules.md"
+    },
+    {
+      "label": "RTK - Rust Token Killer (Google Antigravity)",
+      "file_type": "document",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L1",
+      "id": "rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity",
+      "community": 10,
+      "norm_label": "rtk - rust token killer (google antigravity)"
+    },
+    {
+      "label": "Rule",
+      "file_type": "document",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L5",
+      "id": "rules_antigravity_rtk_rules_rule",
+      "community": 10,
+      "norm_label": "rule"
+    },
+    {
+      "label": "Meta Commands",
+      "file_type": "document",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L21",
+      "id": "rules_antigravity_rtk_rules_meta_commands",
+      "community": 10,
+      "norm_label": "meta commands"
+    },
+    {
+      "label": "Why",
+      "file_type": "document",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L30",
+      "id": "rules_antigravity_rtk_rules_why",
+      "community": 10,
+      "norm_label": "why"
+    },
+    {
+      "label": "DESIGN.md",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L1",
+      "id": "docs_design_md",
+      "community": 6,
+      "norm_label": "design.md"
+    },
+    {
+      "label": "Design do Projeto: dwKwai Downloader",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L1",
+      "id": "docs_design_design_do_projeto_dwkwai_downloader",
+      "community": 6,
+      "norm_label": "design do projeto: dwkwai downloader"
+    },
+    {
+      "label": "\ud83c\udfd7\ufe0f Arquitetura do Sistema",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L5",
+      "id": "docs_design_arquitetura_do_sistema",
+      "community": 6,
+      "norm_label": "\ud83c\udfd7\ufe0f arquitetura do sistema"
+    },
+    {
+      "label": "\ud83d\udee0\ufe0f Stack Tecnol\u00f3gica",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L18",
+      "id": "docs_design_stack_tecnol\u00f3gica",
+      "community": 6,
+      "norm_label": "\ud83d\udee0\ufe0f stack tecnologica"
+    },
+    {
+      "label": "\ud83d\udd04 Fluxo de Dados",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L26",
+      "id": "docs_design_fluxo_de_dados",
+      "community": 6,
+      "norm_label": "\ud83d\udd04 fluxo de dados"
+    },
+    {
+      "label": "\ud83d\udccb Registro de Decis\u00f5es (Decision Log)",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L38",
+      "id": "docs_design_registro_de_decis\u00f5es_decision_log",
+      "community": 6,
+      "norm_label": "\ud83d\udccb registro de decisoes (decision log)"
+    },
+    {
+      "label": "\ud83d\ude80 Estrat\u00e9gia de Deploy",
+      "file_type": "document",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L50",
+      "id": "docs_design_estrat\u00e9gia_de_deploy",
+      "community": 6,
+      "norm_label": "\ud83d\ude80 estrategia de deploy"
+    },
+    {
+      "label": "GSD_FLOW.md",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L1",
+      "id": "docs_gsd_flow_md",
+      "community": 4,
+      "norm_label": "gsd_flow.md"
+    },
+    {
+      "label": "\ud83d\ude80 Fluxo GSD (Get Shit Done) 4-D & Protocolo de Mem\u00f3ria",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L1",
+      "id": "docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria",
+      "community": 4,
+      "norm_label": "\ud83d\ude80 fluxo gsd (get shit done) 4-d & protocolo de memoria"
+    },
+    {
+      "label": "\ud83c\udfdb\ufe0f O Fluxo GSD 4-D em Quatro Etapas",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L7",
+      "id": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "community": 4,
+      "norm_label": "\ud83c\udfdb\ufe0f o fluxo gsd 4-d em quatro etapas"
+    },
+    {
+      "label": "Fase 1: Discuss & Diagnose (A Regra do Mago Acad\u00eamico)",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L9",
+      "id": "docs_gsd_flow_fase_1_discuss_diagnose_a_regra_do_mago_acad\u00eamico",
+      "community": 4,
+      "norm_label": "fase 1: discuss & diagnose (a regra do mago academico)"
+    },
+    {
+      "label": "Fase 2: Plan & Develop (O Planejamento Checklist)",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L15",
+      "id": "docs_gsd_flow_fase_2_plan_develop_o_planejamento_checklist",
+      "community": 4,
+      "norm_label": "fase 2: plan & develop (o planejamento checklist)"
+    },
+    {
+      "label": "Fase 3: Execute & Deliver (Execu\u00e7\u00e3o At\u00f4mica e Testabilidade)",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L21",
+      "id": "docs_gsd_flow_fase_3_execute_deliver_execu\u00e7\u00e3o_at\u00f4mica_e_testabilidade",
+      "community": 4,
+      "norm_label": "fase 3: execute & deliver (execucao atomica e testabilidade)"
+    },
+    {
+      "label": "Fase 4: Verify & Commit (UAT e Auditoria de Muta\u00e7\u00e3o)",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L27",
+      "id": "docs_gsd_flow_fase_4_verify_commit_uat_e_auditoria_de_muta\u00e7\u00e3o",
+      "community": 4,
+      "norm_label": "fase 4: verify & commit (uat e auditoria de mutacao)"
+    },
+    {
+      "label": "\ud83e\udde0 A Lei da Mem\u00f3ria Virtual (ID-Based)",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L35",
+      "id": "docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based",
+      "community": 4,
+      "norm_label": "\ud83e\udde0 a lei da memoria virtual (id-based)"
+    },
+    {
+      "label": "O Padr\u00e3o de ID de Observa\u00e7\u00e3o",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L39",
+      "id": "docs_gsd_flow_o_padr\u00e3o_de_id_de_observa\u00e7\u00e3o",
+      "community": 4,
+      "norm_label": "o padrao de id de observacao"
+    },
+    {
+      "label": "O Arquivo `resumo-de-trabalho.md`",
+      "file_type": "document",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L47",
+      "id": "docs_gsd_flow_o_arquivo_resumo_de_trabalho_md",
+      "community": 4,
+      "norm_label": "o arquivo `resumo-de-trabalho.md`"
+    },
+    {
+      "label": "RTK_GUIDE.md",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L1",
+      "id": "docs_rtk_guide_md",
+      "community": 5,
+      "norm_label": "rtk_guide.md"
+    },
+    {
+      "label": "\u26a1 RTK (Rust Token Killer) Mindset \u2014 Efici\u00eancia de Tokens",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L1",
+      "id": "docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens",
+      "community": 5,
+      "norm_label": "\u26a1 rtk (rust token killer) mindset \u2014 eficiencia de tokens"
+    },
+    {
+      "label": "\ud83c\udfce\ufe0f O Protocolo de Busca Cir\u00fargica em 3 Camadas",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L7",
+      "id": "docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas",
+      "community": 5,
+      "norm_label": "\ud83c\udfce\ufe0f o protocolo de busca cirurgica em 3 camadas"
+    },
+    {
+      "label": "1. Camada de Filtro (Precision Search)",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L11",
+      "id": "docs_rtk_guide_1_camada_de_filtro_precision_search",
+      "community": 5,
+      "norm_label": "1. camada de filtro (precision search)"
+    },
+    {
+      "label": "2. Camada de Scan (Linhas Imediatas)",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L22",
+      "id": "docs_rtk_guide_2_camada_de_scan_linhas_imediatas",
+      "community": 5,
+      "norm_label": "2. camada de scan (linhas imediatas)"
+    },
+    {
+      "label": "3. Camada de Deep Dive (Leitura Seletiva)",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L29",
+      "id": "docs_rtk_guide_3_camada_de_deep_dive_leitura_seletiva",
+      "community": 5,
+      "norm_label": "3. camada de deep dive (leitura seletiva)"
+    },
+    {
+      "label": "\ud83d\udd07 Supress\u00e3o de Ru\u00eddo no Terminal",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L34",
+      "id": "docs_rtk_guide_supress\u00e3o_de_ru\u00eddo_no_terminal",
+      "community": 5,
+      "norm_label": "\ud83d\udd07 supressao de ruido no terminal"
+    },
+    {
+      "label": "\ud83d\udee1\ufe0f Prefixo RTK Obrigat\u00f3rio no Terminal",
+      "file_type": "document",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L50",
+      "id": "docs_rtk_guide_prefixo_rtk_obrigat\u00f3rio_no_terminal",
+      "community": 5,
+      "norm_label": "\ud83d\udee1\ufe0f prefixo rtk obrigatorio no terminal"
+    },
+    {
       "label": "Remove arquivo tempor\u00e1rio.",
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L40",
-      "community": 3,
+      "community": 0,
       "norm_label": "remove arquivo temporario.",
       "id": "kwaidownloader_main_rationale_40"
     },
@@ -224,7 +1088,7 @@
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L61",
-      "community": 4,
+      "community": 0,
       "norm_label": "proxy para download do mp4 com nome personalizado.",
       "id": "kwaidownloader_main_rationale_61"
     },
@@ -233,7 +1097,7 @@
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L85",
-      "community": 5,
+      "community": 0,
       "norm_label": "gera mp3 via yt-dlp post-processors e envia.",
       "id": "kwaidownloader_main_rationale_85"
     },
@@ -242,7 +1106,7 @@
       "file_type": "rationale",
       "source_file": "scraper.py",
       "source_location": "L18",
-      "community": 6,
+      "community": 0,
       "norm_label": "limpa nome do arquivo: letras, numeros e espacos (opcao 1).",
       "id": "kwaidownloader_scraper_rationale_18"
     },
@@ -260,7 +1124,7 @@
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L21",
-      "community": 3,
+      "community": 0,
       "norm_label": "remove arquivo temporario.",
       "id": "kwaidownloader_main_rationale_21"
     },
@@ -269,7 +1133,7 @@
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L42",
-      "community": 4,
+      "community": 0,
       "norm_label": "proxy para download do mp4 com nome personalizado.",
       "id": "kwaidownloader_main_rationale_42"
     },
@@ -278,7 +1142,7 @@
       "file_type": "rationale",
       "source_file": "main.py",
       "source_location": "L69",
-      "community": 5,
+      "community": 0,
       "norm_label": "gera mp3 via ffmpeg e envia.",
       "id": "kwaidownloader_main_rationale_69"
     },
@@ -296,7 +1160,7 @@
       "file_type": "rationale",
       "source_file": "scraper.py",
       "source_location": "L17",
-      "community": 6,
+      "community": 0,
       "norm_label": "limpa nome do arquivo: letras, numeros e espacos (opcao 1).",
       "id": "kwaidownloader_scraper_rationale_17"
     },
@@ -314,6 +1178,156 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "eslintrc_json",
+      "target": "kwaidownloader_eslintrc_env",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "eslintrc_json",
+      "target": "kwaidownloader_eslintrc_extends",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "eslintrc_json",
+      "target": "kwaidownloader_eslintrc_parseroptions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "eslintrc_json",
+      "target": "kwaidownloader_eslintrc_rules",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_env",
+      "target": "kwaidownloader_eslintrc_env_browser",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_env",
+      "target": "kwaidownloader_eslintrc_env_es2021",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_env",
+      "target": "kwaidownloader_eslintrc_env_node",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_parseroptions",
+      "target": "kwaidownloader_eslintrc_parseroptions_ecmaversion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_parseroptions",
+      "target": "kwaidownloader_eslintrc_parseroptions_sourcetype",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_curly",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_eqeqeq",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_no_console",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_no_unused_vars",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_no_var",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".eslintrc.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "kwaidownloader_eslintrc_rules",
+      "target": "kwaidownloader_eslintrc_rules_prefer_const",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "main.py",
       "source_location": "L13",
       "weight": 1.0,
@@ -325,21 +1339,31 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L19",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "main_py",
-      "target": "kwaidownloader_main_lifespan"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "main.py",
       "source_location": "L20",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "main_py",
       "target": "kwaidownloader_main_cleanup_file"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L68",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "main_py",
+      "target": "kwaidownloader_main_download_mp3"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L41",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "main_py",
+      "target": "kwaidownloader_main_download_mp4"
     },
     {
       "relation": "contains",
@@ -365,21 +1389,33 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L41",
+      "source_location": "L19",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "main_py",
-      "target": "kwaidownloader_main_download_mp4"
+      "target": "kwaidownloader_main_lifespan"
     },
     {
-      "relation": "contains",
+      "relation": "imports",
+      "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L68",
+      "source_location": "L11",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "main_py",
-      "target": "kwaidownloader_main_download_mp3"
+      "target": "kwaidownloader_scraper_get_kwai_info",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "main_py",
+      "target": "kwaidownloader_scraper_sanitize_filename",
+      "confidence_score": 1.0
     },
     {
       "relation": "calls",
@@ -396,10 +1432,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L41",
+      "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_41",
+      "source": "kwaidownloader_main_rationale_21",
       "target": "kwaidownloader_main_cleanup_file"
     },
     {
@@ -416,10 +1452,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L21",
+      "source_location": "L41",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_21",
+      "source": "kwaidownloader_main_rationale_41",
       "target": "kwaidownloader_main_cleanup_file"
     },
     {
@@ -432,47 +1468,6 @@
       "weight": 1.0,
       "source": "kwaidownloader_main_info",
       "target": "kwaidownloader_scraper_get_kwai_info"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "main.py",
-      "source_location": "L65",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_65",
-      "target": "kwaidownloader_main_download_mp4"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "main.py",
-      "source_location": "L72",
-      "weight": 1.0,
-      "source": "kwaidownloader_main_download_mp4",
-      "target": "kwaidownloader_scraper_sanitize_filename"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "main.py",
-      "source_location": "L61",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_61",
-      "target": "kwaidownloader_main_download_mp4"
-    },
-    {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "main.py",
-      "source_location": "L42",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_42",
-      "target": "kwaidownloader_main_download_mp4"
     },
     {
       "relation": "calls",
@@ -497,45 +1492,45 @@
       "target": "kwaidownloader_scraper_get_kwai_info"
     },
     {
-      "relation": "rationale_for",
-      "confidence": "EXTRACTED",
-      "source_file": "main.py",
-      "source_location": "L93",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_93",
-      "target": "kwaidownloader_main_download_mp3"
-    },
-    {
       "relation": "calls",
       "context": "call",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "main.py",
-      "source_location": "L103",
+      "source_location": "L72",
       "weight": 1.0,
-      "source": "kwaidownloader_main_download_mp3",
+      "source": "kwaidownloader_main_download_mp4",
       "target": "kwaidownloader_scraper_sanitize_filename"
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L85",
+      "source_location": "L42",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_85",
-      "target": "kwaidownloader_main_download_mp3"
+      "source": "kwaidownloader_main_rationale_42",
+      "target": "kwaidownloader_main_download_mp4"
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "main.py",
-      "source_location": "L69",
+      "source_location": "L61",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_main_rationale_69",
-      "target": "kwaidownloader_main_download_mp3"
+      "source": "kwaidownloader_main_rationale_61",
+      "target": "kwaidownloader_main_download_mp4"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L65",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kwaidownloader_main_rationale_65",
+      "target": "kwaidownloader_main_download_mp4"
     },
     {
       "relation": "calls",
@@ -560,6 +1555,47 @@
       "target": "kwaidownloader_scraper_get_kwai_info"
     },
     {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "main.py",
+      "source_location": "L103",
+      "weight": 1.0,
+      "source": "kwaidownloader_main_download_mp3",
+      "target": "kwaidownloader_scraper_sanitize_filename"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L69",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kwaidownloader_main_rationale_69",
+      "target": "kwaidownloader_main_download_mp3"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kwaidownloader_main_rationale_85",
+      "target": "kwaidownloader_main_download_mp3"
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "main.py",
+      "source_location": "L93",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "kwaidownloader_main_rationale_93",
+      "target": "kwaidownloader_main_download_mp3"
+    },
+    {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
@@ -573,21 +1609,21 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L16",
-      "weight": 1.0,
-      "confidence_score": 1.0,
-      "source": "scraper_py",
-      "target": "kwaidownloader_scraper_sanitize_filename"
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "scraper.py",
       "source_location": "L27",
       "weight": 1.0,
       "confidence_score": 1.0,
       "source": "scraper_py",
       "target": "kwaidownloader_scraper_get_kwai_info"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scraper.py",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "scraper_py",
+      "target": "kwaidownloader_scraper_sanitize_filename"
     },
     {
       "relation": "calls",
@@ -604,20 +1640,20 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L12",
+      "source_location": "L11",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_12",
+      "source": "kwaidownloader_scraper_rationale_11",
       "target": "kwaidownloader_scraper_extract_url"
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_11",
+      "source": "kwaidownloader_scraper_rationale_12",
       "target": "kwaidownloader_scraper_extract_url"
     },
     {
@@ -635,10 +1671,10 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L21",
+      "source_location": "L17",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_21",
+      "source": "kwaidownloader_scraper_rationale_17",
       "target": "kwaidownloader_scraper_sanitize_filename"
     },
     {
@@ -655,20 +1691,20 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L17",
+      "source_location": "L21",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_17",
+      "source": "kwaidownloader_scraper_rationale_21",
       "target": "kwaidownloader_scraper_sanitize_filename"
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L45",
+      "source_location": "L28",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_45",
+      "source": "kwaidownloader_scraper_rationale_28",
       "target": "kwaidownloader_scraper_get_kwai_info"
     },
     {
@@ -685,11 +1721,203 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scraper.py",
-      "source_location": "L28",
+      "source_location": "L45",
       "weight": 1.0,
       "confidence_score": 1.0,
-      "source": "kwaidownloader_scraper_rationale_28",
+      "source": "kwaidownloader_scraper_rationale_45",
       "target": "kwaidownloader_scraper_get_kwai_info"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/commit-msg.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "githooks_commit_msg_py",
+      "target": "githooks_commit_msg_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_py",
+      "target": "githooks_pre_commit_get_staged_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_py",
+      "target": "githooks_pre_commit_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_py",
+      "target": "githooks_pre_commit_scan_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_main",
+      "target": "githooks_pre_commit_get_staged_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_rationale_35",
+      "target": "githooks_pre_commit_get_staged_files",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L85",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_main",
+      "target": "githooks_pre_commit_scan_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": ".githooks/pre-commit.py",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "githooks_pre_commit_rationale_49",
+      "target": "githooks_pre_commit_scan_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_py",
+      "target": "tests_test_git_hooks_test_commit_msg_validation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L51",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_py",
+      "target": "tests_test_git_hooks_test_pre_commit_protected_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_py",
+      "target": "tests_test_git_hooks_test_pre_commit_secret_detection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_rationale_32",
+      "target": "tests_test_git_hooks_test_pre_commit_secret_detection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_rationale_52",
+      "target": "tests_test_git_hooks_test_pre_commit_protected_paths",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "tests/test_git_hooks.py",
+      "source_location": "L81",
+      "weight": 1.0,
+      "source": "tests_test_git_hooks_rationale_81",
+      "target": "tests_test_git_hooks_test_commit_msg_validation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_crypto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_diretoriobase",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_diretoriosignorados",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_extensoesalvo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_fs",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -705,11 +1933,11 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "versionamento/versionador.js",
-      "source_location": "L38",
+      "source_location": "L19",
       "weight": 1.0,
-      "confidence_score": 1.0,
       "source": "versionamento_versionador_js",
-      "target": "versionamento_versionador_processarurl"
+      "target": "versionamento_versionador_path",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -720,6 +1948,16 @@
       "confidence_score": 1.0,
       "source": "versionamento_versionador_js",
       "target": "versionamento_versionador_processarconteudo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "versionamento/versionador.js",
+      "source_location": "L38",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "versionamento_versionador_js",
+      "target": "versionamento_versionador_processarurl"
     },
     {
       "relation": "contains",
@@ -741,8 +1979,518 @@
       "confidence_score": 1.0,
       "source": "versionamento_versionador_processarurl",
       "target": "versionamento_versionador_gerarhash"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "AGENT.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agent_md",
+      "target": "kwaidownloader_agent_dodo_starter_pack_instru\u00e7\u00f5es_do_agente",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "claude_md",
+      "target": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "target": "kwaidownloader_claude_comandos_essenciais",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "target": "kwaidownloader_claude_estrutura_de_dom\u00ednio_recomendada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "target": "kwaidownloader_claude_regras_inegoci\u00e1veis_anti_vibe_coding",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CLAUDE.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding",
+      "target": "kwaidownloader_claude_stack_do_projeto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "GEMINI.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "gemini_md",
+      "target": "kwaidownloader_gemini_dodo_starter_pack_instru\u00e7\u00f5es_do_agente_gemini",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "readme_md",
+      "target": "kwaidownloader_readme_kwai_downloader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L41",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_arquitetura",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_build_e_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L96",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_como_rodar_localmente",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_demo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L54",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_estrutura_do_projeto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_fluxo_principal_da_aplica\u00e7\u00e3o",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_highlights_t\u00e9cnicos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L134",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_licen\u00e7a",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_preview",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_responsabilidades",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_seguran\u00e7a_e_privacidade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_tecnologias",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L125",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_testes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_kwai_downloader",
+      "target": "kwaidownloader_readme_vis\u00e3o_geral_t\u00e9cnica",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L70",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_responsabilidades",
+      "target": "kwaidownloader_readme_main_py",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_responsabilidades",
+      "target": "kwaidownloader_readme_scraper_py",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "README.md",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "kwaidownloader_readme_responsabilidades",
+      "target": "kwaidownloader_readme_templates_index_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "agents_rules_antigravity_rtk_rules_md",
+      "target": "rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity",
+      "target": "rules_antigravity_rtk_rules_meta_commands",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity",
+      "target": "rules_antigravity_rtk_rules_rule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".agents/rules/antigravity-rtk-rules.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity",
+      "target": "rules_antigravity_rtk_rules_why",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_design_md",
+      "target": "docs_design_design_do_projeto_dwkwai_downloader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "docs_design_design_do_projeto_dwkwai_downloader",
+      "target": "docs_design_arquitetura_do_sistema",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "docs_design_design_do_projeto_dwkwai_downloader",
+      "target": "docs_design_estrat\u00e9gia_de_deploy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "docs_design_design_do_projeto_dwkwai_downloader",
+      "target": "docs_design_fluxo_de_dados",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "docs_design_design_do_projeto_dwkwai_downloader",
+      "target": "docs_design_registro_de_decis\u00f5es_decision_log",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/DESIGN.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "docs_design_design_do_projeto_dwkwai_downloader",
+      "target": "docs_design_stack_tecnol\u00f3gica",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_md",
+      "target": "docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L35",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria",
+      "target": "docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria",
+      "target": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "target": "docs_gsd_flow_fase_1_discuss_diagnose_a_regra_do_mago_acad\u00eamico",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "target": "docs_gsd_flow_fase_2_plan_develop_o_planejamento_checklist",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "target": "docs_gsd_flow_fase_3_execute_deliver_execu\u00e7\u00e3o_at\u00f4mica_e_testabilidade",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas",
+      "target": "docs_gsd_flow_fase_4_verify_commit_uat_e_auditoria_de_muta\u00e7\u00e3o",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L47",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based",
+      "target": "docs_gsd_flow_o_arquivo_resumo_de_trabalho_md",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/GSD_FLOW.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based",
+      "target": "docs_gsd_flow_o_padr\u00e3o_de_id_de_observa\u00e7\u00e3o",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_md",
+      "target": "docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens",
+      "target": "docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L50",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens",
+      "target": "docs_rtk_guide_prefixo_rtk_obrigat\u00f3rio_no_terminal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens",
+      "target": "docs_rtk_guide_supress\u00e3o_de_ru\u00eddo_no_terminal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas",
+      "target": "docs_rtk_guide_1_camada_de_filtro_precision_search",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas",
+      "target": "docs_rtk_guide_2_camada_de_scan_linhas_imediatas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/RTK_GUIDE.md",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas",
+      "target": "docs_rtk_guide_3_camada_de_deep_dive_leitura_seletiva",
+      "confidence_score": 1.0
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "1fe4b79e5ed67eebe6f1b1cf720a4dcb5abf472e"
+  "built_at_commit": "c20ae273e4b2b349f5154598d3a135e493ad1027"
 }

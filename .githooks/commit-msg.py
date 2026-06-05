@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # .githooks/commit-msg.py
 # Hook de commit-msg multiplataforma em Python para garantir conformidade do GSD Flow.
 
-import sys
-import re
 import os
+import re
+import sys
 
 # Configuração de encoding padrão UTF-8 para evitar problemas no Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -23,24 +22,24 @@ def main():
         sys.exit(1)
 
     commit_msg_filepath = sys.argv[1]
-    
+
     if not os.path.exists(commit_msg_filepath):
         print(f"⚠️ Erro: Arquivo de mensagem de commit não encontrado em '{commit_msg_filepath}'.", file=sys.stderr)
         sys.exit(1)
 
     try:
-        with open(commit_msg_filepath, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(commit_msg_filepath, encoding='utf-8', errors='ignore') as f:
             lines = f.readlines()
-        
+
         # Filtra linhas vazias e comentários do git (que começam com #)
         commit_lines = [line.strip() for line in lines if line.strip() and not line.startswith('#')]
-        
+
         if not commit_lines:
             print("🚫 BLOCKED: A mensagem de commit está vazia.", file=sys.stderr)
             sys.exit(1)
-            
+
         commit_msg = commit_lines[0]
-        
+
         # Validação do padrão convencional + ID de observação
         if not re.match(COMMIT_PATTERN, commit_msg, re.IGNORECASE):
             print("\n" + "="*70, file=sys.stderr)
@@ -54,7 +53,7 @@ def main():
             print("\nTipos permitidos: feat, fix, refactor, docs, test, chore, ci, perf, style", file=sys.stderr)
             print("="*70 + "\n", file=sys.stderr)
             sys.exit(1)
-            
+
         print("✅ Mensagem de commit validada com sucesso pelo dodo-starter-pack!")
         sys.exit(0)
 

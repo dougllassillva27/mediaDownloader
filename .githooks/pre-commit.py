@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 # .githooks/pre-commit.py
 # Hook de pré-commit multiplataforma em Python para segurança e conformidade.
 
-import sys
-import subprocess
-import re
 import os
+import re
+import subprocess
+import sys
 
 # Configuração de encoding padrão UTF-8 para evitar problemas no Windows
 sys.stdout.reconfigure(encoding='utf-8')
@@ -61,7 +60,7 @@ def scan_file(filepath):
         return True
 
     try:
-        with open(filepath, 'r', encoding='utf-8', errors='ignore') as f:
+        with open(filepath, encoding='utf-8', errors='ignore') as f:
             content = f.read()
 
         for name, pattern in SECRET_PATTERNS.items():

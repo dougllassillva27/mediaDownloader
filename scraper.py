@@ -1,18 +1,33 @@
-import yt_dlp
 import logging
 import re
 import unicodedata
-from functools import lru_cache
+
+import yt_dlp
 
 # Config log
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def detect_platform(url: str) -> str:
+    """Detecta plataforma baseada na URL."""
+    if 'tiktok.com' in url or 'vm.tiktok.com' in url:
+        return 'tiktok'
+    elif 'instagram.com' in url:
+        return 'instagram'
+    elif 'kwai.com' in url:
+        return 'kwai'
+    return 'unknown'
+
 def extract_url(text: str) -> str:
-    """Extrai link do Kwai de um texto usando Regex."""
-    pattern = r'(https?://[^\s]+kwai\.com/[^\s]+)'
+    """Extrai primeira URL válida de um texto."""
+    pattern = r'(https?://[^\s<>"\']+)'
     match = re.search(pattern, text)
     return match.group(0) if match else text
+
+def is_supported_url(url: str) -> bool:
+    """Verifica se URL é de plataforma suportada."""
+    platform = detect_platform(url)
+    return platform in ['kwai', 'tiktok', 'instagram']
 
 MAX_FILENAME_LENGTH = 200
 CACHE_SIZE = 128
@@ -24,40 +39,75 @@ def sanitize_filename(filename: str) -> str:
     """
     if not filename:
         return "kwai_video"
-        
+
     # Normaliza texto (NFKD decompõe caracteres como 'á' em 'a' + '´')
     normalized_text = unicodedata.normalize('NFKD', filename)
     filename = "".join([c for c in normalized_text if not unicodedata.combining(c)])
-    
+
     # Remove caracteres especiais, mantendo letras, números, espaços, hifens e underscores
     filename = re.sub(r'[^a-zA-Z0-9\s\-_]', '', filename)
-    
+
     # Remove espaços extras e substitui por espaço simples
     filename = " ".join(filename.split())
-    
+
     # Limita tamanho para evitar erros de sistema de arquivos
     filename = filename[:MAX_FILENAME_LENGTH]
-    
+
     return filename.strip() or "kwai_video"
 
-@lru_cache(maxsize=CACHE_SIZE)
-def get_kwai_info(url_input: str, download_audio_only: bool = False):
+def get_video_info(url_input: str, download_audio_only: bool = False):
     """
-    Extrai metadados do vídeo Kwai usando yt-dlp.
+    Dispatcher genérico: detecta plataforma e extrai metadados.
+    Suporta Kwai, TikTok e Instagram.
     """
     url = extract_url(url_input)
-    
+    platform = detect_platform(url)
+
+    if platform == 'unknown':
+        return {
+            "success": False,
+            "error": "Plataforma não suportada. Use Kwai, TikTok ou Instagram."
+        }
+
+    # Configurações específicas por plataforma
     ydl_opts = {
         'quiet': True,
         'no_warnings': True,
         'format': 'bestaudio/best' if download_audio_only else 'bestvideo+bestaudio/best',
+        'socket_timeout': 15,
+        'retries': 3,
+        'http_headers': {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        }
     }
-    
+
+    # Configurações específicas para TikTok
+    if platform == 'tiktok':
+        ydl_opts['extractor_args'] = {
+            'tiktok': {
+                'api_hostname': 'api22-normal-c-alisg.tiktokv.com',
+                'force_h265': 'False'
+            }
+        }
+
+    # Configurações específicas para Instagram
+    elif platform == 'instagram':
+        ydl_opts['extractor_args'] = {
+            'instagram': {
+                'api_version': 'v1'
+            }
+        }
+
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=False)
-            title = info.get('title', 'Kwai Video')
-            
+
+            # Handle playlist/entries
+            if info and 'entries' in info and len(info['entries']) > 0:
+                info = info['entries'][0]
+
+            title = info.get('title', f'{platform.capitalize()} Video')
+
             return {
                 "success": True,
                 "title": title,
@@ -65,14 +115,19 @@ def get_kwai_info(url_input: str, download_audio_only: bool = False):
                 "thumbnail": info.get('thumbnail'),
                 "video_url": info.get('url'),
                 "duration": info.get('duration'),
-                "source": url
+                "source": url,
+                "platform": platform
             }
     except Exception as e:
-        logger.error(f"Erro ao extrair {url}: {e}")
+        logger.error(f"Erro ao extrair {url} ({platform}): {e}")
         return {
             "success": False,
-            "error": str(e)
+            "error": str(e),
+            "platform": platform
         }
+
+# Manter compatibilidade com código existente
+get_kwai_info = get_video_info
 
 if __name__ == "__main__":
     # Teste rápido

@@ -1,136 +1,3920 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>graphify - graphify-out\graph.html</title>
-<script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: #0f0f1a; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display: flex; height: 100vh; overflow: hidden; }
-  #graph { flex: 1; }
-  #sidebar { width: 280px; background: #1a1a2e; border-left: 1px solid #2a2a4e; display: flex; flex-direction: column; overflow: hidden; }
-  #search-wrap { padding: 12px; border-bottom: 1px solid #2a2a4e; }
-  #search { width: 100%; background: #0f0f1a; border: 1px solid #3a3a5e; color: #e0e0e0; padding: 7px 10px; border-radius: 6px; font-size: 13px; outline: none; }
-  #search:focus { border-color: #4E79A7; }
-  #search-results { max-height: 140px; overflow-y: auto; padding: 4px 12px; border-bottom: 1px solid #2a2a4e; display: none; }
-  .search-item { padding: 4px 6px; cursor: pointer; border-radius: 4px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .search-item:hover { background: #2a2a4e; }
-  #info-panel { padding: 14px; border-bottom: 1px solid #2a2a4e; min-height: 140px; }
-  #info-panel h3 { font-size: 13px; color: #aaa; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
-  #info-content { font-size: 13px; color: #ccc; line-height: 1.6; }
-  #info-content .field { margin-bottom: 5px; }
-  #info-content .field b { color: #e0e0e0; }
-  #info-content .empty { color: #555; font-style: italic; }
-  .neighbor-link { display: block; padding: 2px 6px; margin: 2px 0; border-radius: 3px; cursor: pointer; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border-left: 3px solid #333; }
-  .neighbor-link:hover { background: #2a2a4e; }
-  #neighbors-list { max-height: 160px; overflow-y: auto; margin-top: 4px; }
-  #legend-wrap { flex: 1; overflow-y: auto; padding: 12px; }
-  #legend-wrap h3 { font-size: 13px; color: #aaa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .legend-item { display: flex; align-items: center; gap: 8px; padding: 4px 0; cursor: pointer; border-radius: 4px; font-size: 12px; }
-  .legend-item:hover { background: #2a2a4e; padding-left: 4px; }
-  .legend-item.dimmed { opacity: 0.35; }
-  .legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-  .legend-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .legend-count { color: #666; font-size: 11px; }
-  #stats { padding: 10px 14px; border-top: 1px solid #2a2a4e; font-size: 11px; color: #555; }
-  #legend-controls { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 4px 0; }
-  #legend-controls label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 12px; color: #aaa; user-select: none; }
-  #legend-controls label:hover { color: #e0e0e0; }
-  .legend-cb, #select-all-cb { appearance: none; -webkit-appearance: none; width: 14px; height: 14px; border: 1.5px solid #3a3a5e; border-radius: 3px; background: #0f0f1a; cursor: pointer; position: relative; flex-shrink: 0; }
-  .legend-cb:checked, #select-all-cb:checked { background: #4E79A7; border-color: #4E79A7; }
-  .legend-cb:checked::after, #select-all-cb:checked::after { content: ''; position: absolute; left: 3.5px; top: 1px; width: 4px; height: 7px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
-  #select-all-cb:indeterminate { background: #4E79A7; border-color: #4E79A7; }
-  #select-all-cb:indeterminate::after { content: ''; position: absolute; left: 2px; top: 5px; width: 8px; height: 2px; background: #fff; border: none; transform: none; }
-</style>
-</head>
-<body>
-<div id="graph"></div>
-<div id="sidebar">
-  <div id="search-wrap">
-    <input id="search" type="text" placeholder="Search nodes..." autocomplete="off">
-    <div id="search-results"></div>
-  </div>
-  <div id="info-panel">
-    <h3>Node Info</h3>
-    <div id="info-content"><span class="empty">Click a node to inspect it</span></div>
-  </div>
-  <div id="legend-wrap">
-    <h3>Communities</h3>
-    <div id="legend-controls">
-      <label><input type="checkbox" id="select-all-cb" checked onchange="toggleAllCommunities(!this.checked)">Select All</label>
+  <head>
+    <meta charset="UTF-8" />
+    <title>graphify - graphify-out\graph.html</title>
+    <script
+      src="https://unpkg.com/vis-network@9.1.6/standalone/umd/vis-network.min.js"
+      integrity="sha384-Ux6phic9PEHJ38YtrijhkzyJ8yQlH8i/+buBR8s3mAZOJrP1gwyvAcIYl3GWtpX1"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: #0f0f1a;
+        color: #e0e0e0;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+      }
+      #graph {
+        flex: 1;
+      }
+      #sidebar {
+        width: 280px;
+        background: #1a1a2e;
+        border-left: 1px solid #2a2a4e;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      #search-wrap {
+        padding: 12px;
+        border-bottom: 1px solid #2a2a4e;
+      }
+      #search {
+        width: 100%;
+        background: #0f0f1a;
+        border: 1px solid #3a3a5e;
+        color: #e0e0e0;
+        padding: 7px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        outline: none;
+      }
+      #search:focus {
+        border-color: #4e79a7;
+      }
+      #search-results {
+        max-height: 140px;
+        overflow-y: auto;
+        padding: 4px 12px;
+        border-bottom: 1px solid #2a2a4e;
+        display: none;
+      }
+      .search-item {
+        padding: 4px 6px;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .search-item:hover {
+        background: #2a2a4e;
+      }
+      #info-panel {
+        padding: 14px;
+        border-bottom: 1px solid #2a2a4e;
+        min-height: 140px;
+      }
+      #info-panel h3 {
+        font-size: 13px;
+        color: #aaa;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      #info-content {
+        font-size: 13px;
+        color: #ccc;
+        line-height: 1.6;
+      }
+      #info-content .field {
+        margin-bottom: 5px;
+      }
+      #info-content .field b {
+        color: #e0e0e0;
+      }
+      #info-content .empty {
+        color: #555;
+        font-style: italic;
+      }
+      .neighbor-link {
+        display: block;
+        padding: 2px 6px;
+        margin: 2px 0;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        border-left: 3px solid #333;
+      }
+      .neighbor-link:hover {
+        background: #2a2a4e;
+      }
+      #neighbors-list {
+        max-height: 160px;
+        overflow-y: auto;
+        margin-top: 4px;
+      }
+      #legend-wrap {
+        flex: 1;
+        overflow-y: auto;
+        padding: 12px;
+      }
+      #legend-wrap h3 {
+        font-size: 13px;
+        color: #aaa;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 0;
+        cursor: pointer;
+        border-radius: 4px;
+        font-size: 12px;
+      }
+      .legend-item:hover {
+        background: #2a2a4e;
+        padding-left: 4px;
+      }
+      .legend-item.dimmed {
+        opacity: 0.35;
+      }
+      .legend-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+      .legend-label {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .legend-count {
+        color: #666;
+        font-size: 11px;
+      }
+      #stats {
+        padding: 10px 14px;
+        border-top: 1px solid #2a2a4e;
+        font-size: 11px;
+        color: #555;
+      }
+      #legend-controls {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        padding: 4px 0;
+      }
+      #legend-controls label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #aaa;
+        user-select: none;
+      }
+      #legend-controls label:hover {
+        color: #e0e0e0;
+      }
+      .legend-cb,
+      #select-all-cb {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 14px;
+        height: 14px;
+        border: 1.5px solid #3a3a5e;
+        border-radius: 3px;
+        background: #0f0f1a;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .legend-cb:checked,
+      #select-all-cb:checked {
+        background: #4e79a7;
+        border-color: #4e79a7;
+      }
+      .legend-cb:checked::after,
+      #select-all-cb:checked::after {
+        content: '';
+        position: absolute;
+        left: 3.5px;
+        top: 1px;
+        width: 4px;
+        height: 7px;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+      #select-all-cb:indeterminate {
+        background: #4e79a7;
+        border-color: #4e79a7;
+      }
+      #select-all-cb:indeterminate::after {
+        content: '';
+        position: absolute;
+        left: 2px;
+        top: 5px;
+        width: 8px;
+        height: 2px;
+        background: #fff;
+        border: none;
+        transform: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="graph"></div>
+    <div id="sidebar">
+      <div id="search-wrap">
+        <input
+          id="search"
+          type="text"
+          placeholder="Search nodes..."
+          autocomplete="off"
+        />
+        <div id="search-results"></div>
+      </div>
+      <div id="info-panel">
+        <h3>Node Info</h3>
+        <div id="info-content">
+          <span class="empty">Click a node to inspect it</span>
+        </div>
+      </div>
+      <div id="legend-wrap">
+        <h3>Communities</h3>
+        <div id="legend-controls">
+          <label
+            ><input
+              type="checkbox"
+              id="select-all-cb"
+              checked
+              onchange="toggleAllCommunities(!this.checked)"
+            />Select All</label
+          >
+        </div>
+        <div id="legend"></div>
+      </div>
+      <div id="stats">130 nodes &middot; 130 edges &middot; 14 communities</div>
     </div>
-    <div id="legend"></div>
-  </div>
-  <div id="stats">34 nodes &middot; 42 edges &middot; 7 communities</div>
-</div>
-<script>
-const RAW_NODES = [{"id": "main_py", "label": "main.py", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 33.3, "font": {"size": 12, "color": "#ffffff"}, "title": "main.py", "community": 1, "community_name": "Community 1", "source_file": "main.py", "file_type": "code", "degree": 7}, {"id": "kwaidownloader_main_appstate", "label": "AppState", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "AppState", "community": 1, "community_name": "Community 1", "source_file": "main.py", "file_type": "code", "degree": 1}, {"id": "kwaidownloader_main_lifespan", "label": "lifespan()", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "lifespan()", "community": 1, "community_name": "Community 1", "source_file": "main.py", "file_type": "code", "degree": 1}, {"id": "kwaidownloader_main_cleanup_file", "label": "cleanup_file()", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 26.7, "font": {"size": 12, "color": "#ffffff"}, "title": "cleanup_file()", "community": 3, "community_name": "Community 3", "source_file": "main.py", "file_type": "code", "degree": 5}, {"id": "kwaidownloader_main_home", "label": "home()", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "home()", "community": 1, "community_name": "Community 1", "source_file": "main.py", "file_type": "code", "degree": 1}, {"id": "kwaidownloader_main_info", "label": "info()", "color": {"background": "#F28E2B", "border": "#F28E2B", "highlight": {"background": "#ffffff", "border": "#F28E2B"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "info()", "community": 1, "community_name": "Community 1", "source_file": "main.py", "file_type": "code", "degree": 2}, {"id": "kwaidownloader_main_download_mp4", "label": "download_mp4()", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 33.3, "font": {"size": 12, "color": "#ffffff"}, "title": "download_mp4()", "community": 4, "community_name": "Community 4", "source_file": "main.py", "file_type": "code", "degree": 7}, {"id": "kwaidownloader_main_download_mp3", "label": "download_mp3()", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 36.7, "font": {"size": 12, "color": "#ffffff"}, "title": "download_mp3()", "community": 5, "community_name": "Community 5", "source_file": "main.py", "file_type": "code", "degree": 8}, {"id": "kwaidownloader_main_rationale_41", "label": "Remove arquivo tempor\u00e1rio.", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Remove arquivo tempor\u00e1rio.", "community": 3, "community_name": "Community 3", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_65", "label": "Proxy para download do MP4 com nome personalizado.", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Proxy para download do MP4 com nome personalizado.", "community": 4, "community_name": "Community 4", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_93", "label": "Gera MP3 via yt-dlp post-processors e envia.", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Gera MP3 via yt-dlp post-processors e envia.", "community": 5, "community_name": "Community 5", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "scraper_py", "label": "scraper.py", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 20.0, "font": {"size": 12, "color": "#ffffff"}, "title": "scraper.py", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "code", "degree": 3}, {"id": "kwaidownloader_scraper_extract_url", "label": "extract_url()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 30.0, "font": {"size": 12, "color": "#ffffff"}, "title": "extract_url()", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "code", "degree": 6}, {"id": "kwaidownloader_scraper_sanitize_filename", "label": "sanitize_filename()", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 33.3, "font": {"size": 12, "color": "#ffffff"}, "title": "sanitize_filename()", "community": 6, "community_name": "Community 6", "source_file": "scraper.py", "file_type": "code", "degree": 7}, {"id": "kwaidownloader_scraper_get_kwai_info", "label": "get_kwai_info()", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 40.0, "font": {"size": 12, "color": "#ffffff"}, "title": "get_kwai_info()", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "code", "degree": 9}, {"id": "kwaidownloader_scraper_rationale_12", "label": "Extrai link do Kwai de um texto usando Regex.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Extrai link do Kwai de um texto usando Regex.", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_21", "label": "Limpa nome do arquivo para garantir compatibilidade com SOs.     Decomp\u00f5e acent", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Limpa nome do arquivo para garantir compatibilidade com SOs.     Decomp\u00f5e acent", "community": 6, "community_name": "Community 6", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_45", "label": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "versionamento_versionador_js", "label": "versionador.js", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 23.3, "font": {"size": 12, "color": "#ffffff"}, "title": "versionador.js", "community": 2, "community_name": "Community 2", "source_file": "versionamento/versionador.js", "file_type": "code", "degree": 4}, {"id": "versionamento_versionador_gerarhash", "label": "gerarHash()", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "gerarHash()", "community": 2, "community_name": "Community 2", "source_file": "versionamento/versionador.js", "file_type": "code", "degree": 2}, {"id": "versionamento_versionador_processarurl", "label": "processarUrl()", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 16.7, "font": {"size": 12, "color": "#ffffff"}, "title": "processarUrl()", "community": 2, "community_name": "Community 2", "source_file": "versionamento/versionador.js", "file_type": "code", "degree": 2}, {"id": "versionamento_versionador_processarconteudo", "label": "processarConteudo()", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "processarConteudo()", "community": 2, "community_name": "Community 2", "source_file": "versionamento/versionador.js", "file_type": "code", "degree": 1}, {"id": "versionamento_versionador_varrerdiretorio", "label": "varrerDiretorio()", "color": {"background": "#E15759", "border": "#E15759", "highlight": {"background": "#ffffff", "border": "#E15759"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "varrerDiretorio()", "community": 2, "community_name": "Community 2", "source_file": "versionamento/versionador.js", "file_type": "code", "degree": 1}, {"id": "kwaidownloader_main_rationale_40", "label": "Remove arquivo tempor\u00e1rio.", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Remove arquivo tempor\u00e1rio.", "community": 3, "community_name": "Community 3", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_61", "label": "Proxy para download do MP4 com nome personalizado.", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Proxy para download do MP4 com nome personalizado.", "community": 4, "community_name": "Community 4", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_85", "label": "Gera MP3 via yt-dlp post-processors e envia.", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Gera MP3 via yt-dlp post-processors e envia.", "community": 5, "community_name": "Community 5", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_18", "label": "Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).", "community": 6, "community_name": "Community 6", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_30", "label": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_21", "label": "Remove arquivo tempor\u00e1rio.", "color": {"background": "#76B7B2", "border": "#76B7B2", "highlight": {"background": "#ffffff", "border": "#76B7B2"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Remove arquivo tempor\u00e1rio.", "community": 3, "community_name": "Community 3", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_42", "label": "Proxy para download do MP4 com nome personalizado.", "color": {"background": "#59A14F", "border": "#59A14F", "highlight": {"background": "#ffffff", "border": "#59A14F"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Proxy para download do MP4 com nome personalizado.", "community": 4, "community_name": "Community 4", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_main_rationale_69", "label": "Gera MP3 via FFmpeg e envia.", "color": {"background": "#EDC948", "border": "#EDC948", "highlight": {"background": "#ffffff", "border": "#EDC948"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Gera MP3 via FFmpeg e envia.", "community": 5, "community_name": "Community 5", "source_file": "main.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_11", "label": "Extrai link do Kwai de um texto usando Regex.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Extrai link do Kwai de um texto usando Regex.", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_17", "label": "Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).", "color": {"background": "#B07AA1", "border": "#B07AA1", "highlight": {"background": "#ffffff", "border": "#B07AA1"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).", "community": 6, "community_name": "Community 6", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}, {"id": "kwaidownloader_scraper_rationale_28", "label": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "color": {"background": "#4E79A7", "border": "#4E79A7", "highlight": {"background": "#ffffff", "border": "#4E79A7"}}, "size": 13.3, "font": {"size": 0, "color": "#ffffff"}, "title": "Extrai metadados do v\u00eddeo Kwai usando yt-dlp.", "community": 0, "community_name": "Community 0", "source_file": "scraper.py", "file_type": "rationale", "degree": 1}];
-const RAW_EDGES = [{"from": "main_py", "to": "kwaidownloader_main_appstate", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_lifespan", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_cleanup_file", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_home", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_info", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_download_mp4", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "main_py", "to": "kwaidownloader_main_download_mp3", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_download_mp3", "to": "kwaidownloader_main_cleanup_file", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_rationale_41", "to": "kwaidownloader_main_cleanup_file", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_rationale_40", "to": "kwaidownloader_main_cleanup_file", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_rationale_21", "to": "kwaidownloader_main_cleanup_file", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_info", "to": "kwaidownloader_scraper_get_kwai_info", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_rationale_65", "to": "kwaidownloader_main_download_mp4", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_download_mp4", "to": "kwaidownloader_scraper_sanitize_filename", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_rationale_61", "to": "kwaidownloader_main_download_mp4", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_rationale_42", "to": "kwaidownloader_main_download_mp4", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_download_mp4", "to": "kwaidownloader_scraper_extract_url", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_download_mp4", "to": "kwaidownloader_scraper_get_kwai_info", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_rationale_93", "to": "kwaidownloader_main_download_mp3", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_download_mp3", "to": "kwaidownloader_scraper_sanitize_filename", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_rationale_85", "to": "kwaidownloader_main_download_mp3", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_rationale_69", "to": "kwaidownloader_main_download_mp3", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_main_download_mp3", "to": "kwaidownloader_scraper_extract_url", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "kwaidownloader_main_download_mp3", "to": "kwaidownloader_scraper_get_kwai_info", "label": "calls", "title": "calls [INFERRED]", "dashes": true, "width": 1, "color": {"opacity": 0.35}, "confidence": "INFERRED"}, {"from": "scraper_py", "to": "kwaidownloader_scraper_extract_url", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "scraper_py", "to": "kwaidownloader_scraper_sanitize_filename", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "scraper_py", "to": "kwaidownloader_scraper_get_kwai_info", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_get_kwai_info", "to": "kwaidownloader_scraper_extract_url", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_12", "to": "kwaidownloader_scraper_extract_url", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_11", "to": "kwaidownloader_scraper_extract_url", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_get_kwai_info", "to": "kwaidownloader_scraper_sanitize_filename", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_21", "to": "kwaidownloader_scraper_sanitize_filename", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_18", "to": "kwaidownloader_scraper_sanitize_filename", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_17", "to": "kwaidownloader_scraper_sanitize_filename", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_45", "to": "kwaidownloader_scraper_get_kwai_info", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_30", "to": "kwaidownloader_scraper_get_kwai_info", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "kwaidownloader_scraper_rationale_28", "to": "kwaidownloader_scraper_get_kwai_info", "label": "rationale_for", "title": "rationale_for [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "versionamento_versionador_js", "to": "versionamento_versionador_gerarhash", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "versionamento_versionador_js", "to": "versionamento_versionador_processarurl", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "versionamento_versionador_js", "to": "versionamento_versionador_processarconteudo", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "versionamento_versionador_js", "to": "versionamento_versionador_varrerdiretorio", "label": "contains", "title": "contains [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}, {"from": "versionamento_versionador_processarurl", "to": "versionamento_versionador_gerarhash", "label": "calls", "title": "calls [EXTRACTED]", "dashes": false, "width": 2, "color": {"opacity": 0.7}, "confidence": "EXTRACTED"}];
-const LEGEND = [{"cid": 0, "color": "#4E79A7", "label": "Community 0", "count": 8}, {"cid": 1, "color": "#F28E2B", "label": "Community 1", "count": 5}, {"cid": 2, "color": "#E15759", "label": "Community 2", "count": 5}, {"cid": 3, "color": "#76B7B2", "label": "Community 3", "count": 4}, {"cid": 4, "color": "#59A14F", "label": "Community 4", "count": 4}, {"cid": 5, "color": "#EDC948", "label": "Community 5", "count": 4}, {"cid": 6, "color": "#B07AA1", "label": "Community 6", "count": 4}];
+    <script>
+      const RAW_NODES = [
+        {
+          id: 'eslintrc_json',
+          label: '.eslintrc.json',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title: '.eslintrc.json',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 4,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_env',
+          label: 'env',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'env',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 4,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_env_browser',
+          label: 'browser',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'browser',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_env_es2021',
+          label: 'es2021',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'es2021',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_env_node',
+          label: 'node',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'node',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_extends',
+          label: 'extends',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'extends',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_parseroptions',
+          label: 'parserOptions',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'parserOptions',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_parseroptions_ecmaversion',
+          label: 'ecmaVersion',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'ecmaVersion',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_parseroptions_sourcetype',
+          label: 'sourceType',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'sourceType',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules',
+          label: 'rules',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 24.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'rules',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 7,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_no_unused_vars',
+          label: 'no-unused-vars',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'no-unused-vars',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_no_console',
+          label: 'no-console',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'no-console',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_eqeqeq',
+          label: 'eqeqeq',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'eqeqeq',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_curly',
+          label: 'curly',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'curly',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_no_var',
+          label: 'no-var',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'no-var',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_eslintrc_rules_prefer_const',
+          label: 'prefer-const',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'prefer-const',
+          community: 3,
+          community_name: 'Community 3',
+          source_file: '.eslintrc.json',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'main_py',
+          label: 'main.py',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 28.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'main.py',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 9,
+        },
+        {
+          id: 'kwaidownloader_main_appstate',
+          label: 'AppState',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'AppState',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_lifespan',
+          label: 'lifespan()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'lifespan()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_cleanup_file',
+          label: 'cleanup_file()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 20.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'cleanup_file()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 5,
+        },
+        {
+          id: 'kwaidownloader_main_home',
+          label: 'home()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'home()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_info',
+          label: 'info()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'info()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'kwaidownloader_main_download_mp4',
+          label: 'download_mp4()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 24.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'download_mp4()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 7,
+        },
+        {
+          id: 'kwaidownloader_main_download_mp3',
+          label: 'download_mp3()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 26.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'download_mp3()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'code',
+          degree: 8,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_41',
+          label: 'Remove arquivo tempor\u00e1rio.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Remove arquivo tempor\u00e1rio.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_65',
+          label: 'Proxy para download do MP4 com nome personalizado.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Proxy para download do MP4 com nome personalizado.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_93',
+          label: 'Gera MP3 via yt-dlp post-processors e envia.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Gera MP3 via yt-dlp post-processors e envia.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'scraper_py',
+          label: 'scraper.py',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'scraper.py',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'kwaidownloader_scraper_extract_url',
+          label: 'extract_url()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 22.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'extract_url()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'code',
+          degree: 6,
+        },
+        {
+          id: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'sanitize_filename()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 26.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'sanitize_filename()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'code',
+          degree: 8,
+        },
+        {
+          id: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'get_kwai_info()',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 30.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'get_kwai_info()',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'code',
+          degree: 10,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_12',
+          label: 'Extrai link do Kwai de um texto usando Regex.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Extrai link do Kwai de um texto usando Regex.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_21',
+          label:
+            'Limpa nome do arquivo para garantir compatibilidade com SOs.     Decomp\u00f5e acent',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Limpa nome do arquivo para garantir compatibilidade com SOs.     Decomp\u00f5e acent',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_45',
+          label: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'githooks_commit_msg_py',
+          label: 'commit-msg.py',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'commit-msg.py',
+          community: 13,
+          community_name: 'Community 13',
+          source_file: '.githooks/commit-msg.py',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'githooks_commit_msg_main',
+          label: 'main()',
+          color: {
+            background: '#76B7B2',
+            border: '#76B7B2',
+            highlight: { background: '#ffffff', border: '#76B7B2' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'main()',
+          community: 13,
+          community_name: 'Community 13',
+          source_file: '.githooks/commit-msg.py',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'githooks_pre_commit_py',
+          label: 'pre-commit.py',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'pre-commit.py',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'githooks_pre_commit_get_staged_files',
+          label: 'get_staged_files()',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'get_staged_files()',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'githooks_pre_commit_scan_file',
+          label: 'scan_file()',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'scan_file()',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'githooks_pre_commit_main',
+          label: 'main()',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'main()',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'githooks_pre_commit_rationale_35',
+          label: 'Retorna a lista de arquivos no stage (staged).',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Retorna a lista de arquivos no stage (staged).',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'githooks_pre_commit_rationale_49',
+          label: 'Varre um arquivo em busca de segredos e caminhos protegidos.',
+          color: {
+            background: '#BAB0AC',
+            border: '#BAB0AC',
+            highlight: { background: '#ffffff', border: '#BAB0AC' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Varre um arquivo em busca de segredos e caminhos protegidos.',
+          community: 9,
+          community_name: 'Community 9',
+          source_file: '.githooks/pre-commit.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'tests_test_git_hooks_py',
+          label: 'test_git_hooks.py',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'test_git_hooks.py',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'code',
+          degree: 3,
+        },
+        {
+          id: 'tests_test_git_hooks_test_pre_commit_secret_detection',
+          label: 'test_pre_commit_secret_detection()',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'test_pre_commit_secret_detection()',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'tests_test_git_hooks_test_pre_commit_protected_paths',
+          label: 'test_pre_commit_protected_paths()',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'test_pre_commit_protected_paths()',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'tests_test_git_hooks_test_commit_msg_validation',
+          label: 'test_commit_msg_validation()',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'test_commit_msg_validation()',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'tests_test_git_hooks_rationale_32',
+          label:
+            'Garante que segredos reais sejam casados pelas regexes de seguran\u00e7a.',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Garante que segredos reais sejam casados pelas regexes de seguran\u00e7a.',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'tests_test_git_hooks_rationale_52',
+          label:
+            'Valida se caminhos protegidos e secretos s\u00e3o interceptados de forma correta.',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Valida se caminhos protegidos e secretos s\u00e3o interceptados de forma correta.',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'tests_test_git_hooks_rationale_81',
+          label:
+            'Valida se o formato Conventional Commit + ID de Observa\u00e7\u00e3o \u00e9 rigidamente exigido',
+          color: {
+            background: '#FF9DA7',
+            border: '#FF9DA7',
+            highlight: { background: '#ffffff', border: '#FF9DA7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Valida se o formato Conventional Commit + ID de Observa\u00e7\u00e3o \u00e9 rigidamente exigido',
+          community: 7,
+          community_name: 'Community 7',
+          source_file: 'tests/test_git_hooks.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_js',
+          label: 'versionador.js',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 30.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'versionador.js',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 10,
+        },
+        {
+          id: 'versionamento_versionador_fs',
+          label: 'fs',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'fs',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_path',
+          label: 'path',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'path',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_crypto',
+          label: 'crypto',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'crypto',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_diretoriobase',
+          label: 'diretorioBase',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'diretorioBase',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_diretoriosignorados',
+          label: 'diretoriosIgnorados',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'diretoriosIgnorados',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_extensoesalvo',
+          label: 'extensoesAlvo',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'extensoesAlvo',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_gerarhash',
+          label: 'gerarHash()',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'gerarHash()',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'versionamento_versionador_processarurl',
+          label: 'processarUrl()',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 14.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'processarUrl()',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 2,
+        },
+        {
+          id: 'versionamento_versionador_processarconteudo',
+          label: 'processarConteudo()',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'processarConteudo()',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'versionamento_versionador_varrerdiretorio',
+          label: 'varrerDiretorio()',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'varrerDiretorio()',
+          community: 2,
+          community_name: 'Community 2',
+          source_file: 'versionamento/versionador.js',
+          file_type: 'code',
+          degree: 1,
+        },
+        {
+          id: 'agent_md',
+          label: 'AGENT.md',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'AGENT.md',
+          community: 11,
+          community_name: 'Community 11',
+          source_file: 'AGENT.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_agent_dodo_starter_pack_instru\u00e7\u00f5es_do_agente',
+          label:
+            '\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            '\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente',
+          community: 11,
+          community_name: 'Community 11',
+          source_file: 'AGENT.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'claude_md',
+          label: 'CLAUDE.md',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'CLAUDE.md',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          label: '\ud83e\udda4 Dodo Starter Pack - Manifesto Anti-Vibe Coding',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 20.0,
+          font: { size: 12, color: '#ffffff' },
+          title: '\ud83e\udda4 Dodo Starter Pack - Manifesto Anti-Vibe Coding',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 5,
+        },
+        {
+          id: 'kwaidownloader_claude_stack_do_projeto',
+          label: '\ud83d\udee0\ufe0f Stack do Projeto',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udee0\ufe0f Stack do Projeto',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_claude_comandos_essenciais',
+          label: '\ud83d\ude80 Comandos Essenciais',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\ude80 Comandos Essenciais',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_claude_regras_inegoci\u00e1veis_anti_vibe_coding',
+          label: '\ud83d\udd12 Regras Inegoci\u00e1veis (Anti-Vibe Coding)',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd12 Regras Inegoci\u00e1veis (Anti-Vibe Coding)',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_claude_estrutura_de_dom\u00ednio_recomendada',
+          label: '\ud83d\udcc1 Estrutura de Dom\u00ednio Recomendada',
+          color: {
+            background: '#9C755F',
+            border: '#9C755F',
+            highlight: { background: '#ffffff', border: '#9C755F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udcc1 Estrutura de Dom\u00ednio Recomendada',
+          community: 8,
+          community_name: 'Community 8',
+          source_file: 'CLAUDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'gemini_md',
+          label: 'GEMINI.md',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'GEMINI.md',
+          community: 12,
+          community_name: 'Community 12',
+          source_file: 'GEMINI.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_gemini_dodo_starter_pack_instru\u00e7\u00f5es_do_agente_gemini',
+          label:
+            '\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente Gemini',
+          color: {
+            background: '#E15759',
+            border: '#E15759',
+            highlight: { background: '#ffffff', border: '#E15759' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            '\ud83e\udda4 Dodo Starter Pack \u2014 Instru\u00e7\u00f5es do Agente Gemini',
+          community: 12,
+          community_name: 'Community 12',
+          source_file: 'GEMINI.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'readme_md',
+          label: 'README.md',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'README.md',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_kwai_downloader',
+          label: 'Kwai Downloader',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 40.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'Kwai Downloader',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 15,
+        },
+        {
+          id: 'kwaidownloader_readme_demo',
+          label: '\ud83d\udd17 Demo',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd17 Demo',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_preview',
+          label: '\ud83c\udf0c Preview',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83c\udf0c Preview',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_vis\u00e3o_geral_t\u00e9cnica',
+          label: '\ud83d\udcd6 Vis\u00e3o Geral T\u00e9cnica',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udcd6 Vis\u00e3o Geral T\u00e9cnica',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_highlights_t\u00e9cnicos',
+          label: '\u2699\ufe0f Highlights t\u00e9cnicos',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\u2699\ufe0f Highlights t\u00e9cnicos',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_arquitetura',
+          label: '\ud83c\udfd7\ufe0f Arquitetura',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83c\udfd7\ufe0f Arquitetura',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_estrutura_do_projeto',
+          label: '\ud83d\udcc2 Estrutura do projeto',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udcc2 Estrutura do projeto',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_responsabilidades',
+          label: '\ud83d\udcc2 Responsabilidades',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title: '\ud83d\udcc2 Responsabilidades',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 4,
+        },
+        {
+          id: 'kwaidownloader_readme_main_py',
+          label: '`main.py`',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '`main.py`',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_scraper_py',
+          label: '`scraper.py`',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '`scraper.py`',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_templates_index_html',
+          label: '`templates/index.html`',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '`templates/index.html`',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_fluxo_principal_da_aplica\u00e7\u00e3o',
+          label: '\ud83d\udd04 Fluxo principal da aplica\u00e7\u00e3o',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd04 Fluxo principal da aplica\u00e7\u00e3o',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_seguran\u00e7a_e_privacidade',
+          label: '\ud83d\udd12 Seguran\u00e7a e privacidade',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd12 Seguran\u00e7a e privacidade',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_como_rodar_localmente',
+          label: '\ud83d\ude80 Como rodar localmente',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\ude80 Como rodar localmente',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_build_e_deploy',
+          label: '\ud83d\udce6 Build e Deploy',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udce6 Build e Deploy',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_tecnologias',
+          label: '\ud83d\udee0\ufe0f Tecnologias',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udee0\ufe0f Tecnologias',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_testes',
+          label: '\u2705 Testes',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\u2705 Testes',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_readme_licen\u00e7a',
+          label: '\ud83d\udcc4 Licen\u00e7a',
+          color: {
+            background: '#F28E2B',
+            border: '#F28E2B',
+            highlight: { background: '#ffffff', border: '#F28E2B' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udcc4 Licen\u00e7a',
+          community: 1,
+          community_name: 'Community 1',
+          source_file: 'README.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'agents_rules_antigravity_rtk_rules_md',
+          label: 'antigravity-rtk-rules.md',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'antigravity-rtk-rules.md',
+          community: 10,
+          community_name: 'Community 10',
+          source_file: '.agents/rules/antigravity-rtk-rules.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity',
+          label: 'RTK - Rust Token Killer (Google Antigravity)',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'RTK - Rust Token Killer (Google Antigravity)',
+          community: 10,
+          community_name: 'Community 10',
+          source_file: '.agents/rules/antigravity-rtk-rules.md',
+          file_type: 'document',
+          degree: 4,
+        },
+        {
+          id: 'rules_antigravity_rtk_rules_rule',
+          label: 'Rule',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Rule',
+          community: 10,
+          community_name: 'Community 10',
+          source_file: '.agents/rules/antigravity-rtk-rules.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'rules_antigravity_rtk_rules_meta_commands',
+          label: 'Meta Commands',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Meta Commands',
+          community: 10,
+          community_name: 'Community 10',
+          source_file: '.agents/rules/antigravity-rtk-rules.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'rules_antigravity_rtk_rules_why',
+          label: 'Why',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Why',
+          community: 10,
+          community_name: 'Community 10',
+          source_file: '.agents/rules/antigravity-rtk-rules.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_md',
+          label: 'DESIGN.md',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'DESIGN.md',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_design_do_projeto_dwkwai_downloader',
+          label: 'Design do Projeto: dwKwai Downloader',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 22.0,
+          font: { size: 12, color: '#ffffff' },
+          title: 'Design do Projeto: dwKwai Downloader',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 6,
+        },
+        {
+          id: 'docs_design_arquitetura_do_sistema',
+          label: '\ud83c\udfd7\ufe0f Arquitetura do Sistema',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83c\udfd7\ufe0f Arquitetura do Sistema',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_stack_tecnol\u00f3gica',
+          label: '\ud83d\udee0\ufe0f Stack Tecnol\u00f3gica',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udee0\ufe0f Stack Tecnol\u00f3gica',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_fluxo_de_dados',
+          label: '\ud83d\udd04 Fluxo de Dados',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd04 Fluxo de Dados',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_registro_de_decis\u00f5es_decision_log',
+          label: '\ud83d\udccb Registro de Decis\u00f5es (Decision Log)',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udccb Registro de Decis\u00f5es (Decision Log)',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_design_estrat\u00e9gia_de_deploy',
+          label: '\ud83d\ude80 Estrat\u00e9gia de Deploy',
+          color: {
+            background: '#B07AA1',
+            border: '#B07AA1',
+            highlight: { background: '#ffffff', border: '#B07AA1' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\ude80 Estrat\u00e9gia de Deploy',
+          community: 6,
+          community_name: 'Community 6',
+          source_file: 'docs/DESIGN.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_md',
+          label: 'GSD_FLOW.md',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'GSD_FLOW.md',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria',
+          label:
+            '\ud83d\ude80 Fluxo GSD (Get Shit Done) 4-D & Protocolo de Mem\u00f3ria',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title:
+            '\ud83d\ude80 Fluxo GSD (Get Shit Done) 4-D &amp; Protocolo de Mem\u00f3ria',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 3,
+        },
+        {
+          id: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          label: '\ud83c\udfdb\ufe0f O Fluxo GSD 4-D em Quatro Etapas',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 20.0,
+          font: { size: 12, color: '#ffffff' },
+          title: '\ud83c\udfdb\ufe0f O Fluxo GSD 4-D em Quatro Etapas',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 5,
+        },
+        {
+          id: 'docs_gsd_flow_fase_1_discuss_diagnose_a_regra_do_mago_acad\u00eamico',
+          label: 'Fase 1: Discuss & Diagnose (A Regra do Mago Acad\u00eamico)',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Fase 1: Discuss &amp; Diagnose (A Regra do Mago Acad\u00eamico)',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_fase_2_plan_develop_o_planejamento_checklist',
+          label: 'Fase 2: Plan & Develop (O Planejamento Checklist)',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Fase 2: Plan &amp; Develop (O Planejamento Checklist)',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_fase_3_execute_deliver_execu\u00e7\u00e3o_at\u00f4mica_e_testabilidade',
+          label:
+            'Fase 3: Execute & Deliver (Execu\u00e7\u00e3o At\u00f4mica e Testabilidade)',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Fase 3: Execute &amp; Deliver (Execu\u00e7\u00e3o At\u00f4mica e Testabilidade)',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_fase_4_verify_commit_uat_e_auditoria_de_muta\u00e7\u00e3o',
+          label:
+            'Fase 4: Verify & Commit (UAT e Auditoria de Muta\u00e7\u00e3o)',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Fase 4: Verify &amp; Commit (UAT e Auditoria de Muta\u00e7\u00e3o)',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based',
+          label: '\ud83e\udde0 A Lei da Mem\u00f3ria Virtual (ID-Based)',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 16.0,
+          font: { size: 12, color: '#ffffff' },
+          title: '\ud83e\udde0 A Lei da Mem\u00f3ria Virtual (ID-Based)',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 3,
+        },
+        {
+          id: 'docs_gsd_flow_o_padr\u00e3o_de_id_de_observa\u00e7\u00e3o',
+          label: 'O Padr\u00e3o de ID de Observa\u00e7\u00e3o',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'O Padr\u00e3o de ID de Observa\u00e7\u00e3o',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_gsd_flow_o_arquivo_resumo_de_trabalho_md',
+          label: 'O Arquivo `resumo-de-trabalho.md`',
+          color: {
+            background: '#59A14F',
+            border: '#59A14F',
+            highlight: { background: '#ffffff', border: '#59A14F' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'O Arquivo `resumo-de-trabalho.md`',
+          community: 4,
+          community_name: 'Community 4',
+          source_file: 'docs/GSD_FLOW.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_md',
+          label: 'RTK_GUIDE.md',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'RTK_GUIDE.md',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens',
+          label:
+            '\u26a1 RTK (Rust Token Killer) Mindset \u2014 Efici\u00eancia de Tokens',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title:
+            '\u26a1 RTK (Rust Token Killer) Mindset \u2014 Efici\u00eancia de Tokens',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 4,
+        },
+        {
+          id: 'docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas',
+          label:
+            '\ud83c\udfce\ufe0f O Protocolo de Busca Cir\u00fargica em 3 Camadas',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 18.0,
+          font: { size: 12, color: '#ffffff' },
+          title:
+            '\ud83c\udfce\ufe0f O Protocolo de Busca Cir\u00fargica em 3 Camadas',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 4,
+        },
+        {
+          id: 'docs_rtk_guide_1_camada_de_filtro_precision_search',
+          label: '1. Camada de Filtro (Precision Search)',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '1. Camada de Filtro (Precision Search)',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_2_camada_de_scan_linhas_imediatas',
+          label: '2. Camada de Scan (Linhas Imediatas)',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '2. Camada de Scan (Linhas Imediatas)',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_3_camada_de_deep_dive_leitura_seletiva',
+          label: '3. Camada de Deep Dive (Leitura Seletiva)',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '3. Camada de Deep Dive (Leitura Seletiva)',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_supress\u00e3o_de_ru\u00eddo_no_terminal',
+          label: '\ud83d\udd07 Supress\u00e3o de Ru\u00eddo no Terminal',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udd07 Supress\u00e3o de Ru\u00eddo no Terminal',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'docs_rtk_guide_prefixo_rtk_obrigat\u00f3rio_no_terminal',
+          label: '\ud83d\udee1\ufe0f Prefixo RTK Obrigat\u00f3rio no Terminal',
+          color: {
+            background: '#EDC948',
+            border: '#EDC948',
+            highlight: { background: '#ffffff', border: '#EDC948' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: '\ud83d\udee1\ufe0f Prefixo RTK Obrigat\u00f3rio no Terminal',
+          community: 5,
+          community_name: 'Community 5',
+          source_file: 'docs/RTK_GUIDE.md',
+          file_type: 'document',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_40',
+          label: 'Remove arquivo tempor\u00e1rio.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Remove arquivo tempor\u00e1rio.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_61',
+          label: 'Proxy para download do MP4 com nome personalizado.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Proxy para download do MP4 com nome personalizado.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_85',
+          label: 'Gera MP3 via yt-dlp post-processors e envia.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Gera MP3 via yt-dlp post-processors e envia.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_18',
+          label:
+            'Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_30',
+          label: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_21',
+          label: 'Remove arquivo tempor\u00e1rio.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Remove arquivo tempor\u00e1rio.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_42',
+          label: 'Proxy para download do MP4 com nome personalizado.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Proxy para download do MP4 com nome personalizado.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_main_rationale_69',
+          label: 'Gera MP3 via FFmpeg e envia.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Gera MP3 via FFmpeg e envia.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'main.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_11',
+          label: 'Extrai link do Kwai de um texto usando Regex.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Extrai link do Kwai de um texto usando Regex.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_17',
+          label:
+            'Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title:
+            'Limpa nome do arquivo: letras, n\u00fameros e espa\u00e7os (Op\u00e7\u00e3o 1).',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+        {
+          id: 'kwaidownloader_scraper_rationale_28',
+          label: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          color: {
+            background: '#4E79A7',
+            border: '#4E79A7',
+            highlight: { background: '#ffffff', border: '#4E79A7' },
+          },
+          size: 12.0,
+          font: { size: 0, color: '#ffffff' },
+          title: 'Extrai metadados do v\u00eddeo Kwai usando yt-dlp.',
+          community: 0,
+          community_name: 'Community 0',
+          source_file: 'scraper.py',
+          file_type: 'rationale',
+          degree: 1,
+        },
+      ];
+      const RAW_EDGES = [
+        {
+          from: 'eslintrc_json',
+          to: 'kwaidownloader_eslintrc_env',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'eslintrc_json',
+          to: 'kwaidownloader_eslintrc_extends',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'eslintrc_json',
+          to: 'kwaidownloader_eslintrc_parseroptions',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'eslintrc_json',
+          to: 'kwaidownloader_eslintrc_rules',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_env',
+          to: 'kwaidownloader_eslintrc_env_browser',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_env',
+          to: 'kwaidownloader_eslintrc_env_es2021',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_env',
+          to: 'kwaidownloader_eslintrc_env_node',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_parseroptions',
+          to: 'kwaidownloader_eslintrc_parseroptions_ecmaversion',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_parseroptions',
+          to: 'kwaidownloader_eslintrc_parseroptions_sourcetype',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_curly',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_eqeqeq',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_no_console',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_no_unused_vars',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_no_var',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_eslintrc_rules',
+          to: 'kwaidownloader_eslintrc_rules_prefer_const',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_appstate',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_cleanup_file',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_download_mp3',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_download_mp4',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_home',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_info',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_main_lifespan',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'imports',
+          title: 'imports [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'main_py',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'imports',
+          title: 'imports [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp3',
+          to: 'kwaidownloader_main_cleanup_file',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_21',
+          to: 'kwaidownloader_main_cleanup_file',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_40',
+          to: 'kwaidownloader_main_cleanup_file',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_41',
+          to: 'kwaidownloader_main_cleanup_file',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_info',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp4',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp4',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp4',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_42',
+          to: 'kwaidownloader_main_download_mp4',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_61',
+          to: 'kwaidownloader_main_download_mp4',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_65',
+          to: 'kwaidownloader_main_download_mp4',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp3',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp3',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_download_mp3',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'calls',
+          title: 'calls [INFERRED]',
+          dashes: true,
+          width: 1,
+          color: { opacity: 0.35 },
+          confidence: 'INFERRED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_69',
+          to: 'kwaidownloader_main_download_mp3',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_85',
+          to: 'kwaidownloader_main_download_mp3',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_main_rationale_93',
+          to: 'kwaidownloader_main_download_mp3',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'scraper_py',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'scraper_py',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'scraper_py',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_get_kwai_info',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_11',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_12',
+          to: 'kwaidownloader_scraper_extract_url',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_get_kwai_info',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_17',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_18',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_21',
+          to: 'kwaidownloader_scraper_sanitize_filename',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_28',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_30',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_scraper_rationale_45',
+          to: 'kwaidownloader_scraper_get_kwai_info',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_commit_msg_py',
+          to: 'githooks_commit_msg_main',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_py',
+          to: 'githooks_pre_commit_get_staged_files',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_py',
+          to: 'githooks_pre_commit_main',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_py',
+          to: 'githooks_pre_commit_scan_file',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_main',
+          to: 'githooks_pre_commit_get_staged_files',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_rationale_35',
+          to: 'githooks_pre_commit_get_staged_files',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_main',
+          to: 'githooks_pre_commit_scan_file',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'githooks_pre_commit_rationale_49',
+          to: 'githooks_pre_commit_scan_file',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_py',
+          to: 'tests_test_git_hooks_test_commit_msg_validation',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_py',
+          to: 'tests_test_git_hooks_test_pre_commit_protected_paths',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_py',
+          to: 'tests_test_git_hooks_test_pre_commit_secret_detection',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_rationale_32',
+          to: 'tests_test_git_hooks_test_pre_commit_secret_detection',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_rationale_52',
+          to: 'tests_test_git_hooks_test_pre_commit_protected_paths',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'tests_test_git_hooks_rationale_81',
+          to: 'tests_test_git_hooks_test_commit_msg_validation',
+          label: 'rationale_for',
+          title: 'rationale_for [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_crypto',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_diretoriobase',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_diretoriosignorados',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_extensoesalvo',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_fs',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_gerarhash',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_path',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_processarconteudo',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_processarurl',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_js',
+          to: 'versionamento_versionador_varrerdiretorio',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'versionamento_versionador_processarurl',
+          to: 'versionamento_versionador_gerarhash',
+          label: 'calls',
+          title: 'calls [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'agent_md',
+          to: 'kwaidownloader_agent_dodo_starter_pack_instru\u00e7\u00f5es_do_agente',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'claude_md',
+          to: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          to: 'kwaidownloader_claude_comandos_essenciais',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          to: 'kwaidownloader_claude_estrutura_de_dom\u00ednio_recomendada',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          to: 'kwaidownloader_claude_regras_inegoci\u00e1veis_anti_vibe_coding',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_claude_dodo_starter_pack_manifesto_anti_vibe_coding',
+          to: 'kwaidownloader_claude_stack_do_projeto',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'gemini_md',
+          to: 'kwaidownloader_gemini_dodo_starter_pack_instru\u00e7\u00f5es_do_agente_gemini',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'readme_md',
+          to: 'kwaidownloader_readme_kwai_downloader',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_arquitetura',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_build_e_deploy',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_como_rodar_localmente',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_demo',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_estrutura_do_projeto',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_fluxo_principal_da_aplica\u00e7\u00e3o',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_highlights_t\u00e9cnicos',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_licen\u00e7a',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_preview',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_responsabilidades',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_seguran\u00e7a_e_privacidade',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_tecnologias',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_testes',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_kwai_downloader',
+          to: 'kwaidownloader_readme_vis\u00e3o_geral_t\u00e9cnica',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_responsabilidades',
+          to: 'kwaidownloader_readme_main_py',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_responsabilidades',
+          to: 'kwaidownloader_readme_scraper_py',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'kwaidownloader_readme_responsabilidades',
+          to: 'kwaidownloader_readme_templates_index_html',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'agents_rules_antigravity_rtk_rules_md',
+          to: 'rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity',
+          to: 'rules_antigravity_rtk_rules_meta_commands',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity',
+          to: 'rules_antigravity_rtk_rules_rule',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'rules_antigravity_rtk_rules_rtk_rust_token_killer_google_antigravity',
+          to: 'rules_antigravity_rtk_rules_why',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_md',
+          to: 'docs_design_design_do_projeto_dwkwai_downloader',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_design_do_projeto_dwkwai_downloader',
+          to: 'docs_design_arquitetura_do_sistema',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_design_do_projeto_dwkwai_downloader',
+          to: 'docs_design_estrat\u00e9gia_de_deploy',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_design_do_projeto_dwkwai_downloader',
+          to: 'docs_design_fluxo_de_dados',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_design_do_projeto_dwkwai_downloader',
+          to: 'docs_design_registro_de_decis\u00f5es_decision_log',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_design_design_do_projeto_dwkwai_downloader',
+          to: 'docs_design_stack_tecnol\u00f3gica',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_md',
+          to: 'docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria',
+          to: 'docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_fluxo_gsd_get_shit_done_4_d_protocolo_de_mem\u00f3ria',
+          to: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          to: 'docs_gsd_flow_fase_1_discuss_diagnose_a_regra_do_mago_acad\u00eamico',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          to: 'docs_gsd_flow_fase_2_plan_develop_o_planejamento_checklist',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          to: 'docs_gsd_flow_fase_3_execute_deliver_execu\u00e7\u00e3o_at\u00f4mica_e_testabilidade',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_o_fluxo_gsd_4_d_em_quatro_etapas',
+          to: 'docs_gsd_flow_fase_4_verify_commit_uat_e_auditoria_de_muta\u00e7\u00e3o',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based',
+          to: 'docs_gsd_flow_o_arquivo_resumo_de_trabalho_md',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_gsd_flow_a_lei_da_mem\u00f3ria_virtual_id_based',
+          to: 'docs_gsd_flow_o_padr\u00e3o_de_id_de_observa\u00e7\u00e3o',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_md',
+          to: 'docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens',
+          to: 'docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens',
+          to: 'docs_rtk_guide_prefixo_rtk_obrigat\u00f3rio_no_terminal',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_rtk_rust_token_killer_mindset_efici\u00eancia_de_tokens',
+          to: 'docs_rtk_guide_supress\u00e3o_de_ru\u00eddo_no_terminal',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas',
+          to: 'docs_rtk_guide_1_camada_de_filtro_precision_search',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas',
+          to: 'docs_rtk_guide_2_camada_de_scan_linhas_imediatas',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+        {
+          from: 'docs_rtk_guide_o_protocolo_de_busca_cir\u00fargica_em_3_camadas',
+          to: 'docs_rtk_guide_3_camada_de_deep_dive_leitura_seletiva',
+          label: 'contains',
+          title: 'contains [EXTRACTED]',
+          dashes: false,
+          width: 2,
+          color: { opacity: 0.7 },
+          confidence: 'EXTRACTED',
+        },
+      ];
+      const LEGEND = [
+        { cid: 0, color: '#4E79A7', label: 'Community 0', count: 29 },
+        { cid: 1, color: '#F28E2B', label: 'Community 1', count: 19 },
+        { cid: 2, color: '#E15759', label: 'Community 2', count: 11 },
+        { cid: 3, color: '#76B7B2', label: 'Community 3', count: 16 },
+        { cid: 4, color: '#59A14F', label: 'Community 4', count: 10 },
+        { cid: 5, color: '#EDC948', label: 'Community 5', count: 8 },
+        { cid: 6, color: '#B07AA1', label: 'Community 6', count: 7 },
+        { cid: 7, color: '#FF9DA7', label: 'Community 7', count: 7 },
+        { cid: 8, color: '#9C755F', label: 'Community 8', count: 6 },
+        { cid: 9, color: '#BAB0AC', label: 'Community 9', count: 6 },
+        { cid: 10, color: '#4E79A7', label: 'Community 10', count: 5 },
+        { cid: 11, color: '#F28E2B', label: 'Community 11', count: 2 },
+        { cid: 12, color: '#E15759', label: 'Community 12', count: 2 },
+        { cid: 13, color: '#76B7B2', label: 'Community 13', count: 2 },
+      ];
 
-// HTML-escape helper — prevents XSS when injecting graph data into innerHTML
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
+      // HTML-escape helper — prevents XSS when injecting graph data into innerHTML
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
 
-// Build vis datasets
-const nodesDS = new vis.DataSet(RAW_NODES.map(n => ({
-  id: n.id, label: n.label, color: n.color, size: n.size,
-  font: n.font, title: n.title,
-  _community: n.community, _community_name: n.community_name,
-  _source_file: n.source_file, _file_type: n.file_type, _degree: n.degree,
-})));
+      // Build vis datasets
+      const nodesDS = new vis.DataSet(
+        RAW_NODES.map((n) => ({
+          id: n.id,
+          label: n.label,
+          color: n.color,
+          size: n.size,
+          font: n.font,
+          title: n.title,
+          _community: n.community,
+          _community_name: n.community_name,
+          _source_file: n.source_file,
+          _file_type: n.file_type,
+          _degree: n.degree,
+        }))
+      );
 
-const edgesDS = new vis.DataSet(RAW_EDGES.map((e, i) => ({
-  id: i, from: e.from, to: e.to,
-  label: '',
-  title: e.title,
-  dashes: e.dashes,
-  width: e.width,
-  color: e.color,
-  arrows: { to: { enabled: true, scaleFactor: 0.5 } },
-})));
+      const edgesDS = new vis.DataSet(
+        RAW_EDGES.map((e, i) => ({
+          id: i,
+          from: e.from,
+          to: e.to,
+          label: '',
+          title: e.title,
+          dashes: e.dashes,
+          width: e.width,
+          color: e.color,
+          arrows: { to: { enabled: true, scaleFactor: 0.5 } },
+        }))
+      );
 
-const container = document.getElementById('graph');
-const network = new vis.Network(container, { nodes: nodesDS, edges: edgesDS }, {
-  physics: {
-    enabled: true,
-    solver: 'forceAtlas2Based',
-    forceAtlas2Based: {
-      gravitationalConstant: -60,
-      centralGravity: 0.005,
-      springLength: 120,
-      springConstant: 0.08,
-      damping: 0.4,
-      avoidOverlap: 0.8,
-    },
-    stabilization: { iterations: 200, fit: true },
-  },
-  interaction: {
-    hover: true,
-    tooltipDelay: 100,
-    hideEdgesOnDrag: true,
-    navigationButtons: false,
-    keyboard: false,
-  },
-  nodes: { shape: 'dot', borderWidth: 1.5 },
-  edges: { smooth: { type: 'continuous', roundness: 0.2 }, selectionWidth: 3 },
-});
+      const container = document.getElementById('graph');
+      const network = new vis.Network(
+        container,
+        { nodes: nodesDS, edges: edgesDS },
+        {
+          physics: {
+            enabled: true,
+            solver: 'forceAtlas2Based',
+            forceAtlas2Based: {
+              gravitationalConstant: -60,
+              centralGravity: 0.005,
+              springLength: 120,
+              springConstant: 0.08,
+              damping: 0.4,
+              avoidOverlap: 0.8,
+            },
+            stabilization: { iterations: 200, fit: true },
+          },
+          interaction: {
+            hover: true,
+            tooltipDelay: 100,
+            hideEdgesOnDrag: true,
+            navigationButtons: false,
+            keyboard: false,
+          },
+          nodes: { shape: 'dot', borderWidth: 1.5 },
+          edges: {
+            smooth: { type: 'continuous', roundness: 0.2 },
+            selectionWidth: 3,
+          },
+        }
+      );
 
-network.once('stabilizationIterationsDone', () => {
-  network.setOptions({ physics: { enabled: false } });
-});
+      network.once('stabilizationIterationsDone', () => {
+        network.setOptions({ physics: { enabled: false } });
+      });
 
-function showInfo(nodeId) {
-  const n = nodesDS.get(nodeId);
-  if (!n) return;
-  const neighborIds = network.getConnectedNodes(nodeId);
-  const neighborItems = neighborIds.map(nid => {
-    const nb = nodesDS.get(nid);
-    const color = nb ? nb.color.background : '#555';
-    return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
-  }).join('');
-  document.getElementById('info-content').innerHTML = `
+      function showInfo(nodeId) {
+        const n = nodesDS.get(nodeId);
+        if (!n) return;
+        const neighborIds = network.getConnectedNodes(nodeId);
+        const neighborItems = neighborIds
+          .map((nid) => {
+            const nb = nodesDS.get(nid);
+            const color = nb ? nb.color.background : '#555';
+            return `<span class="neighbor-link" style="border-left-color:${esc(color)}" onclick="focusNode(${JSON.stringify(nid)})">${esc(nb ? nb.label : nid)}</span>`;
+          })
+          .join('');
+        document.getElementById('info-content').innerHTML = `
     <div class="field"><b>${esc(n.label)}</b></div>
     <div class="field">Type: ${esc(n._file_type || 'unknown')}</div>
     <div class="field">Community: ${esc(n._community_name)}</div>
@@ -138,168 +3922,178 @@ function showInfo(nodeId) {
     <div class="field">Degree: ${n._degree}</div>
     ${neighborIds.length ? `<div class="field" style="margin-top:8px;color:#aaa;font-size:11px">Neighbors (${neighborIds.length})</div><div id="neighbors-list">${neighborItems}</div>` : ''}
   `;
-}
+      }
 
-function focusNode(nodeId) {
-  network.focus(nodeId, { scale: 1.4, animation: true });
-  network.selectNodes([nodeId]);
-  showInfo(nodeId);
-}
+      function focusNode(nodeId) {
+        network.focus(nodeId, { scale: 1.4, animation: true });
+        network.selectNodes([nodeId]);
+        showInfo(nodeId);
+      }
 
-// Track hovered node — hover detection is more reliable than click params
-let hoveredNodeId = null;
-network.on('hoverNode', params => {
-  hoveredNodeId = params.node;
-  container.style.cursor = 'pointer';
-});
-network.on('blurNode', () => {
-  hoveredNodeId = null;
-  container.style.cursor = 'default';
-});
-container.addEventListener('click', () => {
-  if (hoveredNodeId !== null) {
-    showInfo(hoveredNodeId);
-    network.selectNodes([hoveredNodeId]);
-  }
-});
-network.on('click', params => {
-  if (params.nodes.length > 0) {
-    showInfo(params.nodes[0]);
-  } else if (hoveredNodeId === null) {
-    document.getElementById('info-content').innerHTML = '<span class="empty">Click a node to inspect it</span>';
-  }
-});
+      // Track hovered node — hover detection is more reliable than click params
+      let hoveredNodeId = null;
+      network.on('hoverNode', (params) => {
+        hoveredNodeId = params.node;
+        container.style.cursor = 'pointer';
+      });
+      network.on('blurNode', () => {
+        hoveredNodeId = null;
+        container.style.cursor = 'default';
+      });
+      container.addEventListener('click', () => {
+        if (hoveredNodeId !== null) {
+          showInfo(hoveredNodeId);
+          network.selectNodes([hoveredNodeId]);
+        }
+      });
+      network.on('click', (params) => {
+        if (params.nodes.length > 0) {
+          showInfo(params.nodes[0]);
+        } else if (hoveredNodeId === null) {
+          document.getElementById('info-content').innerHTML =
+            '<span class="empty">Click a node to inspect it</span>';
+        }
+      });
 
-const searchInput = document.getElementById('search');
-const searchResults = document.getElementById('search-results');
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.toLowerCase().trim();
-  searchResults.innerHTML = '';
-  if (!q) { searchResults.style.display = 'none'; return; }
-  const matches = RAW_NODES.filter(n => n.label.toLowerCase().includes(q)).slice(0, 20);
-  if (!matches.length) { searchResults.style.display = 'none'; return; }
-  searchResults.style.display = 'block';
-  matches.forEach(n => {
-    const el = document.createElement('div');
-    el.className = 'search-item';
-    el.textContent = n.label;
-    el.style.borderLeft = `3px solid ${n.color.background}`;
-    el.style.paddingLeft = '8px';
-    el.onclick = () => {
-      network.focus(n.id, { scale: 1.5, animation: true });
-      network.selectNodes([n.id]);
-      showInfo(n.id);
-      searchResults.style.display = 'none';
-      searchInput.value = '';
-    };
-    searchResults.appendChild(el);
-  });
-});
-document.addEventListener('click', e => {
-  if (!searchResults.contains(e.target) && e.target !== searchInput)
-    searchResults.style.display = 'none';
-});
+      const searchInput = document.getElementById('search');
+      const searchResults = document.getElementById('search-results');
+      searchInput.addEventListener('input', () => {
+        const q = searchInput.value.toLowerCase().trim();
+        searchResults.innerHTML = '';
+        if (!q) {
+          searchResults.style.display = 'none';
+          return;
+        }
+        const matches = RAW_NODES.filter((n) =>
+          n.label.toLowerCase().includes(q)
+        ).slice(0, 20);
+        if (!matches.length) {
+          searchResults.style.display = 'none';
+          return;
+        }
+        searchResults.style.display = 'block';
+        matches.forEach((n) => {
+          const el = document.createElement('div');
+          el.className = 'search-item';
+          el.textContent = n.label;
+          el.style.borderLeft = `3px solid ${n.color.background}`;
+          el.style.paddingLeft = '8px';
+          el.onclick = () => {
+            network.focus(n.id, { scale: 1.5, animation: true });
+            network.selectNodes([n.id]);
+            showInfo(n.id);
+            searchResults.style.display = 'none';
+            searchInput.value = '';
+          };
+          searchResults.appendChild(el);
+        });
+      });
+      document.addEventListener('click', (e) => {
+        if (!searchResults.contains(e.target) && e.target !== searchInput)
+          searchResults.style.display = 'none';
+      });
 
-const hiddenCommunities = new Set();
+      const hiddenCommunities = new Set();
 
-const selectAllCb = document.getElementById('select-all-cb');
+      const selectAllCb = document.getElementById('select-all-cb');
 
-function updateSelectAllState() {
-  const total = LEGEND.length;
-  const hidden = hiddenCommunities.size;
-  selectAllCb.checked = hidden === 0;
-  selectAllCb.indeterminate = hidden > 0 && hidden < total;
-}
+      function updateSelectAllState() {
+        const total = LEGEND.length;
+        const hidden = hiddenCommunities.size;
+        selectAllCb.checked = hidden === 0;
+        selectAllCb.indeterminate = hidden > 0 && hidden < total;
+      }
 
-function toggleAllCommunities(hide) {
-  document.querySelectorAll('.legend-item').forEach(item => {
-    hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
-  });
-  document.querySelectorAll('.legend-cb').forEach(cb => {
-    cb.checked = !hide;
-  });
-  LEGEND.forEach(c => {
-    if (hide) hiddenCommunities.add(c.cid); else hiddenCommunities.delete(c.cid);
-  });
-  const updates = RAW_NODES.map(n => ({ id: n.id, hidden: hide }));
-  nodesDS.update(updates);
-  updateSelectAllState();
-}
+      function toggleAllCommunities(hide) {
+        document.querySelectorAll('.legend-item').forEach((item) => {
+          hide ? item.classList.add('dimmed') : item.classList.remove('dimmed');
+        });
+        document.querySelectorAll('.legend-cb').forEach((cb) => {
+          cb.checked = !hide;
+        });
+        LEGEND.forEach((c) => {
+          if (hide) hiddenCommunities.add(c.cid);
+          else hiddenCommunities.delete(c.cid);
+        });
+        const updates = RAW_NODES.map((n) => ({ id: n.id, hidden: hide }));
+        nodesDS.update(updates);
+        updateSelectAllState();
+      }
 
-const legendEl = document.getElementById('legend');
-LEGEND.forEach(c => {
-  const item = document.createElement('div');
-  item.className = 'legend-item';
-  const cb = document.createElement('input');
-  cb.type = 'checkbox';
-  cb.className = 'legend-cb';
-  cb.checked = true;
-  cb.addEventListener('change', (e) => {
-    e.stopPropagation();
-    if (cb.checked) {
-      hiddenCommunities.delete(c.cid);
-      item.classList.remove('dimmed');
-    } else {
-      hiddenCommunities.add(c.cid);
-      item.classList.add('dimmed');
-    }
-    const updates = RAW_NODES
-      .filter(n => n.community === c.cid)
-      .map(n => ({ id: n.id, hidden: !cb.checked }));
-    nodesDS.update(updates);
-    updateSelectAllState();
-  });
-  item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
+      const legendEl = document.getElementById('legend');
+      LEGEND.forEach((c) => {
+        const item = document.createElement('div');
+        item.className = 'legend-item';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.className = 'legend-cb';
+        cb.checked = true;
+        cb.addEventListener('change', (e) => {
+          e.stopPropagation();
+          if (cb.checked) {
+            hiddenCommunities.delete(c.cid);
+            item.classList.remove('dimmed');
+          } else {
+            hiddenCommunities.add(c.cid);
+            item.classList.add('dimmed');
+          }
+          const updates = RAW_NODES.filter((n) => n.community === c.cid).map(
+            (n) => ({ id: n.id, hidden: !cb.checked })
+          );
+          nodesDS.update(updates);
+          updateSelectAllState();
+        });
+        item.innerHTML = `<div class="legend-dot" style="background:${c.color}"></div>
     <span class="legend-label">${c.label}</span>
     <span class="legend-count">${c.count}</span>`;
-  item.prepend(cb);
-  item.onclick = (e) => {
-    if (e.target === cb) return;
-    cb.checked = !cb.checked;
-    cb.dispatchEvent(new Event('change'));
-  };
-  legendEl.appendChild(item);
-});
-</script>
-<script>
-// Render hyperedges as shaded regions
-const hyperedges = [];
-// afterDrawing passes ctx already transformed to network coordinate space.
-// Draw node positions raw — no manual pan/zoom/DPR math needed.
-network.on('afterDrawing', function(ctx) {
-    hyperedges.forEach(h => {
-        const positions = h.nodes
-            .map(nid => network.getPositions([nid])[nid])
-            .filter(p => p !== undefined);
-        if (positions.length < 2) return;
-        ctx.save();
-        ctx.globalAlpha = 0.12;
-        ctx.fillStyle = '#6366f1';
-        ctx.strokeStyle = '#6366f1';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        // Centroid and expanded hull in network coordinates
-        const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
-        const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
-        const expanded = positions.map(p => ({
+        item.prepend(cb);
+        item.onclick = (e) => {
+          if (e.target === cb) return;
+          cb.checked = !cb.checked;
+          cb.dispatchEvent(new Event('change'));
+        };
+        legendEl.appendChild(item);
+      });
+    </script>
+    <script>
+      // Render hyperedges as shaded regions
+      const hyperedges = [];
+      // afterDrawing passes ctx already transformed to network coordinate space.
+      // Draw node positions raw — no manual pan/zoom/DPR math needed.
+      network.on('afterDrawing', function (ctx) {
+        hyperedges.forEach((h) => {
+          const positions = h.nodes
+            .map((nid) => network.getPositions([nid])[nid])
+            .filter((p) => p !== undefined);
+          if (positions.length < 2) return;
+          ctx.save();
+          ctx.globalAlpha = 0.12;
+          ctx.fillStyle = '#6366f1';
+          ctx.strokeStyle = '#6366f1';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          // Centroid and expanded hull in network coordinates
+          const cx = positions.reduce((s, p) => s + p.x, 0) / positions.length;
+          const cy = positions.reduce((s, p) => s + p.y, 0) / positions.length;
+          const expanded = positions.map((p) => ({
             x: cx + (p.x - cx) * 1.15,
-            y: cy + (p.y - cy) * 1.15
-        }));
-        ctx.moveTo(expanded[0].x, expanded[0].y);
-        expanded.slice(1).forEach(p => ctx.lineTo(p.x, p.y));
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 0.4;
-        ctx.stroke();
-        // Label
-        ctx.globalAlpha = 0.8;
-        ctx.fillStyle = '#4f46e5';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(h.label, cx, cy - 5);
-        ctx.restore();
-    });
-});
-</script>
-</body>
+            y: cy + (p.y - cy) * 1.15,
+          }));
+          ctx.moveTo(expanded[0].x, expanded[0].y);
+          expanded.slice(1).forEach((p) => ctx.lineTo(p.x, p.y));
+          ctx.closePath();
+          ctx.fill();
+          ctx.globalAlpha = 0.4;
+          ctx.stroke();
+          // Label
+          ctx.globalAlpha = 0.8;
+          ctx.fillStyle = '#4f46e5';
+          ctx.font = 'bold 11px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(h.label, cx, cy - 5);
+          ctx.restore();
+        });
+      });
+    </script>
+  </body>
 </html>

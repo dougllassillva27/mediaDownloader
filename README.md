@@ -68,12 +68,15 @@ KwaiDownloader/
 ## 📂 Responsabilidades
 
 ### `main.py`
+
 Entrypoint principal. Gerencia rotas da API, serve arquivos estáticos, orquestra o streaming de vídeo (MP4) e a conversão de áudio (MP3), além de gerenciar tarefas de limpeza em background.
 
 ### `scraper.py`
+
 Responsável pela lógica de negócio de extração. Implementa Regex para limpeza de URL, integração com `yt-dlp` para metadados e sanitização de nomes de arquivos para compatibilidade universal.
 
 ### `templates/index.html`
+
 Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme e lógica de interação com a API, incluindo gerenciamento de estado da UI (Loading/Modal).
 
 ## 🔄 Fluxo principal da aplicação
@@ -113,18 +116,19 @@ Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme
 
 ## 🛠️ Tecnologias
 
-| Tecnologia | Responsabilidade |
-| --- | --- |
-| Python 3.11 | Núcleo do Backend |
-| FastAPI | Framework de API de alta performance |
-| yt-dlp | Motor de extração e scraping |
-| FFmpeg | Processamento e conversão de mídia |
-| Vanilla JS/CSS | Interface leve e responsiva |
-| Docker | Padronização de ambiente |
+| Tecnologia     | Responsabilidade                     |
+| -------------- | ------------------------------------ |
+| Python 3.11    | Núcleo do Backend                    |
+| FastAPI        | Framework de API de alta performance |
+| yt-dlp         | Motor de extração e scraping         |
+| FFmpeg         | Processamento e conversão de mídia   |
+| Vanilla JS/CSS | Interface leve e responsiva          |
+| Docker         | Padronização de ambiente             |
 
 ## ✅ Testes
 
 Validações manuais críticas:
+
 - [x] Extração de URL a partir de texto compartilhado do app Kwai.
 - [x] Download de MP4 via streaming proxy.
 - [x] Conversão de MP3 baixando apenas o fluxo de áudio (Post-processing).
@@ -136,4 +140,5 @@ Validações manuais críticas:
 Este projeto está sob a licença MIT.
 
 ---
+
 Desenvolvido por **Douglas Silva**.

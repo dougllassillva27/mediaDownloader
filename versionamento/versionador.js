@@ -29,14 +29,23 @@ const extensoesAlvo = ['.html', '.css', '.js', '.py', '.php', '.json'];
  */
 function gerarHash(caminhoArquivo) {
   const conteudo = fs.readFileSync(caminhoArquivo);
-  return crypto.createHash('md5').update(conteudo).digest('hex').substring(0, 8);
+  return crypto
+    .createHash('md5')
+    .update(conteudo)
+    .digest('hex')
+    .substring(0, 8);
 }
 
 /**
  * Processa uma URL, injetando o Content Hash se o arquivo físico existir.
  */
 function processarUrl(url, caminhoArquivoAtual) {
-  if (!url || url.startsWith('http') || url.startsWith('data:') || url.startsWith('#')) {
+  if (
+    !url ||
+    url.startsWith('http') ||
+    url.startsWith('data:') ||
+    url.startsWith('#')
+  ) {
     return url;
   }
 
@@ -73,28 +82,38 @@ function processarUrl(url, caminhoArquivoAtual) {
 function processarConteudo(conteudo, caminhoArquivo) {
   // Processa atributos padrões (HTML: src="...", JS: src: "...", JSON: "src": "...")
   // Captura o prefixo inteiro na variável "prefix" para preservar formato, aspas originais na "aspas".
-  const regexAtributos = /((?:['"]?)(?:href|src|content)(?:['"]?)\s*[:=]\s*)(['"])(.*?)\2/gi;
-  let novoConteudo = conteudo.replace(regexAtributos, (match, prefix, aspas, url) => {
-    return `${prefix}${aspas}${processarUrl(url, caminhoArquivo)}${aspas}`;
-  });
+  const regexAtributos =
+    /((?:['"]?)(?:href|src|content)(?:['"]?)\s*[:=]\s*)(['"])(.*?)\2/gi;
+  let novoConteudo = conteudo.replace(
+    regexAtributos,
+    (match, prefix, aspas, url) => {
+      return `${prefix}${aspas}${processarUrl(url, caminhoArquivo)}${aspas}`;
+    }
+  );
 
   // Processa url() do CSS
-  novoConteudo = novoConteudo.replace(/url\((['"]?)(.*?)\1\)/gi, (match, aspas, url) => {
-    return `url(${aspas}${processarUrl(url, caminhoArquivo)}${aspas})`;
-  });
+  novoConteudo = novoConteudo.replace(
+    /url\((['"]?)(.*?)\1\)/gi,
+    (match, aspas, url) => {
+      return `url(${aspas}${processarUrl(url, caminhoArquivo)}${aspas})`;
+    }
+  );
 
   // Processa srcset (imagens responsivas)
-  novoConteudo = novoConteudo.replace(/srcset=(['"])(.*?)\1/gi, (match, aspas, srcset) => {
-    const novoSrcset = srcset
-      .split(',')
-      .map((parte) => {
-        const [url, descritor] = parte.trim().split(/\s+/);
-        const urlProcessada = processarUrl(url, caminhoArquivo);
-        return descritor ? `${urlProcessada} ${descritor}` : urlProcessada;
-      })
-      .join(', ');
-    return `srcset=${aspas}${novoSrcset}${aspas}`;
-  });
+  novoConteudo = novoConteudo.replace(
+    /srcset=(['"])(.*?)\1/gi,
+    (match, aspas, srcset) => {
+      const novoSrcset = srcset
+        .split(',')
+        .map((parte) => {
+          const [url, descritor] = parte.trim().split(/\s+/);
+          const urlProcessada = processarUrl(url, caminhoArquivo);
+          return descritor ? `${urlProcessada} ${descritor}` : urlProcessada;
+        })
+        .join(', ');
+      return `srcset=${aspas}${novoSrcset}${aspas}`;
+    }
+  );
 
   return novoConteudo;
 }
@@ -105,7 +124,9 @@ function processarConteudo(conteudo, caminhoArquivo) {
 function varrerDiretorio(dir) {
   if (!fs.existsSync(dir)) {
     console.error(`[ERRO CRÍTICO] O diretório de build (${dir}) não existe.`);
-    console.error('Certifique-se de rodar "vite build" antes de executar este script.');
+    console.error(
+      'Certifique-se de rodar "vite build" antes de executar este script.'
+    );
     process.exit(1);
   }
 
@@ -118,18 +139,27 @@ function varrerDiretorio(dir) {
       if (!diretoriosIgnorados.includes(arquivo)) {
         varrerDiretorio(caminhoCompleto);
       }
-    } else if (extensoesAlvo.includes(path.extname(caminhoCompleto).toLowerCase())) {
+    } else if (
+      extensoesAlvo.includes(path.extname(caminhoCompleto).toLowerCase())
+    ) {
       const conteudoOriginal = fs.readFileSync(caminhoCompleto, 'utf-8');
-      const conteudoProcessado = processarConteudo(conteudoOriginal, caminhoCompleto);
+      const conteudoProcessado = processarConteudo(
+        conteudoOriginal,
+        caminhoCompleto
+      );
 
       if (conteudoOriginal !== conteudoProcessado) {
         fs.writeFileSync(caminhoCompleto, conteudoProcessado, 'utf-8');
-        console.log(`[ATUALIZADO] ${caminhoCompleto.replace(diretorioBase, '')}`);
+        console.log(
+          `[ATUALIZADO] ${caminhoCompleto.replace(diretorioBase, '')}`
+        );
       }
     }
   });
 }
 
-console.log('Iniciando versionamento de assets estáticos no diretório dist/ ...');
+console.log(
+  'Iniciando versionamento de assets estáticos no diretório dist/ ...'
+);
 varrerDiretorio(diretorioBase);
 console.log('Versionamento concluído com sucesso.');

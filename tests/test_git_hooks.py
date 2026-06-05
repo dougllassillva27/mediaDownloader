@@ -1,16 +1,17 @@
-# -*- coding: utf-8 -*-
 # tests/test_git_hooks.py
 # Suíte de testes unitários para os hooks do dodo-starter-pack
 
-import sys
 import os
-import pytest
 import re
+import sys
+
+import pytest
 
 # Adiciona o diretório .githooks ao path para permitir importação direta
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.githooks')))
 
 import importlib
+
 pre_commit = importlib.import_module("pre-commit")
 commit_msg = importlib.import_module("commit-msg")
 
@@ -69,7 +70,7 @@ def test_pre_commit_protected_paths(filepath, expected):
     ("chore(deps): [OBS-20260525-03] atualiza pacotes", True),
     ("docs: [OBS-20260525-99] atualiza manual de onboarding", True),
     ("refactor(core): [OBS-12345678-01] limpa imports nao utilizados", True),
-    
+
     # Falhas induzidas (sem ID, formato errado)
     ("feat(api): adiciona validação de login", False),                        # Sem OBS ID
     ("fix: [OBS-20260525-01]", False),                                         # Sem mensagem
