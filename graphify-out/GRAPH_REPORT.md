@@ -1,4 +1,4 @@
-# Graph Report - kwaiDownloader (2026-06-02)
+# Graph Report - mediaDownloader (2026-06-02)
 
 ## Corpus Check
 

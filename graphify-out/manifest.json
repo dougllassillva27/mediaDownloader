@@ -1,115 +1,115 @@
 {
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\main.py": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\main.py": {
     "mtime": 1779208284.4841623,
     "ast_hash": "04f21ab7f6c952f7e50ec20ffe34bba7",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\scraper.py": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\scraper.py": {
     "mtime": 1779208106.5657303,
     "ast_hash": "697f0a25d295f6a51a6b6e76d6dea8cb",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\versionamento\\versionador.js": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\versionamento\\versionador.js": {
     "mtime": 1779730358.2336166,
     "ast_hash": "596fb505a6698b1e7dbdf7a21b1130e3",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\README.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\README.md": {
     "mtime": 1778960752.1887865,
     "ast_hash": "64a6a27d586755f12870f5597174fb05",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\requirements.txt": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\requirements.txt": {
     "mtime": 1779738774.3284264,
     "ast_hash": "8fd1b12779225c17eb7b25d803296ae7",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\resumo-de-trabalho.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\resumo-de-trabalho.md": {
     "mtime": 1779333748.5031161,
     "ast_hash": "4e638c067bca837ef36bc2535be86cc6",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\docs\\DESIGN.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\docs\\DESIGN.md": {
     "mtime": 1778950035.2152736,
     "ast_hash": "6e44e394e1b29d44c1e5c48ba5aab73c",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\templates\\index.html": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\templates\\index.html": {
     "mtime": 1779737329.6791556,
     "ast_hash": "c41fe72ca469ac44f9e5e0ec40d3899e",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\_contexto-ia\\Geral.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\_contexto-ia\\Geral.md": {
     "mtime": 1778540830.9629078,
     "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\assets\\img\\Kwai Downloader Banner.webp": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\assets\\img\\Kwai Downloader Banner.webp": {
     "mtime": 1778960612.8790991,
     "ast_hash": "0545139a56ae74bc78c69312e6594141",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\assets\\img\\Kwai-Downloader.webp": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\assets\\img\\Kwai-Downloader.webp": {
     "mtime": 1778958843.190106,
     "ast_hash": "b15b62308ecda062159edb938c14827d",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.eslintrc.json": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.eslintrc.json": {
     "mtime": 1779729107.9002295,
     "ast_hash": "d3d804ef7d8d4ed60d67d36326f53fcc",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.githooks\\commit-msg": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.githooks\\commit-msg": {
     "mtime": 1779729147.1428955,
     "ast_hash": "cd9d323fd1eae091df42602c911bb9e3",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.githooks\\commit-msg.py": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.githooks\\commit-msg.py": {
     "mtime": 1779729143.669237,
     "ast_hash": "6de48d687509e1759a627e298e15cc1d",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.githooks\\pre-commit": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.githooks\\pre-commit": {
     "mtime": 1779729126.820832,
     "ast_hash": "a8823a11792aa5f100187c40ce5639d9",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.githooks\\pre-commit.py": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.githooks\\pre-commit.py": {
     "mtime": 1779729124.0240598,
     "ast_hash": "61e6d0bba868310e02286f524cd81e7e",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\tests\\test_git_hooks.py": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\tests\\test_git_hooks.py": {
     "mtime": 1779729162.994639,
     "ast_hash": "43a001baf392508176d09a666578f943",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\AGENT.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\AGENT.md": {
     "mtime": 1779730060.4419403,
     "ast_hash": "4b53083027c85282bd7b68af59cfcf43",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\CLAUDE.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\CLAUDE.md": {
     "mtime": 1779729089.914082,
     "ast_hash": "94e029ddfb114260eac9d3fc634ddb2b",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\GEMINI.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\GEMINI.md": {
     "mtime": 1779730062.9923341,
     "ast_hash": "bc106fe15bb4e834fa4c3e45f2195433",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\.agents\\rules\\antigravity-rtk-rules.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\.agents\\rules\\antigravity-rtk-rules.md": {
     "mtime": 1778626469.2445462,
     "ast_hash": "f35bc5f83b89536ea1788c5c86377968",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\docs\\GSD_FLOW.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\docs\\GSD_FLOW.md": {
     "mtime": 1779729203.6548276,
     "ast_hash": "f1db9b994649fc1efeb9ae8f6af7c5b8",
     "semantic_hash": ""
   },
-  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\kwaiDownloader\\docs\\RTK_GUIDE.md": {
+  "D:\\Onedrive - Douglas\\OneDrive\\Pessoal\\Dodo\\Programacao\\Git\\mediaDownloader\\docs\\RTK_GUIDE.md": {
     "mtime": 1779729207.7171998,
     "ast_hash": "1b762a900ec3060119ec451955ce0fdf",
     "semantic_hash": ""
