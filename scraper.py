@@ -42,7 +42,7 @@ def sanitize_filename(title: str) -> str:
     """Sanitiza o título para criar nomes de arquivos válidos"""
     sanitized = re.sub(r'[<>:"/\\|?*]', '', title)
     sanitized = re.sub(r'\s+', '_', sanitized)
-    sanitized = ''.join(c for c in sanitized if not c.isascii() else c)
+    sanitized = ''.join(c for c in sanitized if c.isascii())
     sanitized = unicodedata.normalize('NFKD', sanitized).encode('ascii', 'ignore').decode('ascii')
     sanitized = sanitized.strip('_').strip('.')
     if not sanitized:
