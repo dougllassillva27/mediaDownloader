@@ -14,7 +14,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import yt_dlp
-import requests
 from scraper import extract_kwai_info, sanitize_filename, clean_text_and_extract_urls
 
 # Configuração do logger
