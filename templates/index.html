@@ -256,6 +256,26 @@
       <h1>Media Downloader</h1>
       <p>Baixe vídeos e áudios do Kwai.</p>
 
+      <!-- Separador -->
+      <hr style="margin: 25px 0; border: none; border-top: 1px solid #333;" />
+
+      <!-- Seção de Conversor -->
+      <h2 style="color: var(--primary); font-size: 1.2rem; margin-bottom: 15px;">Conversor de Vídeo para MP3</h2>
+      <p style="font-size: 0.9rem; color: #aaa; margin-bottom: 15px;">Converta vídeos do seu dispositivo para MP3 (até 200MB)</p>
+
+      <div class="input-group">
+        <input
+          type="file"
+          id="videoFile"
+          accept=".mp4,.ts,.mkv,.avi,.mov,.webm"
+          style="flex: 1; padding: 10px; border-radius: 8px; border: none; background: #2a2a2a; color: white;"
+        />
+        <button id="btnConvert">Converter</button>
+      </div>
+      <p id="convertStatus" style="font-size: 0.85rem; color: #aaa; margin-top: 8px; display: none;"></p>
+
+      <hr style="margin: 25px 0; border: none; border-top: 1px solid #333;" />
+
       <div class="input-group">
         <input
           type="text"
@@ -305,6 +325,9 @@
       const modal = document.getElementById('modal');
       const btnMp3 = document.getElementById('btnMp3');
       const btnMp4 = document.getElementById('btnMp4');
+      const videoFile = document.getElementById('videoFile');
+      const btnConvert = document.getElementById('btnConvert');
+      const convertStatus = document.getElementById('convertStatus');
 
       let lastProcessedUrl = '';
       let lastProcessedTitle = 'kwai_video';

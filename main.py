@@ -7,13 +7,14 @@ import uuid
 import asyncio
 import logging
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, HTTPException, Query, BackgroundTasks
+from fastapi import FastAPI, HTTPException, Query, BackgroundTasks, UploadFile, File
 from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import yt_dlp
+import subprocess
 from scraper import extract_kwai_info, sanitize_filename, clean_text_and_extract_urls
 
 # Configuração do logger
@@ -57,6 +58,13 @@ class MediaResponse(BaseModel):
     filename: Optional[str] = None
     message: Optional[str] = None
 
+class ConvertResponse(BaseModel):
+    """Modelo para resposta de conversão"""
+    success: bool
+    download_url: Optional[str] = None
+    original_filename: Optional[str] = None
+    message: Optional[str] = None
+
 def cleanup_temp_files():
     """Limpa arquivos temporários antigos"""
     try:
@@ -67,6 +75,34 @@ def cleanup_temp_files():
                 logger.info(f"Arquivo temporário removido: {filepath}")
     except Exception as e:
         logger.warning(f"Erro ao limpar arquivos temporários: {e}")
+
+def convert_to_mp3(input_path: str, output_path: str) -> bool:
+    """Converte arquivo de vídeo para MP3 usando ffmpeg"""
+    try:
+        cmd = [
+            'ffmpeg',
+            '-i', input_path,
+            '-vn',  # Remove vídeo
+            '-acodec', 'libmp3lame',
+            '-ac', '2',
+            '-ab', '192k',
+            '-ar', '44100',
+            '-y',  # Sobrescrever se existir
+            output_path
+        ]
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+        if result.returncode == 0:
+            logger.info(f"Conversão concluída: {output_path}")
+            return True
+        else:
+            logger.error(f"Erro no ffmpeg: {result.stderr}")
+            return False
+    except subprocess.TimeoutExpired:
+        logger.error("Timeout na conversão")
+        return False
+    except Exception as e:
+        logger.error(f"Erro ao converter para MP3: {str(e)}")
+        return False
 
 def download_media_file(url: str, format_type: str, temp_filename: str) -> Optional[str]:
     """Baixa o arquivo de mídia (vídeo MP4 ou áudio MP3)"""
@@ -236,6 +272,81 @@ async def download_file(filename: str):
             "Content-Disposition": f"attachment; filename={filename}"
         }
     )
+
+@app.post("/api/convert")
+async def convert_video_to_mp3(
+    file: UploadFile = File(...),
+    background_tasks: BackgroundTasks = None
+) -> ConvertResponse:
+    """Endpoint para converter arquivo de vídeo local para MP3"""
+    try:
+        # Validar extensão do arquivo
+        allowed_extensions = {'.mp4', '.ts', '.mkv', '.avi', '.mov', '.webm'}
+        file_ext = os.path.splitext(file.filename)[1].lower()
+
+        if file_ext not in allowed_extensions:
+            return ConvertResponse(
+                success=False,
+                message=f"Formato não suportado. Use: {', '.join(sorted(allowed_extensions))}"
+            )
+
+        # Ler conteúdo do arquivo
+        content = await file.read()
+
+        # Validar tamanho (200MB)
+        max_size = 200 * 1024 * 1024  # 200MB
+        if len(content) > max_size:
+            return ConvertResponse(
+                success=False,
+                message="Arquivo muito grande. Limite: 200MB"
+            )
+
+        # Gerar nomes únicos
+        unique_id = str(uuid.uuid4())[:8]
+        safe_name = sanitize_filename(os.path.splitext(file.filename)[0])
+        input_filename = f"{safe_name}_{unique_id}{file_ext}"
+        output_filename = f"{safe_name}_{unique_id}.mp3"
+
+        input_path = os.path.join(TEMP_DIR, input_filename)
+        output_path = os.path.join(TEMP_DIR, output_filename)
+
+        # Salvar arquivo de entrada
+        with open(input_path, 'wb') as f:
+            f.write(content)
+
+        # Converter para MP3
+        success = await asyncio.to_thread(convert_to_mp3, input_path, output_path)
+
+        if not success or not os.path.exists(output_path):
+            # Limpar arquivo de entrada em caso de erro
+            if os.path.exists(input_path):
+                os.remove(input_path)
+            return ConvertResponse(
+                success=False,
+                message="Erro ao converter arquivo. Verifique o formato e tente novamente."
+            )
+
+        # Limpar arquivo de entrada após conversão bem-sucedida
+        if os.path.exists(input_path):
+            os.remove(input_path)
+
+        # Agendar limpeza do arquivo de saída
+        if background_tasks:
+            background_tasks.add_task(lambda: os.remove(output_path) if os.path.exists(output_path) else None)
+
+        return ConvertResponse(
+            success=True,
+            download_url=f"/download/{output_filename}",
+            original_filename=file.filename,
+            message="Arquivo convertido com sucesso!"
+        )
+
+    except Exception as e:
+        logger.error(f"Erro ao processar conversão: {str(e)}")
+        return ConvertResponse(
+            success=False,
+            message=f"Erro interno do servidor: {str(e)}"
+        )
 
 @app.get("/api/health")
 async def health_check():
