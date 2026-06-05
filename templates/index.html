@@ -283,7 +283,7 @@
         <input
           type="text"
           id="kwaiUrl"
-          placeholder="Cole o link (Kwai, TikTok ou Instagram)..."
+          placeholder="Cole o link do Kwai aqui..."
         />
         <button id="btnFetch">Analisar</button>
       </div>
@@ -442,18 +442,6 @@
           'mp3',
           'Convertendo áudio... aguarde.'
         );
-      };
-
-      // Login com Instagram - Instruções
-      btnInstagramLogin.onclick = () => {
-        loginStatus.style.display = 'block';
-        loginStatus.innerHTML = `
-          🔐 Para baixar do Instagram, você precisa exportar cookies:<br>
-          1. Instale <a href="https://chrome.google.com/webstore/detail/get-cookiestxt-locally/cclelndahbckbenkjhflpdbgdldlbecc" target="_blank" style="color: #ff5000;">Get cookies.txt</a><br>
-          2. Faça login no <a href="https://www.instagram.com" target="_blank" style="color: #ff5000;">Instagram</a><br>
-          3. Exporte cookies e salve como <strong>cookies.txt</strong> na pasta do projeto<br>
-          <small style="color: #666;">O arquivo está no .gitignore e não será commitado.</small>
-        `;
       };
 
       // Move cursor ao final do campo após clique/focus (setTimeout sobrescreve posição do mouse)
