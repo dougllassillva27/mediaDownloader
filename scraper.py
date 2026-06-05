@@ -1,4 +1,5 @@
 import logging
+import os
 import re
 import unicodedata
 
@@ -7,6 +8,9 @@ import yt_dlp
 # Config log
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Caminho para arquivo de cookies (opcional, para Instagram)
+COOKIES_FILE = os.path.join(os.path.dirname(__file__), "cookies.txt")
 
 def detect_platform(url: str) -> str:
     """Detecta plataforma baseada na URL."""
@@ -29,7 +33,7 @@ def is_supported_url(url: str) -> bool:
     platform = detect_platform(url)
     return platform in ['kwai', 'tiktok', 'instagram']
 
-MAX_FILENAME_LENGTH = 200
+MAX_FILENAME_LENGTH = 80
 CACHE_SIZE = 128
 
 def sanitize_filename(filename: str) -> str:
@@ -38,7 +42,7 @@ def sanitize_filename(filename: str) -> str:
     Decompõe acentos, remove caracteres especiais e limita o tamanho.
     """
     if not filename:
-        return "kwai_video"
+        return "video"
 
     # Normaliza texto (NFKD decompõe caracteres como 'á' em 'a' + '´')
     normalized_text = unicodedata.normalize('NFKD', filename)
@@ -50,10 +54,11 @@ def sanitize_filename(filename: str) -> str:
     # Remove espaços extras e substitui por espaço simples
     filename = " ".join(filename.split())
 
-    # Limita tamanho para evitar erros de sistema de arquivos
-    filename = filename[:MAX_FILENAME_LENGTH]
+    # Trunca para evitar limite do Windows (260 chars caminho completo)
+    max_len = min(MAX_FILENAME_LENGTH, 80)
+    filename = filename[:max_len]
 
-    return filename.strip() or "kwai_video"
+    return filename.strip() or "video"
 
 def get_video_info(url_input: str, download_audio_only: bool = False):
     """
@@ -97,6 +102,10 @@ def get_video_info(url_input: str, download_audio_only: bool = False):
                 'api_version': 'v1'
             }
         }
+        # Usar cookies se disponíveis (necessário para Instagram)
+        if os.path.exists(COOKIES_FILE):
+            ydl_opts['cookiefile'] = COOKIES_FILE
+            logger.info("Usando cookies.txt para autenticação Instagram")
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:

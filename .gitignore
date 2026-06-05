@@ -85,6 +85,13 @@ Thumbs.db
 resumo-de-trabalho.md
 
 # =========================================
+# Secrets & Credentials (Instagram, etc)
+# =========================================
+cookies.txt
+_netrc
+.netrc
+
+# =========================================
 # IGNORADOS DO PROJETO (Personal/Local)
 # =========================================
 docs/skills/
