@@ -1,5 +1,5 @@
 """
-Scraper de Mídia - Kwai Downloader
+Scraper de Mídia - Media Downloader
 Módulo responsável por extrair informações de vídeos do Kwai usando yt-dlp.
 """
 import yt_dlp

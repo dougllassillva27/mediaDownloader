@@ -1,16 +1,16 @@
 <div align="center">
-  <img src="assets/img/Kwai Downloader Banner.webp" alt="Kwai Downloader Banner" />
+  <img src="assets/img/Kwai Downloader Banner.webp" alt="Media Downloader Banner" />
 </div>
 
-# Kwai Downloader
+# Media Downloader
 
 ![Status](https://img.shields.io/badge/status-active-success)
 ![Deploy](https://img.shields.io/badge/deploy-render-46E3B7)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-**Downloader de Kwai inteligente, modular e com conversão nativa para MP3.**
+**Downloader de mídia inteligente, modular e com conversão nativa para MP3.**
 
-Solução robusta para extração de vídeos e áudios do Kwai com interface profissional, feedback em tempo real e processamento otimizado em servidor.
+Solução robusta para extração de vídeos e áudios com interface profissional, feedback em tempo real e processamento otimizado em servidor.
 
 ## 🔗 Demo
 
@@ -21,18 +21,18 @@ Acesse a aplicação em produção:
 ## 🌌 Preview
 
 <div align="center">
-  <img src="assets/img/Kwai-Downloader.webp" alt="Kwai Downloader Preview" />
+  <img src="assets/img/Kwai-Downloader.webp" alt="Media Downloader Preview" />
 </div>
 
 ## 📖 Visão Geral Técnica
 
-O **Kwai Downloader** é uma aplicação web Full Stack desenvolvida para simplificar a obtenção de mídias da plataforma Kwai. Utiliza uma arquitetura assíncrona baseada em FastAPI para garantir alta performance e escalabilidade.
+O **Media Downloader** é uma aplicação web Full Stack desenvolvida para simplificar a obtenção de mídias. Utiliza uma arquitetura assíncrona baseada em FastAPI para garantir alta performance e escalabilidade.
 
 O sistema integra a poderosa biblioteca `yt-dlp` para extração de metadados e fluxos de mídia, combinada com o `FFmpeg` para conversão de áudio no lado do servidor. A interface é construída em Vanilla JS com um sistema de feedback visual dinâmico (overlays e modais), proporcionando uma experiência de usuário fluida e profissional.
 
 ## ⚙️ Highlights técnicos
 
-- **Extração Inteligente:** Detecta URLs do Kwai mesmo em meio a blocos de texto usando Regex.
+- **Extração Inteligente:** Detecta URLs de mídia mesmo em meio a blocos de texto usando Regex.
 - **Processamento Otimizado:** Download de MP3 baixa apenas o fluxo de áudio, economizando até 80% de banda.
 - **Feedback em Tempo Real:** Overlay de loading e modais de sucesso para uma UX sem interrupções.
 - **Auto-Cleanup:** Gerenciamento automático de arquivos temporários para manter a saúde do storage.
@@ -46,7 +46,7 @@ Navegador (Frontend Vanilla JS/CSS)
    ▼
 FastAPI (Python Backend)
    │
-   ├── Scraper (yt-dlp) ───► Kwai CDN (Extração de metadados)
+   ├── Scraper (yt-dlp) ───► CDN da plataforma (Extração de metadados)
    ├── Mídia (yt-dlp Post-Processors) ───► Conversão MP3 nativa
    └── Auto-Cleanup (Background Tasks) ───► Remoção de arquivos temp
 ```
@@ -54,7 +54,7 @@ FastAPI (Python Backend)
 ## 📂 Estrutura do projeto
 
 ```txt
-KwaiDownloader/
+MediaDownloader/
 ├── assets/             # Recursos estáticos (Imagens, Ícones)
 ├── templates/          # Interface HTML e lógica JS
 ├── temp/               # Diretório para processamento temporário
@@ -81,7 +81,7 @@ Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme
 
 ## 🔄 Fluxo principal da aplicação
 
-1. O usuário cola um link (ou texto contendo um link) do Kwai.
+1. O usuário cola um link (ou texto contendo um link) de mídia.
 2. O sistema limpa a URL e extrai metadados (Título, Thumbnail, Duração).
 3. A interface exibe um preview rico do vídeo.
 4. O usuário seleciona o formato desejado (MP4 ou MP3).
@@ -129,7 +129,7 @@ Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme
 
 Validações manuais críticas:
 
-- [x] Extração de URL a partir de texto compartilhado do app Kwai.
+- [x] Extração de URL a partir de texto compartilhado.
 - [x] Download de MP4 via streaming proxy.
 - [x] Conversão de MP3 baixando apenas o fluxo de áudio (Post-processing).
 - [x] Exibição e fechamento do modal de sucesso.

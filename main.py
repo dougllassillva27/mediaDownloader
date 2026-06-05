@@ -31,7 +31,7 @@ async def lifespan(app: FastAPI):
     yield
     cleanup_temp_files()
 
-app = FastAPI(title="Kwai Downloader API", lifespan=lifespan)
+app = FastAPI(title="Media Downloader API", lifespan=lifespan)
 
 # CORS
 app.add_middleware(
@@ -241,7 +241,7 @@ async def download_file(filename: str):
 @app.get("/api/health")
 async def health_check():
     """Endpoint de verificação de saúde"""
-    return {"status": "healthy", "service": "Kwai Downloader API"}
+    return {"status": "healthy", "service": "Media Downloader API"}
 
 if __name__ == "__main__":
     import uvicorn
