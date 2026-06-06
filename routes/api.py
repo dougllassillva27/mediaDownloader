@@ -31,14 +31,14 @@ class ConvertResponse(BaseModel):
 
 TEMP_DIR = "temp"
 
-@router.get("/")
+@router.get("/", response_class=HTMLResponse)
 async def read_root():
     try:
         with open("templates/index.html", "r", encoding="utf-8") as f:
             content = f.read()
-        return content
+        return HTMLResponse(content)
     except FileNotFoundError:
-        return "<h1>Template não encontrado</h1>"
+        return HTMLResponse("<h1>Template não encontrado</h1>", status_code=404)
 
 @router.post("/api/info")
 async def get_video_info(request: Request):
