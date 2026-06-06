@@ -14,7 +14,7 @@
 
 Acesse a aplicação em produção:
 
-👉 https://kwaidownloader.dougllassillva.com.br/
+👉 https://mediadownloader.dougllassillva.com.br/
 
 ## 🌌 Preview
 
