@@ -99,6 +99,24 @@
         background: #2a2a2a;
         color: white;
       }
+      input[type="file"] {
+        padding: 9px 12px;
+        cursor: pointer;
+      }
+      input[type="file"]::file-selector-button {
+        padding: 6px 16px;
+        border-radius: 6px;
+        border: none;
+        background: var(--primary);
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 12px;
+        transition: opacity 0.2s;
+      }
+      input[type="file"]::file-selector-button:hover {
+        opacity: 0.8;
+      }
       button {
         padding: 12px 20px;
         border-radius: 8px;
@@ -268,9 +286,9 @@
           type="file"
           id="videoFile"
           accept=".mp4,.ts,.mkv,.avi,.mov,.webm"
-          style="flex: 1; padding: 10px; border-radius: 8px; border: none; background: #2a2a2a; color: white;"
+          style="flex: 1; padding: 12px; border-radius: 8px; border: none; outline: none; background: #2a2a2a; color: white;"
         />
-        <button id="btnConvert">Converter</button>
+        <button id="btnConvert" style="padding: 12px 20px; border-radius: 8px; border: none; background: var(--primary); color: white; font-weight: bold; cursor: pointer;">Converter</button>
       </div>
       <p id="convertStatus" style="font-size: 0.85rem; color: #aaa; margin-top: 8px; display: none;"></p>
 
@@ -444,13 +462,84 @@
         );
       };
 
-      // Move cursor ao final do campo após clique/focus (setTimeout sobrescreve posição do mouse)
+      // Move cursor ao final do campo após clique/focus
       customFilename.addEventListener('focus', function () {
         setTimeout(() => {
           const len = this.value.length;
           this.setSelectionRange(len, len);
         }, 0);
       });
+
+      // === LÓGICA DO CONVERSOR ===
+      btnConvert.onclick = async () => {
+        const file = videoFile.files[0];
+        if (!file) {
+          alert('Selecione um arquivo de vídeo!');
+          return;
+        }
+
+        const allowedExts = ['.mp4', '.ts', '.mkv', '.avi', '.mov', '.webm'];
+        const fileExt = '.' + file.name.split('.').pop().toLowerCase();
+        const maxSize = 200 * 1024 * 1024; // 200MB
+
+        if (!allowedExts.includes(fileExt)) {
+          alert('Formato não suportado. Use: ' + allowedExts.join(', '));
+          return;
+        }
+
+        if (file.size > maxSize) {
+          alert('Arquivo muito grande. Limite: 200MB');
+          return;
+        }
+
+        showOverlay('Enviando e convertendo...');
+        btnConvert.disabled = true;
+        convertStatus.style.display = 'block';
+        convertStatus.innerText = 'Processando...';
+
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          const response = await fetch('/api/convert', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            convertStatus.innerText = 'Download iniciado!';
+
+            const downloadResponse = await fetch(data.download_url);
+            const blob = await downloadResponse.blob();
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = data.original_filename.replace(/\.[^/.]+$/, '') + '.mp3';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            window.URL.revokeObjectURL(downloadUrl);
+
+            showModal();
+            setTimeout(() => {
+              convertStatus.style.display = 'none';
+              convertStatus.innerText = '';
+              videoFile.value = '';
+            }, 3000);
+          } else {
+            alert('Erro na conversão: ' + data.message);
+            convertStatus.style.display = 'none';
+          }
+        } catch (e) {
+          alert('Erro na conexão: ' + e.message);
+          convertStatus.style.display = 'none';
+        } finally {
+          hideOverlay();
+          btnConvert.disabled = false;
+        }
+      };
     </script>
   </body>
 </html>

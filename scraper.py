@@ -5,6 +5,7 @@ Módulo responsável por extrair informações de vídeos do Kwai usando yt-dlp.
 import yt_dlp
 import re
 import logging
+import unicodedata
 from typing import Optional, Dict, Any
 
 # Configuração do logger

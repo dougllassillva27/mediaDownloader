@@ -6,6 +6,8 @@ import os
 import uuid
 import asyncio
 import logging
+import unicodedata
+import subprocess
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Query, BackgroundTasks, UploadFile, File
 from fastapi.responses import FileResponse, HTMLResponse, StreamingResponse
@@ -14,7 +16,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
 import yt_dlp
-import subprocess
 from scraper import extract_kwai_info, sanitize_filename, clean_text_and_extract_urls
 
 # Configuração do logger
@@ -85,23 +86,36 @@ def convert_to_mp3(input_path: str, output_path: str) -> bool:
             '-vn',  # Remove vídeo
             '-acodec', 'libmp3lame',
             '-ac', '2',
-            '-ab', '192k',
+            '-b:a', '192k',  # Bitrate de áudio (sintaxe moderna)
             '-ar', '44100',
-            '-y',  # Sobrescrever se existir
+            '-f', 'mp3',     # Força o formato de saída
+            '-y',            # Sobrescrever se existir
             output_path
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
-        if result.returncode == 0:
-            logger.info(f"Conversão concluída: {output_path}")
+
+        # Log detalhado para diagnóstico
+        if result.stdout:
+            logger.debug(f"ffmpeg stdout: {result.stdout}")
+        if result.stderr:
+            logger.info(f"ffmpeg stderr: {result.stderr}")
+
+        # Verifica se sucedeu E se o arquivo tem tamanho razoável (> 1KB)
+        if result.returncode == 0 and os.path.exists(output_path) and os.path.getsize(output_path) > 1024:
+            logger.info(f"Conversão concluída com sucesso: {output_path}")
             return True
         else:
-            logger.error(f"Erro no ffmpeg: {result.stderr}")
+            logger.error(f"Falha na conversão (código: {result.returncode}). stderr: {result.stderr}")
             return False
+
+    except FileNotFoundError:
+        logger.error("ERRO CRÍTICO: 'ffmpeg' não encontrado no PATH do sistema. Instale o ffmpeg para conversão local.")
+        return False
     except subprocess.TimeoutExpired:
-        logger.error("Timeout na conversão")
+        logger.error("Timeout na conversão (arquivo muito grande ou processo travado)")
         return False
     except Exception as e:
-        logger.error(f"Erro ao converter para MP3: {str(e)}")
+        logger.error(f"Erro inesperado ao converter para MP3: {str(e)}")
         return False
 
 def download_media_file(url: str, format_type: str, temp_filename: str) -> Optional[str]:
@@ -330,9 +344,10 @@ async def convert_video_to_mp3(
         if os.path.exists(input_path):
             os.remove(input_path)
 
-        # Agendar limpeza do arquivo de saída
-        if background_tasks:
-            background_tasks.add_task(lambda: os.remove(output_path) if os.path.exists(output_path) else None)
+        # NOTA: A limpeza do arquivo de saída (output_path) foi removida daqui.
+        # Se fosse limpo via background_task, o arquivo seria deletado ANTES
+        # do navegador fazer a requisição GET /download/, causando erro 404.
+        # A limpeza geral é feita no shutdown da aplicação (lifespan).
 
         return ConvertResponse(
             success=True,
@@ -355,4 +370,5 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    port = int(os.getenv("PORT", 8200))
+    uvicorn.run(app, host="127.0.0.1", port=port)
