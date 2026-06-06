@@ -7,7 +7,7 @@ import uuid
 import asyncio
 import logging
 from fastapi import APIRouter, Request, BackgroundTasks, UploadFile, File, HTTPException
-from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
+from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel
 from typing import Optional
 
@@ -31,18 +31,14 @@ class ConvertResponse(BaseModel):
 
 TEMP_DIR = "temp"
 
-import time
-
-@router.get("/", response_class=HTMLResponse)
+@router.get("/")
 async def read_root():
     try:
         with open("templates/index.html", "r", encoding="utf-8") as f:
             content = f.read()
-        # Cache buster simples baseado no timestamp atual para forçar reload de assets
-        content = content.replace("{{ cache_buster }}", str(int(time.time())))
         return content
     except FileNotFoundError:
-        return HTMLResponse("<h1>Template não encontrado</h1>", status_code=404)
+        return "<h1>Template não encontrado</h1>"
 
 @router.post("/api/info")
 async def get_video_info(request: Request):
@@ -61,6 +57,11 @@ async def download_mp4(url: str, filename: str = None, background_tasks: Backgro
         result = await download_media_async(url, "mp4", filename or "video")
         path = result["path"]
 
+        if not os.path.exists(path):
+            raise Exception(f"Arquivo não encontrado no caminho: {path}")
+
+        logger.info(f"Servindo arquivo MP4: {path} ({os.path.getsize(path)} bytes)")
+
         if background_tasks:
             background_tasks.add_task(lambda p=path: os.remove(p) if os.path.exists(p) else None)
 
@@ -74,6 +75,11 @@ async def download_mp3(url: str, filename: str = None, background_tasks: Backgro
     try:
         result = await download_media_async(url, "mp3", filename or "audio")
         path = result["path"]
+
+        if not os.path.exists(path):
+            raise Exception(f"Arquivo não encontrado no caminho: {path}")
+
+        logger.info(f"Servindo arquivo MP3: {path} ({os.path.getsize(path)} bytes)")
 
         if background_tasks:
             background_tasks.add_task(lambda p=path: os.remove(p) if os.path.exists(p) else None)

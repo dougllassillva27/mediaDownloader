@@ -3,6 +3,7 @@ Ponto de entrada principal da aplicação.
 Inicializa o servidor FastAPI e inclui as rotas.
 """
 import os
+import time
 import logging
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
@@ -47,8 +48,7 @@ app.add_middleware(
 )
 
 # Servir arquivos estáticos
-if os.path.exists("assets"):
-    app.mount("/assets", StaticFiles(directory="assets"), name="assets")
+app.mount("/assets", StaticFiles(directory="assets", html=True), name="assets")
 
 # Incluir rotas da API
 app.include_router(api_router)
