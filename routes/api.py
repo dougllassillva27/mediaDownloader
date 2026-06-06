@@ -7,7 +7,7 @@ import uuid
 import asyncio
 import logging
 from fastapi import APIRouter, Request, BackgroundTasks, UploadFile, File, HTTPException
-from fastapi.responses import JSONResponse, FileResponse
+from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from pydantic import BaseModel
 from typing import Optional
 
