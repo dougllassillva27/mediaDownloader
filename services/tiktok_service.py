@@ -18,13 +18,15 @@ def extract_tiktok_info(url: str):
         'no_warnings': True,
         'extract_flat': False,
         'format': 'best',
-        'socket_timeout': 30,  # Timeout mais longo para TikTok
+        'socket_timeout': 30,
         'retries': 3,
+        'ignoreerrors': True,  # Ignora erros de extração parciais
         'http_headers': {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-us,en;q=0.5',
-            'Sec-Fetch-Mode': 'navigate'
+            'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7',
+            'Sec-Fetch-Mode': 'navigate',
+            'Referer': 'https://www.tiktok.com/'
         }
     }
 

@@ -60,6 +60,13 @@ def clean_text_and_extract_urls(text: str) -> list:
     if not text:
         return []
 
-    url_pattern = r'https?://[^\s<>"]*kwai\.com/[^\s<>"]*'
+    # Regex genérico para capturar URLs completas (Kwai, TikTok, etc)
+    url_pattern = r'https?://[^\s<>"]+'
+    urls = re.findall(url_pattern, text)
+
+    logger.info(f"Texto recebido: {text}")
+    logger.info(f"URLs extraídas: {urls}")
+
+    return urls if urls else []
     urls = re.findall(url_pattern, text)
     return urls if urls else []

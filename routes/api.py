@@ -47,19 +47,30 @@ async def get_video_info(request: Request):
     form = await request.form()
     raw_text = form.get("url", "")
 
+    logger.info(f"Recebido no /api/info: {raw_text}")
+
     urls = clean_text_and_extract_urls(raw_text)
+    logger.info(f"URLs extraídas: {urls}")
+
     if not urls:
         return JSONResponse({"success": False, "error": "Nenhuma URL válida encontrada."})
 
     url = urls[0]
+    logger.info(f"Tentando processar URL: {url}")
 
     # Roteamento inteligente
-    if "tiktok.com" in url:
-        data, error = extract_tiktok_info(url)
-    elif "kwai.com" in url:
-        data, error = get_video_metadata(raw_text)
-    else:
-        return JSONResponse({"success": False, "error": "Plataforma não suportada. Use Kwai ou TikTok."})
+    try:
+        if "tiktok.com" in url:
+            logger.info("Detectado como TikTok")
+            data, error = extract_tiktok_info(url)
+        elif "kwai.com" in url:
+            logger.info("Detectado como Kwai")
+            data, error = get_video_metadata(raw_text)
+        else:
+            return JSONResponse({"success": False, "error": "Plataforma não suportada. Use Kwai ou TikTok."})
+    except Exception as e:
+        logger.error(f"Erro no roteamento: {e}")
+        return JSONResponse({"success": False, "error": f"Erro interno: {str(e)}"})
 
     if error or not data:
         return JSONResponse({"success": False, "error": error or "Erro ao extrair informações."})
