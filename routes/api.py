@@ -12,6 +12,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 from services.kwai_service import get_video_metadata, sanitize_filename, clean_text_and_extract_urls
+from services.tiktok_service import extract_tiktok_info
 from services.download_service import download_media_async
 from services.converter_service import convert_to_mp3
 
@@ -42,12 +43,26 @@ async def read_root():
 
 @router.post("/api/info")
 async def get_video_info(request: Request):
+    from fastapi.responses import JSONResponse
     form = await request.form()
     raw_text = form.get("url", "")
-    data, error = get_video_metadata(raw_text)
+
+    urls = clean_text_and_extract_urls(raw_text)
+    if not urls:
+        return JSONResponse({"success": False, "error": "Nenhuma URL válida encontrada."})
+
+    url = urls[0]
+
+    # Roteamento inteligente
+    if "tiktok.com" in url:
+        data, error = extract_tiktok_info(url)
+    elif "kwai.com" in url:
+        data, error = get_video_metadata(raw_text)
+    else:
+        return JSONResponse({"success": False, "error": "Plataforma não suportada. Use Kwai ou TikTok."})
 
     if error or not data:
-        return JSONResponse({"success": False, "error": error or "Erro desconhecido."})
+        return JSONResponse({"success": False, "error": error or "Erro ao extrair informações."})
 
     return JSONResponse(data)
 
