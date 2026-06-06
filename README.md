@@ -8,7 +8,7 @@
 ![Deploy](https://img.shields.io/badge/deploy-render-46E3B7)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-**Downloader de mídia modular com FastAPI, conversão nativa para MP3 e suporte a Kwai.**
+**Downloader de mídia modular com FastAPI, conversão nativa para MP3 e suporte a Kwai e TikTok.**
 
 ## 🔗 Demo
 
@@ -28,6 +28,7 @@ O **Media Downloader** é uma aplicação web Full Stack baseada em FastAPI com 
 
 ## ⚙️ Highlights técnicos
 
+- **Multi-Plataforma:** Suporte a Kwai e TikTok com roteamento automático de URLs.
 - **Extração Inteligente:** Detecta URLs de mídia em blocos de texto via Regex.
 - **Download Eficiente:** MP3 baixa apenas fluxo de áudio, economizando banda.
 - **Conversor Local:** Suporta .mp4, .ts, .mkv, .avi, .mov, .webm (até 200MB) convertidos para MP3 via ffmpeg.
@@ -44,6 +45,7 @@ FastAPI (Python Backend)
    │
    ├── routes/api.py ───► Endpoints da API
    ├── services/
+   │   ├── tiktok_service.py    # Extração TikTok
    │   ├── kwai_service.py      # Extração Kwai
    │   ├── download_service.py  # Download yt-dlp
    │   └── converter_service.py # Conversão local FFmpeg
@@ -57,6 +59,7 @@ mediaDownloader/
 ├── assets/                 # Recursos estáticos (imagens, ícones)
 ├── templates/              # Frontend HTML/CSS/JS
 ├── services/               # Lógica de negócio
+│   ├── tiktok_service.py
 │   ├── kwai_service.py
 │   ├── download_service.py
 │   └── converter_service.py
@@ -76,6 +79,10 @@ mediaDownloader/
 
 Entry point FastAPI. Monta rotas da API, serve estáticos e gerencia ciclo de vida (cleanup de `temp/`). Porta padrão: **8200**.
 
+### `services/tiktok_service.py`
+
+Extração de metadados e URLs de vídeos do TikTok via `yt-dlp` com headers otimizados.
+
 ### `services/kwai_service.py`
 
 Extração de metadados e URLs de vídeos do Kwai via `yt-dlp`.
@@ -90,7 +97,7 @@ Conversão local de arquivos de vídeo (.mp4, .ts, .mkv, .avi, .mov, .webm) para
 
 ### `routes/api.py`
 
-Define endpoints REST para extração Kwai, download e conversão.
+Define endpoints REST para extração TikTok/Kwai, download e conversão.
 
 ### `templates/index.html`
 
@@ -99,12 +106,13 @@ Interface single-page com Vanilla JS, estilização dark theme e comunicação c
 ## 🔄 Fluxo principal
 
 1. Usuário cola URL ou texto contendo link de mídia.
-2. Sistema extrai URL limpa e busca metadados (título, thumbnail, duração).
-3. Preview exibido na interface.
-4. Usuário seleciona formato (MP4 ou MP3).
-5. Backend processa mídia com feedback visual (spinner).
-6. Download disparado e modal de sucesso exibido.
-7. Arquivos temporários deletados automaticamente.
+2. Sistema detecta plataforma (TikTok ou Kwai) automaticamente.
+3. Extrai URL limpa e busca metadados (título, thumbnail, duração).
+4. Preview exibido na interface.
+5. Usuário seleciona formato (MP4 ou MP3).
+6. Backend processa mídia com feedback visual (spinner).
+7. Download disparado e modal de sucesso exibido.
+8. Arquivos temporários deletados automaticamente.
 
 ## 🔒 Segurança e privacidade
 
