@@ -50,7 +50,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="/assets/img/Kwai-Downloader.ico"
+      href="/assets/img/Kwai-Downloader.ico?v={{ cache_buster }}"
     />
 
     <style>
@@ -492,6 +492,8 @@
           return;
         }
 
+        const outputName = file.name.replace(/\.[^/.]+$/, '') + '_convertido.mp3';
+
         showOverlay('Enviando e convertendo...');
         btnConvert.disabled = true;
         convertStatus.style.display = 'block';
@@ -506,32 +508,25 @@
             body: formData,
           });
 
-          const data = await response.json();
+          if (!response.ok) throw new Error("Falha na conversão.");
 
-          if (data.success) {
-            convertStatus.innerText = 'Download iniciado!';
+          const blob = await response.blob();
+          const downloadUrl = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = downloadUrl;
+          a.download = outputName;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          window.URL.revokeObjectURL(downloadUrl);
 
-            const downloadResponse = await fetch(data.download_url);
-            const blob = await downloadResponse.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = data.original_filename.replace(/\.[^/.]+$/, '') + '.mp3';
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            window.URL.revokeObjectURL(downloadUrl);
-
-            showModal();
-            setTimeout(() => {
-              convertStatus.style.display = 'none';
-              convertStatus.innerText = '';
-              videoFile.value = '';
-            }, 3000);
-          } else {
-            alert('Erro na conversão: ' + data.message);
+          convertStatus.innerText = 'Download iniciado!';
+          showModal();
+          setTimeout(() => {
             convertStatus.style.display = 'none';
-          }
+            convertStatus.innerText = '';
+            videoFile.value = '';
+          }, 3000);
         } catch (e) {
           alert('Erro na conexão: ' + e.message);
           convertStatus.style.display = 'none';

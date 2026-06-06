@@ -8,9 +8,7 @@
 ![Deploy](https://img.shields.io/badge/deploy-render-46E3B7)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
-**Downloader de mídia inteligente, modular e com conversão nativa para MP3.**
-
-Solução robusta para extração de vídeos e áudios com interface profissional, feedback em tempo real e processamento otimizado em servidor.
+**Downloader de mídia modular com FastAPI, conversão nativa para MP3 e suporte a Kwai.**
 
 ## 🔗 Demo
 
@@ -26,79 +24,98 @@ Acesse a aplicação em produção:
 
 ## 📖 Visão Geral Técnica
 
-O **Media Downloader** é uma aplicação web Full Stack desenvolvida para simplificar a obtenção de mídias. Utiliza uma arquitetura assíncrona baseada em FastAPI para garantir alta performance e escalabilidade.
-
-O sistema integra a poderosa biblioteca `yt-dlp` para extração de metadados e fluxos de mídia, combinada com o `FFmpeg` para conversão de áudio no lado do servidor. A interface é construída em Vanilla JS com um sistema de feedback visual dinâmico (overlays e modais), proporcionando uma experiência de usuário fluida e profissional.
+O **Media Downloader** é uma aplicação web Full Stack baseada em FastAPI com frontend Vanilla JS. Arquitetura modular separada em serviços (`services/`), rotas de API (`routes/`) e templates (`templates/`). Processamento assíncrono com `yt-dlp` para extração de mídia e `ffmpeg` para conversão de áudio no servidor.
 
 ## ⚙️ Highlights técnicos
 
-- **Extração Inteligente:** Detecta URLs de mídia mesmo em meio a blocos de texto usando Regex.
-- **Processamento Otimizado:** Download de MP3 baixa apenas o fluxo de áudio, economizando até 80% de banda.
-- **Feedback em Tempo Real:** Overlay de loading e modais de sucesso para uma UX sem interrupções.
-- **Auto-Cleanup:** Gerenciamento automático de arquivos temporários para manter a saúde do storage.
-- **Proxy de Download:** Downloads servidos diretamente pelo backend com nomes de arquivos sanitizados.
+- **Extração Inteligente:** Detecta URLs de mídia em blocos de texto via Regex.
+- **Download Eficiente:** MP3 baixa apenas fluxo de áudio, economizando banda.
+- **Conversor Local:** Suporta .mp4, .ts, .mkv, .avi, .mov, .webm (até 200MB) convertidos para MP3 via ffmpeg.
+- **Feedback em Tempo Real:** UI com overlays de loading e modais de sucesso.
+- **Auto-Cleanup:** Arquivos temporários removidos após processamento.
 
 ## 🏗️ Arquitetura
 
-```txt
-Navegador (Frontend Vanilla JS/CSS)
+```
+Navegador (Vanilla JS/CSS)
    │
    ▼
 FastAPI (Python Backend)
    │
-   ├── Scraper (yt-dlp) ───► CDN da plataforma (Extração de metadados)
-   ├── Mídia (yt-dlp Post-Processors) ───► Conversão MP3 nativa
-   └── Auto-Cleanup (Background Tasks) ───► Remoção de arquivos temp
+   ├── routes/api.py ───► Endpoints da API
+   ├── services/
+   │   ├── kwai_service.py      # Extração Kwai
+   │   ├── download_service.py  # Download yt-dlp
+   │   └── converter_service.py # Conversão local FFmpeg
+   └── temp/                    # Arquivos temporários (auto-cleanup)
 ```
 
 ## 📂 Estrutura do projeto
 
-```txt
-MediaDownloader/
-├── assets/             # Recursos estáticos (Imagens, Ícones)
-├── templates/          # Interface HTML e lógica JS
-├── temp/               # Diretório para processamento temporário
-├── docs/               # Documentação técnica e design
-├── Dockerfile          # Definição do ambiente (Python + FFmpeg)
-├── main.py             # Entrypoint da API FastAPI
-├── scraper.py          # Módulo de scraping e sanitização
-└── requirements.txt    # Gerenciamento de dependências
+```
+mediaDownloader/
+├── assets/                 # Recursos estáticos (imagens, ícones)
+├── templates/              # Frontend HTML/CSS/JS
+├── services/               # Lógica de negócio
+│   ├── kwai_service.py
+│   ├── download_service.py
+│   └── converter_service.py
+├── routes/                 # Endpoints da API
+│   └── api.py
+├── temp/                   # Arquivos temporários de processamento
+├── docs/                   # Documentação técnica
+├── Dockerfile              # Ambiente Python + FFmpeg
+├── main.py                 # Entry point FastAPI
+├── scraper.py              # Módulo de scraping legacy
+└── requirements.txt        # Dependências
 ```
 
 ## 📂 Responsabilidades
 
 ### `main.py`
 
-Entrypoint principal. Gerencia rotas da API, serve arquivos estáticos, orquestra o streaming de vídeo (MP4) e a conversão de áudio (MP3), além de gerenciar tarefas de limpeza em background.
+Entry point FastAPI. Monta rotas da API, serve estáticos e gerencia ciclo de vida (cleanup de `temp/`). Porta padrão: **8200**.
 
-### `scraper.py`
+### `services/kwai_service.py`
 
-Responsável pela lógica de negócio de extração. Implementa Regex para limpeza de URL, integração com `yt-dlp` para metadados e sanitização de nomes de arquivos para compatibilidade universal.
+Extração de metadados e URLs de vídeos do Kwai via `yt-dlp`.
+
+### `services/download_service.py`
+
+Download de mídia (MP4/MP3) com post-processing de áudio.
+
+### `services/converter_service.py`
+
+Conversão local de arquivos de vídeo (.mp4, .ts, .mkv, .avi, .mov, .webm) para MP3 usando ffmpeg. Limite de 200MB.
+
+### `routes/api.py`
+
+Define endpoints REST para extração Kwai, download e conversão.
 
 ### `templates/index.html`
 
-Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme e lógica de interação com a API, incluindo gerenciamento de estado da UI (Loading/Modal).
+Interface single-page com Vanilla JS, estilização dark theme e comunicação com API.
 
-## 🔄 Fluxo principal da aplicação
+## 🔄 Fluxo principal
 
-1. O usuário cola um link (ou texto contendo um link) de mídia.
-2. O sistema limpa a URL e extrai metadados (Título, Thumbnail, Duração).
-3. A interface exibe um preview rico do vídeo.
-4. O usuário seleciona o formato desejado (MP4 ou MP3).
-5. O sistema processa a mídia em tempo real com feedback visual (Spinner).
-6. O download é disparado e um modal de sucesso é exibido.
-7. Arquivos temporários são deletados automaticamente após o envio.
+1. Usuário cola URL ou texto contendo link de mídia.
+2. Sistema extrai URL limpa e busca metadados (título, thumbnail, duração).
+3. Preview exibido na interface.
+4. Usuário seleciona formato (MP4 ou MP3).
+5. Backend processa mídia com feedback visual (spinner).
+6. Download disparado e modal de sucesso exibido.
+7. Arquivos temporários deletados automaticamente.
 
 ## 🔒 Segurança e privacidade
 
-- **Sanitização de Entrada:** URLs são filtradas rigorosamente via Regex.
-- **Nomes de Arquivos Seguros:** Títulos de vídeos são normalizados (remoção de caracteres especiais/acentos).
-- **Isolamento Temporário:** Arquivos processados são identificados por UUIDs únicos para evitar colisões.
-- **Auto-Destruição:** Arquivos temporários são deletados por Background Tasks do FastAPI imediatamente após o uso.
+- **Sanitização de Entrada:** URLs filtradas via Regex.
+- **Nomes Seguros:** Caracteres especiais e acentos removidos.
+- **Isolamento por UUID:** Arquivos temporários identificados unicamente.
+- **Auto-Destruição:** Cleanup via Background Tasks do FastAPI.
 
 ## 🚀 Como rodar localmente
 
-1. **Pré-requisitos:** Python 3.11+ e FFmpeg instalado no sistema.
+1. **Pré-requisitos:** Python 3.10+ e FFmpeg instalado no sistema.
 2. **Instalação:**
    ```bash
    pip install -r requirements.txt
@@ -107,33 +124,29 @@ Single Page Interface. Contém toda a estrutura visual, estilização Dark Theme
    ```bash
    python main.py
    ```
-4. **Acesso:** Abra `http://localhost:8000` no seu navegador.
+4. **Acesso:** Abra `http://localhost:8200` no navegador.
 
-## 📦 Build e Deploy
+## ✅ Qualidade e Testes
 
-- **Build:** O projeto utiliza Docker para garantir que o FFmpeg e as dependências Python estejam presentes.
-- **Deploy:** Configurado para Render.com, detectando automaticamente o `Dockerfile`.
+```bash
+ruff check .     # Linting Python
+pytest           # Testes unitários
+```
+
+## 📦 Deploy no Render
+
+Projeto utiliza `Dockerfile` com suporte nativo a FFmpeg. Deploy configurado no Render.com detectando o Dockerfile automaticamente.
 
 ## 🛠️ Tecnologias
 
-| Tecnologia     | Responsabilidade                     |
-| -------------- | ------------------------------------ |
-| Python 3.11    | Núcleo do Backend                    |
-| FastAPI        | Framework de API de alta performance |
-| yt-dlp         | Motor de extração e scraping         |
-| FFmpeg         | Processamento e conversão de mídia   |
-| Vanilla JS/CSS | Interface leve e responsiva          |
-| Docker         | Padronização de ambiente             |
-
-## ✅ Testes
-
-Validações manuais críticas:
-
-- [x] Extração de URL a partir de texto compartilhado.
-- [x] Download de MP4 via streaming proxy.
-- [x] Conversão de MP3 baixando apenas o fluxo de áudio (Post-processing).
-- [x] Exibição e fechamento do modal de sucesso.
-- [x] Verificação de deleção de arquivos na pasta `temp/`.
+| Tecnologia       | Responsabilidade                     |
+| ---------------- | ------------------------------------ |
+| Python 3.10+     | Núcleo do Backend                    |
+| FastAPI          | Framework de API de alta performance |
+| yt-dlp           | Motor de extração e scraping         |
+| FFmpeg           | Processamento e conversão de mídia   |
+| Vanilla JS/CSS   | Interface leve e responsiva          |
+| Docker           | Padronização de ambiente             |
 
 ## 📄 Licença
 
