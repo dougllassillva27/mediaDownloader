@@ -8,4 +8,4 @@ services:
     environment:
       PORT: "8000"
     volumes:
-      - /root/dodo/media-downloader-temp:/app/temp
+      - /root/dodo/data/mediaDownloader/temp:/app/temp
