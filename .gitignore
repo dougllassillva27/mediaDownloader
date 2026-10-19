@@ -95,6 +95,7 @@ _netrc
 # IGNORADOS DO PROJETO (Personal/Local)
 # =========================================
 docs/skills/
+graphify-out/
 graphify-out/cache/
 graphify-out/MAPA.md
 graphify-out/TREE.md

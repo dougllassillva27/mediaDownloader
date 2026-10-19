@@ -1,0 +1,11 @@
+services:
+  media-downloader:
+    build: .
+    container_name: media-downloader
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8200:8000"
+    environment:
+      PORT: "8000"
+    volumes:
+      - /root/dodo/media-downloader-temp:/app/temp

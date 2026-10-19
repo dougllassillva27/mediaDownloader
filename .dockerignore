@@ -10,6 +10,7 @@ __pycache__/
 tests/
 docs/
 _contexto-ia/
+graphify-out/
 graphify-out/cache/
 graphify-out/*.json
 graphify-out/*.html

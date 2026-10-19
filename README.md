@@ -5,7 +5,7 @@
 # Media Downloader
 
 ![Status](https://img.shields.io/badge/status-active-success)
-![Deploy](https://img.shields.io/badge/deploy-render-46E3B7)
+![Deploy](https://img.shields.io/badge/deploy-docker%20vps-2496ED)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 **Downloader de mídia modular com FastAPI, conversão nativa para MP3 e suporte a Kwai e TikTok.**
@@ -141,9 +141,23 @@ ruff check .     # Linting Python
 pytest           # Testes unitários
 ```
 
-## 📦 Deploy no Render
+## 📦 Deploy
 
-Projeto utiliza `Dockerfile` com suporte nativo a FFmpeg. Deploy configurado no Render.com detectando o Dockerfile automaticamente.
+### Produção (VPS Docker — atual)
+
+Container `media-downloader`: Python 3.11-slim com FFmpeg, servido por uvicorn em `127.0.0.1:8200`. Nginx host faz proxy de `mediadownloader.dougllassillva.com.br` com Let's Encrypt e Cloudflare proxied.
+
+```bash
+cd /root/dodo/aplicacoes/mediaDownloader
+git pull
+docker compose up -d --build
+```
+
+Temp de processamento em volume `/root/dodo/media-downloader-temp` (cleanup automático no shutdown da app).
+
+### Legado (Render)
+
+O deploy original no Render.com usava o mesmo `Dockerfile` (FastAPI + FFmpeg), detectando o Dockerfile automaticamente. O deploy Netlify/Render está em descontinuação.
 
 ## 🛠️ Tecnologias
 
