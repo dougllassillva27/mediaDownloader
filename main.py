@@ -5,11 +5,17 @@ Inicializa o servidor FastAPI e inclui as rotas.
 import os
 import time
 import logging
+import mimetypes
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from routes.api import router as api_router
+
+# O mimetypes do Python nao conhece .webp (usado nas imagens de share).
+# Sem isso o StaticFiles serviria como application/octet-stream e o
+# WhatsApp/Facebook recusariam a imagem do preview.
+mimetypes.add_type("image/webp", ".webp")
 
 # Configuração do logger
 logging.basicConfig(level=logging.INFO)
