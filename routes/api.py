@@ -11,10 +11,12 @@ from fastapi.responses import JSONResponse, FileResponse, HTMLResponse
 from pydantic import BaseModel
 from typing import Optional
 
-from services.kwai_service import get_video_metadata, sanitize_filename, clean_text_and_extract_urls
+from scraper import clean_text_and_extract_urls, sanitize_filename
+from services.kwai_service import get_video_metadata
 from services.tiktok_service import extract_tiktok_info
 from services.download_service import download_media_async
 from services.converter_service import convert_to_mp3
+from services.url_service import plataforma_da_url, validar_url_plataforma
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +34,10 @@ class ConvertResponse(BaseModel):
 
 TEMP_DIR = "temp"
 
+# Limite do upload do conversor, aplicado durante a leitura (não depois)
+LIMITE_UPLOAD_BYTES = 200 * 1024 * 1024
+TAMANHO_CHUNK = 1024 * 1024
+
 @router.get("/", response_class=HTMLResponse)
 async def read_root():
     try:
@@ -45,7 +51,8 @@ async def read_root():
 async def get_video_info(request: Request):
     from fastapi.responses import JSONResponse
     form = await request.form()
-    raw_text = form.get("url", "")
+    valor_url = form.get("url", "")
+    raw_text = valor_url if isinstance(valor_url, str) else ""
 
     logger.info(f"Recebido no /api/info: {raw_text}")
 
@@ -58,16 +65,20 @@ async def get_video_info(request: Request):
     url = urls[0]
     logger.info(f"Tentando processar URL: {url}")
 
+    try:
+        validar_url_plataforma(url)
+    except ValueError as erro:
+        logger.warning(f"URL recusada no /api/info: {erro}")
+        return JSONResponse({"success": False, "error": str(erro)})
+
     # Roteamento inteligente
     try:
-        if "tiktok.com" in url:
+        if plataforma_da_url(url) == "tiktok.com":
             logger.info("Detectado como TikTok")
             data, error = extract_tiktok_info(url)
-        elif "kwai.com" in url:
-            logger.info("Detectado como Kwai")
-            data, error = get_video_metadata(raw_text)
         else:
-            return JSONResponse({"success": False, "error": "Plataforma não suportada. Use Kwai ou TikTok."})
+            logger.info("Detectado como Kwai")
+            data, error = get_video_metadata(url)
     except Exception as e:
         logger.error(f"Erro no roteamento: {e}")
         return JSONResponse({"success": False, "error": f"Erro interno: {str(e)}"})
@@ -80,6 +91,7 @@ async def get_video_info(request: Request):
 @router.get("/api/download/mp4")
 async def download_mp4(url: str, filename: str = None, background_tasks: BackgroundTasks = None):
     try:
+        validar_url_plataforma(url)
         result = await download_media_async(url, "mp4", filename or "video")
         path = result["path"]
 
@@ -92,6 +104,9 @@ async def download_mp4(url: str, filename: str = None, background_tasks: Backgro
             background_tasks.add_task(lambda p=path: os.remove(p) if os.path.exists(p) else None)
 
         return FileResponse(path, filename=result["filename"], media_type="video/mp4")
+    except ValueError as e:
+        logger.warning(f"URL recusada no MP4: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Erro MP4: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -99,6 +114,7 @@ async def download_mp4(url: str, filename: str = None, background_tasks: Backgro
 @router.get("/api/download/mp3")
 async def download_mp3(url: str, filename: str = None, background_tasks: BackgroundTasks = None):
     try:
+        validar_url_plataforma(url)
         result = await download_media_async(url, "mp3", filename or "audio")
         path = result["path"]
 
@@ -111,6 +127,9 @@ async def download_mp3(url: str, filename: str = None, background_tasks: Backgro
             background_tasks.add_task(lambda p=path: os.remove(p) if os.path.exists(p) else None)
 
         return FileResponse(path, filename=result["filename"], media_type="audio/mpeg")
+    except ValueError as e:
+        logger.warning(f"URL recusada no MP3: {e}")
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         logger.error(f"Erro MP3: {e}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -123,9 +142,16 @@ async def convert_video(file: UploadFile = File(...), background_tasks: Backgrou
     if file_ext not in allowed_extensions:
         raise HTTPException(status_code=400, detail=f"Formato não suportado. Use: {', '.join(sorted(allowed_extensions))}")
 
-    content = await file.read()
-    if len(content) > 200 * 1024 * 1024:
-        raise HTTPException(status_code=400, detail=" muito grande. Limite: 200MB")
+    conteudo = bytearray()
+    while True:
+        pedaco = await file.read(TAMANHO_CHUNK)
+        if not pedaco:
+            break
+        conteudo.extend(pedaco)
+        if len(conteudo) > LIMITE_UPLOAD_BYTES:
+            raise HTTPException(status_code=400, detail="Arquivo muito grande. Limite: 200MB")
+
+    content = bytes(conteudo)
 
     unique_id = str(uuid.uuid4())[:8]
     safe_name = sanitize_filename(os.path.splitext(file.filename)[0])

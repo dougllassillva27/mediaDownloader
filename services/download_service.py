@@ -1,9 +1,13 @@
 """
 Serviço responsável por baixar mídias do Kwai usando yt-dlp.
+
+O nome do arquivo de saída é gerado aqui (uuid); o nome escolhido pelo usuário é
+sanitizado e usado apenas como nome de exibição no download.
 """
 import os
 import asyncio
 import logging
+import uuid
 import yt_dlp
 from .kwai_service import sanitize_filename
 
@@ -11,6 +15,19 @@ logger = logging.getLogger(__name__)
 
 TEMP_DIR = "temp"
 os.makedirs(TEMP_DIR, exist_ok=True)
+
+
+def _nome_interno() -> str:
+    """Nome de arquivo gerado pelo servidor, sem entrada do usuário."""
+    return f"media_{uuid.uuid4().hex[:12]}"
+
+
+def _dentro_do_temp(caminho: str) -> bool:
+    """Confirma que o caminho resolvido permanece dentro de TEMP_DIR."""
+    raiz = os.path.realpath(TEMP_DIR)
+    alvo = os.path.realpath(caminho)
+    return alvo == raiz or alvo.startswith(raiz + os.sep)
+
 
 def _download_media(url: str, format_type: str, temp_filename: str) -> str:
     """Lógica interna de download (síncrona)."""
@@ -50,36 +67,41 @@ def _download_media(url: str, format_type: str, temp_filename: str) -> str:
 
             base_name = os.path.join(TEMP_DIR, temp_filename)
 
-            # Procura pelo arquivo gerado
+            # Procura pelo arquivo gerado, sempre confinado ao TEMP_DIR
             if format_type == "mp3":
                 for file in os.listdir(TEMP_DIR):
                     if file.startswith(temp_filename) and file.endswith('.mp3'):
-                        return os.path.join(TEMP_DIR, file)
+                        candidato = os.path.join(TEMP_DIR, file)
+                        if _dentro_do_temp(candidato):
+                            return candidato
             else:
                 video_extensions = ['.mp4', '.webm', '.mkv']
                 for ext in video_extensions:
                     video_file = f"{base_name}{ext}"
-                    if os.path.exists(video_file):
+                    if os.path.exists(video_file) and _dentro_do_temp(video_file):
                         return video_file
                 for file in os.listdir(TEMP_DIR):
                     if file.startswith(temp_filename):
-                        return os.path.join(TEMP_DIR, file)
+                        candidato = os.path.join(TEMP_DIR, file)
+                        if _dentro_do_temp(candidato):
+                            return candidato
             return None
     except Exception as e:
         logger.error(f"Erro no yt-dlp: {str(e)}")
         return None
 
+
 async def download_media_async(url: str, format_type: str, filename: str) -> dict:
     """Wrapper assíncrono para o download."""
-    unique_id = filename.split('_')[-1] if '_' in filename else "tmp"
-    safe_name = "_".join(filename.split('_')[:-1]) if '_' in filename else filename
-
-    media_file = await asyncio.to_thread(_download_media, url, format_type, filename)
+    nome_exibicao = sanitize_filename(filename) or ("audio" if format_type == "mp3" else "video")
+    media_file = await asyncio.to_thread(_download_media, url, format_type, _nome_interno())
 
     if not media_file:
         raise Exception("Falha ao baixar o arquivo de mídia.")
 
+    extensao = os.path.splitext(media_file)[1] or (".mp3" if format_type == "mp3" else ".mp4")
+
     return {
         "path": media_file,
-        "filename": os.path.basename(media_file)
+        "filename": f"{nome_exibicao}{extensao}"
     }

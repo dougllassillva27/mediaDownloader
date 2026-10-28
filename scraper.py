@@ -8,13 +8,15 @@ import logging
 import unicodedata
 from typing import Optional, Dict, Any
 
+from services.url_service import plataforma_da_url
+
 # Configuração do logger
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 def extract_kwai_info(url: str) -> Optional[Dict[str, Any]]:
     """Extrai informações de um vídeo do Kwai"""
-    if not url or 'kwai.com' not in url:
+    if not url or plataforma_da_url(url) is None:
         return None
 
     ydl_opts = {
@@ -67,6 +69,4 @@ def clean_text_and_extract_urls(text: str) -> list:
     logger.info(f"Texto recebido: {text}")
     logger.info(f"URLs extraídas: {urls}")
 
-    return urls if urls else []
-    urls = re.findall(url_pattern, text)
     return urls if urls else []
